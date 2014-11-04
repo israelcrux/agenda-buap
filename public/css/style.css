@@ -1,0 +1,6 @@
+/* Bootstrap overriding */
+.nav,
+.navbar,
+.navbar-default {
+  background-color: #fff;
+}
