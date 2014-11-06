@@ -15,3 +15,13 @@ Route::get('/', function()
 {
 	return View::make('home');
 });
+
+Route::get('/login', function(){
+	return View::make('login');
+});
+
+Route::post('/login', 'UserController@login');
+
+Route::get('/dashboard', function(){
+    return View::make('dashboard');
+});
