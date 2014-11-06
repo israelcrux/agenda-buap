@@ -20,13 +20,13 @@ Route::get('/login', function(){
 	return View::make('login');
 });
 
-Route::get('/registro', function(){
-	return View::make('signup');
-});
-
 Route::post('/login', 'UserController@login');
 
 Route::get('/logout', 'UserController@logout');
+
+Route::get('/registro', function(){
+    return View::make('signup');
+});
 
 Route::get('/dashboard', function(){
     return View::make('dashboard');
