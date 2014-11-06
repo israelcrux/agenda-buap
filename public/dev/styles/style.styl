@@ -10,6 +10,7 @@ palid_gray = #fbfbfb
 gray = #f2f2f2
 silver = #f7f7f7
 bgc = #fbfbfb
+shadow = #e2e2e2
 standard-text-color = #3d3d3d
 subtile-text-color = #7d7d7d
 standard-background()
@@ -142,6 +143,53 @@ ul.nav.navbar-nav li a
 	padding 0px
 .form-control
 	border-radius 0px
+
+/****************************	LOGIN   ****************************/
+
+.ar-form-wrapper
+	max-width 500px
+	height 400px
+	background-color silver
+	margin 0 auto
+	box-shadow 10px 10px 0px shadow
+
+.ar-form-container
+	max-width 300px
+	height 300px
+	padding 15px
+	h1
+		text-transform uppercase
+		color light_blue
+		font-weight 300
+		font-size 1.3em
+	input
+		border 0px
+		font-size 1.5em
+	input[type="submit"]
+		background-color light_blue
+		color #fff
+		height 50px
+		width 100%
+		margin-left 0px
+		margin-right 0px
+
+	input[type="text"],
+	input[type="email"],
+	input[type="password"]
+		margin-top 10px
+		margin-bottom 10px
+		border 0px
+		background-color gray
+		box-shadow none
+		color #777
+		padding 10px
+		height auto
+		outline none
+	input:focus
+		box-shadow 3px 3px 0px shadow
+
+
+
 
 /****************************	BANNER   ****************************/
 .ar-slider-banner{
@@ -301,6 +349,12 @@ ul.nav.navbar-nav li a
 .ar-dayview .ar-month
 	margin-left 565px
 
+@media (min-width:768px) and (min-height:768px)
+	.ar-form-wrapper
+		padding-top 1px
+		margin 100px auto 30px auto
+	.ar-form-container
+		margin 50px auto 30px auto
 @media (min-width:768px)
 	.nav.navbar
 		position fixed
@@ -338,9 +392,29 @@ ul.nav.navbar-nav li a
 		float none
 
 @media (max-width:767px)
+	
+	/*Login*/
+	.ar-form-wrapper
+		padding-top 1px
+		margin 0px auto
+		box-shadow none
+	.ar-form-container
+		margin 10px auto 10px auto
+	/*Calendar*/
 	.ar-day
 		width 100%
-		padding-top 60px
+		padding-top 50px
+		h4
+			top 50px
+			height 50px
+		.ar-container
+			padding-top 50px
+		.ar-closebtn
+			width 50px
+			height 50px
+			top 50px
+			right 0px
+			z-index 3
 	.navbar-header
 		background-color light_blue
 	.ar-day-month
