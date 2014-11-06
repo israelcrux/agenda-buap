@@ -1,5 +1,344 @@
 /* Bootstrap overriding */
+
+light_blue = #00b2e2
+deep_blue = #003a5c
+
+deep_blue_s1 = #004b6d
+deep_blue_s2 = #005c7e
+
+palid_gray = #fbfbfb
+gray = #f2f2f2
+silver = #f7f7f7
+bgc = #fbfbfb
+standard-text-color = #3d3d3d
+subtile-text-color = #7d7d7d
+standard-background()
+	background-size contain
+	background-position center center
+	background-repeat no-repeat
+
+
+
+nav-height = 80px
+nav-height-padding = 90px
+nav-height_2 = 50px
+
+html,body
+	height 100%
+
+body.noscroll
+	overflow hidden
+
+*
+	color standard-text-color
+	font-family 'Source Sans Pro', sans-serif
+	outline-color: #EB645E;
+
+*::-webkit-scrollbar
+	width 5px
+	height 1px
+	background-color white
+*::-webkit-scrollbar-track-piecek
+	background-color #ededed
+	border 0px
+*::-webkit-scrollbar-thumb 
+	background-color #999
+*::-webkit-input-placeholder
+	font-weight 300
+*:-moz-placeholder
+	font-weight 300
+*::-moz-placeholder
+	font-weight 300
+*:-ms-input-placeholder
+	font-weight 300
+
+
+.ar-wrapper
+	width 90%
+	max-width 1400px
+	margin 0 auto
+
+.container-fluid.ar-wrapper
+	border-bottom 1px solid #ddd
+.nav.navbar
+	z-index 3
+	.navbar-header,
+	.collapse.navbar-collapse
+		max-width 100%
+		margin-right 0px
+		margin-left 0px
+		
+
 .nav
 .navbar
 .navbar-default
 	background-color #fff
+	border-radius 0px
+	border-top 0px
+	border-bottom 0px
+	.container-fliud
+		height nav-height		
+	ul li
+		height 100%
+		a
+			height 100%
+			line-height nav-height
+			padding-top 0px
+			padding-bottom 0px
+.navbar-default .navbar-brand
+	height 100%
+	padding-top 0px
+	padding-bottom 0px
+	div
+		display inline-block
+		height 100%
+		line-height nav-height
+		color #fff
+		span
+			color #fff
+	.ar-buap-logo
+		standard-background()
+		width 200px
+		background-color deep_blue
+		background-image url(../img/logo-buap.svg)
+		color transparent
+		float left
+	.ar-dep
+		background-color light_blue
+		padding-right 25px
+		padding-left 25px
+.container-fluid.ar-wrapper
+	padding 0px
+
+ul.nav.navbar-nav
+	max-width 100%
+ul.nav.navbar-nav li a
+	font-size 1.2em
+	text-transform uppercase
+	color deep_blue
+
+.ar-hidden
+	display none
+
+.ar-vwrap
+	overflow auto
+
+.navbar-form
+	margin-top 23px
+	padding 0px
+.form-control
+	border-radius 0px
+
+//Calendar
+
+.ar-calendar
+	position relative
+.ar-arrows
+	div
+		standard-background()
+		height 25px
+		background-position-y -1px
+	div:first-child
+		background-image url(../img/arrows_left.svg)
+	div:last-child
+		background-image url(../img/arrows_right.svg)
+.ar-day-month.ar-disabled-day:hover
+	background-color silver
+	border-bottom 0px
+	
+.ar-day-month:hover,
+.ar-day-month.selected
+	background-color gray
+	border-bottom 10px solid light_blue
+.ar-day-month
+	float left
+	background-color silver
+	margin 1px
+	width 14%
+	height 180px
+	height 10vw
+	overflow auto
+	padding 10px
+	cursor pointer
+
+.ar-daytag span
+	color light_blue
+
+.ar-right
+	text-align right
+.ar-ri
+	display inline-block
+	font-size 1.5em
+.ar-event
+	overflow auto
+	margin-top 10px
+	margin-bottom 10px
+.ar-uptitle
+	text-transform uppercase
+	font-size 1.5em
+.ar-eventtitle
+	font-weight 600
+	color deep_blue
+	width 65%
+	float left
+
+
+.ar-eventtime
+	font-size 0.85em
+	float right
+	color subtile-text-color
+.ar-disabled-day
+	background-color palid_gray
+
+.ar-month
+	width 100%
+	margin 0 auto
+	overflow auto 
+	z-index 1
+	margin-left 1px
+	-webkit-transition margin 0.25s ease
+	-moz-transition margin 0.25s ease
+	-ms-transition margin 0.25s ease
+	-o-transition margin 0.25s ease
+	transition margin 0.25s ease
+
+//Fancy day
+.ar-closebtn
+	width 60px
+	height 60px
+	right -60px
+	top 0px
+	background-color deep_blue
+	position absolute
+	cursor pointer
+
+.ar-eventlist
+	overflow-y scroll
+	height 80vh
+.ar-day
+	display block
+	width 555px
+	height 80vh
+	box-shadow 1px 1px 2px #ddd
+	background-color light_blue
+	position fixed
+	color #fff
+	padding-bottom 10px
+	padding-top 10px
+	z-index -1
+	opacity 0
+	-webkit-transition: opacity .25s ease-out;
+	-moz-transition: opacity .25s ease-out;
+	-ms-transition: opacity .25s ease-out;
+	-o-transition: opacity .25s ease-out;
+	transition: opacity .25s ease-out;
+	h4
+		text-indent 10px
+		margin-top 0px	
+	.ar-event:nth-child(even)
+		background-color deep_blue_s1
+	.ar-event:nth-child(odd)
+		background-color deep_blue_s2
+	.ar-event
+		width 100%
+		padding-left 20px
+		padding-right 20px
+		background-color deep_blue
+		margin 0 auto
+		p
+			max-width 450px
+			float right
+			color light_blue
+	.ar-eventtitle
+		padding-left 10px
+		padding-right 10px
+		font-size 1.6em
+		font-weight 200
+		color #fff		
+	.ar-eventtime
+		font-size 1em
+		color #fff
+
+.ar-dayview .ar-day
+	z-index 1
+	opacity 1
+
+.ar-dayview .ar-month
+	margin-left 565px
+
+
+@media (min-width:768px)
+	.nav.navbar
+		position fixed
+		width 100%
+	.ar-wrapper.ar-thecontent
+		padding-top nav-height-padding
+	.collapse.navbar-collapse.navbar-right
+		padding-right 0px 
+	.navbar-brand .ar-long
+		display block
+	.navbar-brand .ar-short
+		display none
+	.ar-day .ar-event
+		padding-top 25px
+		padding-bottom 25px
+
+
+@media (max-width:1200px)
+	.ar-wrapper
+		width 95%
+	.ar-day-month
+		padding 5px
+	.ar-event
+		margin 0px
+	.navbar-default .navbar-brand .ar-buap-logo
+		background-image url(../img/logo-buap-short.svg)
+		width 50px
+	//Calendar
+	.ar-eventtitle
+		float none
+		white-space nowrap
+		text-overflow ellipsis
+		overflow hidden
+	.ar-eventtime
+		float none
+
+@media (max-width:767px)
+	.navbar-header
+		background-color light_blue
+	.ar-day-month
+		margin-right 0px
+		margin-bottom 0px
+	.ar-event,
+	.ar-text-tag
+		display none		
+	.ar-wrapper
+		width 100%
+	.navbar-default
+		.navbar-toggle
+			width 50px
+			height 50px
+			border-radius 0px
+			margin 0px
+			padding-left 13px
+			border-bottom 0px
+			border-right 0px
+			background-color #fff
+		.container-fliud
+			height nav-height_2
+	.navbar-default .navbar-brand
+		padding 0px
+		.ar-buap-logo
+			background-image url(../img/logo-buap-short.svg)
+			width 50px
+	.navbar-default .navbar-brand div,
+	.navbar-default .container-fliud ul li a 
+			line-height nav-height_2
+	.navbar-brand .ar-long
+		display none
+	.navbar-brand .ar-short
+		display block
+@media (max-width:450px)
+	.ar-day-month
+		padding 1px
+		width 13.8% 
