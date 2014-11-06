@@ -31,8 +31,8 @@
 			</div>
 			<div class="collapse navbar-collapse navbar-right" id="ar-collapsable-menu">
 		      <ul class="nav navbar-nav">
-		        <li><a href="#">Acerca de</a></li>
-		        <li><a href="#">Ingresar</a></li>
+		        <li><a href="#">Acerca de</a></li>		        
+		        <li>{{ HTML::link('/login','Ingresar') }}</li>
 		        <li>
 		        <!--
 				  <form class="navbar-form navbar-left" role="search">
@@ -55,5 +55,26 @@
 		@section('content')
 		@show
 	</div>
+	<footer>
+		<div class="ar-wrapper ar-vwrap">
+			<div class="col-xs-6 col-md-4">
+				<a class="ar-footer-logo" target="_blank" href="http://cmas.siu.buap.mx/portal_pprd/wb/BBUAP/inicio"></a>
+			</div>
+			<div class="col-xs-6 col-md-4">
+				<p>
+					<a target="_blank" href="http://cmas.siu.buap.mx/portal_pprd/wb/BBUAP/directorio_telefonico_2013">Directorio Telefónico</a>
+					<a target="_blank" href="http://cmas.siu.buap.mx/portal_pprd/wb/rectoria/avisos">Aviso de Privacidad</a>
+					<a target="_blank" href="http://cmas.siu.buap.mx/portal_pprd/wb/BBUAP/buzon_de_comentarios">Buzón de comentarios</a>
+				</p>
+			</div>
+			<div class="col-xs-6 col-md-4">
+				<p>
+					Benemérita Universidad Autónoma de Puebla <br>
+					4 sur 104 Centro Histórico C.P. 72000 <br>
+					Teléfono +52(222) 2295500 ext. 5013 <br>
+				</p>				
+			</div>
+		</div>
+	</footer>
 </body>
 </html>

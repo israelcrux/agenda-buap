@@ -1,6 +1,8 @@
 /* Bootstrap overriding */
 
 light_blue = #00b2e2
+light_blue_shadow = #059dc1
+
 deep_blue = #003a5c
 
 deep_blue_s1 = #004b6d
@@ -32,7 +34,25 @@ body
 
 body.noscroll
 	overflow hidden
-	
+
+section
+	margin 50px auto
+
+footer
+	padding-top 20px
+	padding-bottom 20px
+	background-color deep_blue
+	*
+		color light_blue
+	p	
+		padding-top 25px
+		a
+			display block
+a.ar-footer-logo
+	display block
+	standard-background()
+	background-image url(../img/logo-buap.svg)
+	height 100px
 *
 	color standard-text-color
 	font-family 'Source Sans Pro', sans-serif
@@ -67,11 +87,42 @@ body.noscroll
 *:-ms-input-placeholder
 	font-weight 300
 
+input 
+	border 0px
+
+.btn-primary
+	background-color light_blue
+.btn-primary,
+input[type="submit"]
+	position relative
+	border-radius 0px
+	border 0px
+	box-shadow 0 6px light_blue_shadow
+	-webkit-transition none
+	-moz-transition none
+	-ms-transition none
+	-o-transition none
+	transition none
+
+.btn-primary:hover,
+input[type="submit"]:hover
+	background-color light_blue
+	box-shadow 0 4px light_blue_shadow
+	top 2px
+
+.btn-primary:active,
+input[type="submit"]:active
+	box-shadow: 0 0 #ab3c3c;
+	top: 6px;
+
 
 .ar-wrapper
 	width 90%
 	max-width 1400px
 	margin 0 auto
+
+.ar-vwrap
+	overflow auto
 
 .ar-navfl
 	border-bottom 1px solid #ddd
@@ -81,8 +132,7 @@ body.noscroll
 	.collapse.navbar-collapse
 		max-width 100%
 		margin-right 0px
-		margin-left 0px
-		
+		margin-left 0px		
 
 .nav
 .navbar
@@ -157,13 +207,13 @@ ul.nav.navbar-nav li a
 	max-width 300px
 	height 300px
 	padding 15px
+	margin 0 auto
 	h1
 		text-transform uppercase
 		color light_blue
 		font-weight 300
 		font-size 1.3em
 	input
-		border 0px
 		font-size 1.5em
 	input[type="submit"]
 		background-color light_blue
@@ -210,7 +260,9 @@ ul.nav.navbar-nav li a
 		background-image url(../img/arrows_left.svg)
 	div:last-child
 		background-image url(../img/arrows_right.svg)
-.ar-day-month.ar-disabled-day:hover
+
+.ar-day-month.ar-disabled-day:hover,
+.ar-day-month.ar-disabled-day.selected:hover
 	background-color silver
 	border-bottom 0px
 	
@@ -349,7 +401,7 @@ ul.nav.navbar-nav li a
 .ar-dayview .ar-month
 	margin-left 565px
 
-@media (min-width:768px) and (min-height:768px)
+@media (min-width:768px) and (min-height:600px)
 	.ar-form-wrapper
 		padding-top 1px
 		margin 100px auto 30px auto
