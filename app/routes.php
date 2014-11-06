@@ -22,6 +22,8 @@ Route::get('/login', function(){
 
 Route::post('/login', 'UserController@login');
 
+Route::get('/logout', 'UserController@logout');
+
 Route::get('/dashboard', function(){
     return View::make('dashboard');
 });
