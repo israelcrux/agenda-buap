@@ -15,16 +15,19 @@ bgc = #fbfbfb
 shadow = #e2e2e2
 standard-text-color = #3d3d3d
 subtile-text-color = #7d7d7d
-standard-background()
-	background-size contain
-	background-position center center
-	background-repeat no-repeat
 
 
+
+footer_height = 140px
 
 nav-height = 80px
 nav-height-padding = 90px
 nav-height_2 = 50px
+
+standard-background()
+	background-size contain
+	background-position center center
+	background-repeat no-repeat
 
 html,body
 	height 100%
@@ -38,7 +41,15 @@ body.noscroll
 section
 	margin 50px auto
 
+.ar-above
+	min-height 100%	
+	overflow auto
+	// padding-bottom footer_height
+	padding-bottom 170px
+
 footer
+	margin-top -140px
+	height footer_height
 	padding-top 20px
 	padding-bottom 20px
 	background-color deep_blue
@@ -198,15 +209,17 @@ ul.nav.navbar-nav li a
 
 .ar-form-wrapper
 	max-width 500px
-	height 400px
-	background-color silver
+	min-height 400px
+	background-color palid_gray
 	margin 0 auto
-	box-shadow 10px 10px 0px shadow
+	box-shadow 4px 4px 0px shadow
 
 .ar-form-container
 	max-width 300px
-	height 300px
+	min-height 300px
 	padding 15px
+	padding-bottom 30px
+	margin-bottom 30px
 	margin 0 auto
 	h1
 		text-transform uppercase
@@ -225,19 +238,24 @@ ul.nav.navbar-nav li a
 
 	input[type="text"],
 	input[type="email"],
-	input[type="password"]
+	input[type="password"],
+	select
 		margin-top 10px
 		margin-bottom 10px
 		border 0px
 		background-color gray
 		box-shadow none
 		color #777
+		width 100%
 		padding 10px
 		height auto
 		outline none
+	select
+		min-height 50px
+		margin 0px
 	input:focus
 		box-shadow 3px 3px 0px shadow
-
+	
 
 
 
@@ -261,15 +279,17 @@ ul.nav.navbar-nav li a
 	div:last-child
 		background-image url(../img/arrows_right.svg)
 
-.ar-day-month.ar-disabled-day:hover,
-.ar-day-month.ar-disabled-day.selected:hover
-	background-color silver
-	border-bottom 0px
 	
 .ar-day-month:hover,
 .ar-day-month.selected
 	background-color gray
 	border-bottom 10px solid light_blue
+
+.ar-day-month.ar-disabled-day:hover,
+.ar-day-month.ar-disabled-day.selected:hover
+	background-color silver
+	border-bottom 0px
+
 .ar-day-month
 	float left
 	background-color silver
@@ -402,10 +422,10 @@ ul.nav.navbar-nav li a
 	margin-left 565px
 
 @media (min-width:768px) and (min-height:600px)
-	.ar-form-wrapper
+	.ar-login-form.ar-form-wrapper
 		padding-top 1px
 		margin 100px auto 30px auto
-	.ar-form-container
+	.ar-login-form .ar-form-container
 		margin 50px auto 30px auto
 @media (min-width:768px)
 	.nav.navbar
@@ -448,6 +468,7 @@ ul.nav.navbar-nav li a
 	/*Login*/
 	.ar-form-wrapper
 		padding-top 1px
+		padding-bottom 1px
 		margin 0px auto
 		box-shadow none
 	.ar-form-container

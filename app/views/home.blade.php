@@ -24,7 +24,7 @@
 			(con dominio terminado en .buap.mx) y crear una cuenta
 		</p>
 		<p>
-			<button class="btn btn-primary">Solicitar Difusión</button>			
+			<button class="btn btn-primary" onclick="document.location='{{ URL::to('/registro') }}'">Solicitar Difusión</button>
 		</p>
 	</section>
 @stop
