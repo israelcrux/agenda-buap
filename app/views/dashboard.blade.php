@@ -1,5 +1,5 @@
 @extends('layout')
 
 @section('content')
-    Bienvenido {{ Session::get('name'); }}
+    Bienvenido {{ $name }}
 @stop

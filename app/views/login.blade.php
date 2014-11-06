@@ -1,6 +1,7 @@
-@extends('layout');
+@extends('layout')
 
 @section('content')
+    {{ Session::get('alert'); }}
     {{ Form::open(array('url' => '/login', 'method' => 'post')); }}
         {{ Form::label('username', 'Usuario'); }}
         {{ Form::text('username'); }}

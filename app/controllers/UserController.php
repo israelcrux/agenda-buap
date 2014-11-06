@@ -8,22 +8,21 @@
         public function login() {
             if(Input::has('username') && Input::has('password')) {
                 $username = Input::get('username');
-                $password = sha1(Input::get('password'));
+                $password = Input::get('password');
+                $crypt_password = sha1($password);
 
-                // echo $password;
-
-                $user_json = User::whereRaw('username = ? AND password = ?', array($username, $password))->first(array('name'));
-                $user = json_decode($user_json);
+                $user = User::whereRaw('username = ? AND password = ?', array($username, $crypt_password))->first(array('name'));
 
                 if($user) {
-                    return Redirect::to('dashboard')->with('name', $user->name);
+                    $user->toArray();
+                    return View::make('dashboard', array('name' => $user['name']));
                 }
                 else {
-                    return Redirect::to('login');
+                    return Redirect::to('login')->with('alert', 'Usuario y/o contraseña incorrectos');
                 }
             }
             else {
-                return Redirect::to('login');
+                return Redirect::to('login')->with('alert', 'Escriba su usuario y contraseña');
             }
         }
         
