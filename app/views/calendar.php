@@ -651,6 +651,7 @@ $(document).ready(function(){
 			if(!day.disabled){
 				$scope.calendarStatusClass = 'ar-dayview';
 				$scope.currentDay = day;
+				$(".navbar-toggle").trigger( "click" );
 			}
 		};
 	}]);

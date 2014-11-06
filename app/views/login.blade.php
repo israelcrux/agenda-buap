@@ -2,13 +2,14 @@
 
 @section('content')
     {{ Session::get('alert'); }}
-    {{ Form::open(array('url' => '/login', 'method' => 'post')); }}
-        {{ Form::label('username', 'Usuario'); }}
-        {{ Form::text('username'); }}
-
-        {{ Form::label('password', 'Contraseña'); }}
-        {{ Form::password('password'); }}
-
-        {{ Form::submit('Iniciar sesión'); }}
-    {{ Form::close(); }}
+	<div class="ar-form-wrapper">
+		<div class="ar-form-container">
+			<h1>Entrar</h1>
+		    {{ Form::open(array('url' => '/login', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); }}
+				<input class="form-control" name="username" type="text" id="username" placeholder="e-mail" autocomplete="off">
+				<input class="form-control" name="password" type="password" value="" id="password" placeholder="password">
+				<input class="form-control" type="submit" value="Entrar">
+		    {{ Form::close(); }}		    
+		</div>
+	</div>
 @stop
