@@ -20,7 +20,7 @@
 				<div class="btn btn-mainbtn"></div>
 			</div>
 		</div>
-		<div class="ar-day-month" ng-class="{'selected':day.ntag&&currentDay.ntag==day.ntag}" ng-repeat="day in currentMonth.days" ng-click="dayView(day)" ng-show="mode=='month'" ng-class="{'ar-disabled-day':day.disabled}">
+		<div class="ar-day-month" ng-class="{'selected':day.ntag&&currentDay.ntag==day.ntag, 'ar-disabled-day':day.disabled}" ng-repeat="day in currentMonth.days" ng-click="dayView(day)" ng-show="mode=='month'">
 			<div class="ar-daytag">
 				<span class="ar-text-tag">{{ day.ttag }}</span>
 				<span class="ar-number-tag">{{ day.ntag }}</span>
