@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+    {{ Session::get('alert'); }}
 	<div class="ar-form-wrapper">
 		<div class="ar-form-container">
 			<h1>Entrar</h1>
