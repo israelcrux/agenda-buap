@@ -25,24 +25,38 @@ nav-height_2 = 50px
 
 html,body
 	height 100%
+	max-height 100%
+body
+	overflow-x hidden
 
 body.noscroll
 	overflow hidden
-
+	
 *
 	color standard-text-color
 	font-family 'Source Sans Pro', sans-serif
 	outline-color: #EB645E;
 
 *::-webkit-scrollbar
-	width 5px
-	height 1px
+	width 0px
+	height 10px
 	background-color white
 *::-webkit-scrollbar-track-piecek
 	background-color #ededed
 	border 0px
 *::-webkit-scrollbar-thumb 
 	background-color #999
+
+*::-moz-scrollbar
+	width 0px
+	height 10px
+	background-color white
+*::-moz-scrollbar-track-piecek
+	background-color #ededed
+	border 0px
+*::-moz-scrollbar-thumb 
+	background-color #999
+
 *::-webkit-input-placeholder
 	font-weight 300
 *:-moz-placeholder
@@ -58,7 +72,7 @@ body.noscroll
 	max-width 1400px
 	margin 0 auto
 
-.container-fluid.ar-wrapper
+.ar-navfl
 	border-bottom 1px solid #ddd
 .nav.navbar
 	z-index 3
@@ -107,7 +121,7 @@ body.noscroll
 		background-color light_blue
 		padding-right 25px
 		padding-left 25px
-.container-fluid.ar-wrapper
+.ar-navfl
 	padding 0px
 
 ul.nav.navbar-nav
@@ -129,8 +143,14 @@ ul.nav.navbar-nav li a
 .form-control
 	border-radius 0px
 
-//Calendar
+/****************************	BANNER   ****************************/
+.ar-slider-banner{
+	height 300px
+	width 100%
+	background-color light_blue
+}
 
+/****************************	CALENDAR   ****************************/
 .ar-calendar
 	position relative
 .ar-arrows
@@ -207,24 +227,24 @@ ul.nav.navbar-nav li a
 	width 60px
 	height 60px
 	right -60px
-	top 0px
+	top nav-height-padding
 	background-color deep_blue
 	position absolute
 	cursor pointer
+	standard-background()
+	background-image url(../img/arrows_remove.svg)
 
-.ar-eventlist
+
+.scrollable
 	overflow-y scroll
-	height 80vh
+
 .ar-day
 	display block
-	width 555px
-	height 80vh
-	box-shadow 1px 1px 2px #ddd
-	background-color light_blue
 	position fixed
-	color #fff
-	padding-bottom 10px
-	padding-top 10px
+	top 0px
+	padding-top nav-height-padding
+	width 555px	
+	height 100%
 	z-index -1
 	opacity 0
 	-webkit-transition: opacity .25s ease-out;
@@ -234,7 +254,22 @@ ul.nav.navbar-nav li a
 	transition: opacity .25s ease-out;
 	h4
 		text-indent 10px
-		margin-top 0px	
+		position absolute
+		padding-top 5px
+		padding-bottom 6px
+		top nav-height-padding
+		margin 0px
+		z-index 1
+		background-color light_blue
+		color #fff
+		width 100%
+	.ar-container
+		position relative
+		max-height 100%
+		background-color light_blue
+		color #fff
+		padding-bottom 10px
+		padding-top 30px
 	.ar-event:nth-child(even)
 		background-color deep_blue_s1
 	.ar-event:nth-child(odd)
@@ -265,7 +300,6 @@ ul.nav.navbar-nav li a
 
 .ar-dayview .ar-month
 	margin-left 565px
-
 
 @media (min-width:768px)
 	.nav.navbar
@@ -304,14 +338,17 @@ ul.nav.navbar-nav li a
 		float none
 
 @media (max-width:767px)
+	.ar-day
+		width 100%
+		padding-top 60px
 	.navbar-header
 		background-color light_blue
 	.ar-day-month
 		margin-right 0px
 		margin-bottom 0px
-	.ar-event,
-	.ar-text-tag
-		display none		
+		.ar-event,
+		.ar-text-tag
+			display none
 	.ar-wrapper
 		width 100%
 	.navbar-default

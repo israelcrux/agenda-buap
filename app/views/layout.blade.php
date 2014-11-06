@@ -9,7 +9,7 @@
 </head>
 <body ng-app="dgi">
 	<div class="nav navbar navbar-default" role="navigation">
-		<div class="container-fluid ar-wrapper">
+		<div class="container-fluid ar-wrapper ar-navfl">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ar-collapsable-menu">
 					<span class="sr-only">Menu</span>
@@ -47,8 +47,13 @@
 		</div>
 	</div>
 	<div class="ar-wrapper ar-thecontent">
+		<?php /*
+		@section('banner')
+		@show
+		*/ ?>
+
 		@section('content')
+		@show
 	</div>
-	@show
 </body>
 </html>
