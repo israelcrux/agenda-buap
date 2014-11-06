@@ -32,7 +32,7 @@
 				</div>
 				<div class="collapse navbar-collapse navbar-right" id="ar-collapsable-menu">
 			      <ul class="nav navbar-nav">
-			        <li>{{ HTML::link('/login','Salir') }}</li>
+			        <li>{{ HTML::link('/logout','Salir') }}</li>
 			        <li>
 			        <!--
 					  <form class="navbar-form navbar-left" role="search">
