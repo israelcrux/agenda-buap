@@ -49,7 +49,7 @@ section
 
 footer
 	margin-top -140px
-	height footer_height
+	min-height footer_height
 	padding-top 20px
 	padding-bottom 20px
 	background-color deep_blue
@@ -236,6 +236,14 @@ ul.nav.navbar-nav li a
 	margin 0 auto
 	box-shadow 4px 4px 0px shadow
 
+section.ar-reg-msg
+	padding 15px
+	max-width 500px
+	margin 0 auto
+	text-align justify
+	overflow auto
+	button
+		float right
 .ar-form-container
 	max-width 300px
 	min-height 300px
@@ -243,13 +251,11 @@ ul.nav.navbar-nav li a
 	padding-bottom 30px
 	margin-bottom 30px
 	margin 0 auto
-	section
-		padding 15px
 	h1
 		text-transform uppercase
 		color light_blue
 		font-weight 300
-		font-size 1.3em
+		font-size 2em
 	input
 		font-size 1.5em
 	input[type="submit"]
@@ -293,6 +299,8 @@ ul.nav.navbar-nav li a
 /****************************	CALENDAR   ****************************/
 .ar-calendar
 	position relative
+	max-width 1200px
+	margin 0 auto
 .ar-arrows
 	div
 		standard-background()
@@ -306,6 +314,7 @@ ul.nav.navbar-nav li a
 	
 .ar-day-month:hover,
 .ar-day-month.selected
+	
 	background-color gray
 	border-bottom 10px solid light_blue
 
@@ -319,11 +328,31 @@ ul.nav.navbar-nav li a
 	background-color silver
 	margin 1px
 	width 14%
-	height 180px
-	height 10vw
+	height 100px
+	height 7vw
 	overflow auto
-	padding 10px
 	cursor pointer
+	position relative
+	.ar-daymonth-container
+		padding 10px
+	.ar-daytag
+		font-size 1.05
+		padding 5px
+		background-color gray
+.ar-day-month.ar-disabled-day .ar-daytag
+	display none
+.ar-moarrr
+	max-width 200px
+	position absolute 
+	bottom 10px
+	right 5px
+	text-align right
+	span
+		border-radius 50%
+		display inline-block
+		width 4px
+		height 4px
+		background-color #bbb
 
 .ar-daytag span
 	color light_blue
@@ -448,9 +477,9 @@ ul.nav.navbar-nav li a
 @media (min-width:768px) and (min-height:600px)
 	.ar-login-form.ar-form-wrapper
 		padding-top 1px
-		margin 100px auto 30px auto
-	.ar-login-form .ar-form-container
 		margin 50px auto 30px auto
+	.ar-login-form .ar-form-container
+		margin 30px auto 30px auto
 @media (min-width:768px)
 	.nav.navbar
 		position fixed
@@ -488,7 +517,8 @@ ul.nav.navbar-nav li a
 		float none
 
 @media (max-width:767px)
-	
+	.ar-moarrr
+		display none	
 	/*Login*/
 	.ar-form-wrapper
 		padding-top 1px
