@@ -11,21 +11,31 @@
 |
 */
 
+/* Route to home */
 Route::get('/', function()
 {
 	return View::make('home');
 });
 
+/* Route to show the login form */
 Route::get('/login', function(){
 	return View::make('login');
 });
 
+/* Route to make login */
 Route::post('/login', 'UserController@login');
 
-Route::get('/logout', 'UserController@logout');
+/* Route to show the register form */
+Route::get('/signup', 'UserController@signup');
 
-Route::get('/registro', 'UserController@signup');
+/* Group of routes that need authentication */
+Route::group(array('before' => 'auth'), function(){
 
-Route::get('/dashboard', function(){
-    return View::make('dashboard');
+    Route::get('/logout', 'UserController@logout');
+
+
+    Route::get('/dashboard', function(){
+        return View::make('dashboard');
+    });
+
 });
