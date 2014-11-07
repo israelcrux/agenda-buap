@@ -32,7 +32,6 @@
 				</div>
 				<div class="collapse navbar-collapse navbar-right" id="ar-collapsable-menu">
 			      <ul class="nav navbar-nav">
-			        <li>{{ HTML::link('/signup','Registro') }}</li>
 			        <li>{{ HTML::link('/login','Ingresar') }}</li>
 			        <li>
 			        <!--
