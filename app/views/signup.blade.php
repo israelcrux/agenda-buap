@@ -5,7 +5,7 @@
 		<div class="ar-form-container">
 			<h1>Registro</h1>
 		    {{ Form::open(array('url' => '/signup', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); }}
-				<input class="form-control" name="name" type="text" id="name" placeholder="Nombre" autocomplete="off">
+				<input class="form-control" name="name" type="text" id="name" placeholder="Nombre" autocomplete="off" required="true">
 				<input class="form-control" name="phone" type="text" id="phone" placeholder="Teléfono" autocomplete="off">
 				<select name="unidad_academica" id="">
 					<option value="">Unidad Acádemica/Administrativa</option>
