@@ -7,7 +7,7 @@
 		    {{ Form::open(array('url' => '/signup', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); }}
 				<input class="form-control" name="name" type="text" id="name" placeholder="Nombre" autocomplete="off">
 				<input class="form-control" name="phone" type="text" id="phone" placeholder="Teléfono" autocomplete="off">
-				<select name="unidad_academica" id="">
+				<select name="unidad_academica" id="" placeholder="">
 					<option value="">Unidad Acádemica/Administrativa</option>
 					@foreach($aaunits as $aaunit)
 						<option value="">{{ $aaunit['name'] }}</option>
