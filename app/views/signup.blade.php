@@ -12,8 +12,10 @@
 				<input class="form-control" name="phone" type="text" id="phone" placeholder="Teléfono" autocomplete="off">
 
 				<select name="unidad_academica" id="">
-					<option value="">ola</option>
-					<option value="">k ase</option>
+					<option value="">Seleccione</option>
+					@foreach($aaunits as $aaunit)
+						<option value="">{{ $aaunit['name'] }}</option>
+					@endforeach
 				</select>
 				<input class="form-control" name="username" type="text" id="username" placeholder="E-mail" autocomplete="off" required="true">
 				<input class="form-control" name="password" type="password" value="" id="password" placeholder="password" required="true">

@@ -42,5 +42,21 @@
                 return Redirect::to('login')->with('alert', 'Usuario y/o contraseña incorrectos');
             }
         }
+
+        /*
+         * Finish the user login
+        */
+        public function logout() {
+            Auth::logout();
+            return View::make('home');
+        }
+
+        /*
+         * Show the form to register an user
+        */
+        public function signup() {
+            $units = AcademicAdministrativeUnit::all(array('name'))->toArray();
+            return View::make('signup', array('aaunits' => $units));
+        }
         
     }
