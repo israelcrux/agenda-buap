@@ -1,7 +1,7 @@
 @extends('admin_layout')
 
 @section('content')
-    Bienvenido {{ $name }}
+    Bienvenido {{ Auth::user()->first_name }}
 
 @stop
 

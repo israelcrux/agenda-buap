@@ -28,11 +28,13 @@ Route::post('/login', 'UserController@login');
 /* Route to show the register form */
 Route::get('/signup', 'UserController@signup');
 
+/* Route to register an user */
+Route::post('/register', 'UserController@register');
+
 /* Group of routes that need authentication */
 Route::group(array('before' => 'auth'), function(){
 
     Route::get('/logout', 'UserController@logout');
-
 
     Route::get('/dashboard', function(){
         return View::make('dashboard');

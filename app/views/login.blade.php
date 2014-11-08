@@ -20,7 +20,7 @@
 		<div class="ar-form-container">
 			<h1>Entrar</h1>
 		    {{ Form::open(array('url' => '/login', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); }}
-				<input class="form-control" name="username" type="text" id="username" placeholder="e-mail" autocomplete="off" required="true">
+				<input class="form-control" name="email" type="text" id="username" placeholder="E-mail" autocomplete="off" required="true" value="{{ Input::old('email'); }}">
 				<input class="form-control" name="password" type="password" value="" id="password" placeholder="Contraseña" required="true">
 				<input class="form-control" type="submit" value="Entrar">
 		    {{ Form::close(); }}		    
