@@ -19,15 +19,15 @@
 						<span class="icon-bar"></span>
 					</button>
 					<div class="navbar-brand">
-
-						<div class="ar-buap-logo">
-							BUAP
-						</div>
-						<div class="ar-dep">
-							<span class="ar-long">Dirección de Comunicación Institucional</span>						
-							<span class="ar-short">DGI</span>
-						</div>
-
+						<a href="{{ URL::to('/') }}">
+							<div class="ar-buap-logo">
+								BUAP
+							</div>
+							<div class="ar-dep">
+								<span class="ar-long">Dirección de Comunicación Institucional</span>
+								<span class="ar-short">DGI</span>
+							</div>
+						</a>
 					</div>
 				</div>
 				<div class="collapse navbar-collapse navbar-right" id="ar-collapsable-menu">

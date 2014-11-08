@@ -20,14 +20,23 @@
 				<div class="btn btn-mainbtn"></div>
 			</div>
 		</div>
-		<div class="ar-day-month" ng-class="{'selected':day.ntag&&currentDay.ntag==day.ntag, 'ar-disabled-day':day.disabled}" ng-repeat="day in currentMonth.days" ng-click="dayView(day)" ng-show="mode=='month'">
+		<div class="ar-day-month" class="ar-disabled-day" ng-repeat="day in dummies" ng-show="mode=='month'">
+		</div>
+		<div class="ar-day-month" ng-class="{'selected':day.ntag&&currentDay.ntag==day.ntag}" ng-repeat="day in currentMonth.days" ng-click="dayView(day,$index)" ng-show="mode=='month'">
 			<div class="ar-daytag">
 				<span class="ar-text-tag">{{ day.ttag }}</span>
 				<span class="ar-number-tag">{{ day.ntag }}</span>
 			</div>
-			<div class="ar-event" ng-repeat="activity in day.activities">
-				<div class="ar-eventtitle"> {{activity.name}} </div>
-				<div class="ar-eventtime"> {{activity.begins}} </div>
+			<div class="ar-daymonth-container">
+				<div class="ar-event" ng-show="day.activities[0]">
+					<div class="ar-eventtitle"> {{day.activities[0].name}} </div>
+					<div class="ar-eventtime"> {{day.activities[0].begins}} </div>
+				</div>
+				<div class="ar-moarrr" ng-show="day.activities[1]">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -60,12 +69,12 @@ $(document).ready(function(){
 
 	function calendarize(year, month, days){
 		var calendarDays =[];
+		var calendarDummies =[];
 		var date = new Date(year,month-1,1);
-
 		var fd = date.getDay();
 
 		for(var i = fd; i > 0; i--){
-			calendarDays.push({disabled: true});
+			calendarDummies.push({disabled: true});
 		}
 
 		for (var i = 0, j = fd; i < days.length; i++, j = (j+1) % 7 ) {
@@ -74,11 +83,16 @@ $(document).ready(function(){
 			calendarDays.push( days[i] );
 		};
 
-		return calendarDays;
+		return { days: calendarDays, dummies: calendarDummies};
 	}
 
-	var app = angular.module('dgi',[]);
-	app.controller('CalendarController',['$scope','$http',function($scope,$http){
+	var app = angular.module('dgi',['cfp.hotkeys'])
+		.config(function(hotkeysProvider) {
+			hotkeysProvider.includeCheatSheet = false;
+		})
+
+	app.controller('CalendarController',['$scope','$http','hotkeys',function($scope,$http,hotkeys){
+
 		$scope.mode = 'month';
 		
 		$scope.currentWeek = {
@@ -88,10 +102,7 @@ $(document).ready(function(){
 			]
 		};
 
-		$scope.currentMonth = {
-			name : 'Noviembre',
-			year : '2014',
-			days : calendarize(2014,11,[
+		var dnd = calendarize(2014,11,[
 				{
 					activities : [
 						{ 
@@ -152,7 +163,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -170,7 +182,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -188,7 +201,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -206,7 +220,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -224,7 +239,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -242,7 +258,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -260,7 +277,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -278,7 +296,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -296,7 +315,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -314,7 +334,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -332,7 +353,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -350,7 +372,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -368,7 +391,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -386,7 +410,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -404,7 +429,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -422,7 +448,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -440,7 +467,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -458,7 +486,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -476,7 +505,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -494,7 +524,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -512,7 +543,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -530,7 +562,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -548,7 +581,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -566,7 +600,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -584,7 +619,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -617,7 +653,8 @@ $(document).ready(function(){
 							begins: '9:00am'
 						},						
 					]
-				},				{
+				},
+				{
 					activities : [
 						{ 
 							name: 'Lorem ipsum.', 
@@ -636,24 +673,107 @@ $(document).ready(function(){
 						},
 					]
 				},
+			]);
 
-			])
+		$scope.dummies = dnd.dummies;
+
+		$scope.currentMonth = {
+			name : 'Noviembre',
+			year : '2014',
+			days : dnd.days
 		};
 
 		$scope.currentDay = {};
+
+		//Today? ...doesn't really matter
+		$scope.currentDayIndex = 0;
+		$scope.calendarStatusClass = '';
 
 		//UX -------------------
 		$scope.mainView = function(){
 			$scope.calendarStatusClass = '';
 			$scope.currentDay = {};
 		};
-		$scope.dayView = function(day){
+		$scope.dayView = function(day,index){
 			if(!day.disabled){
 				$scope.calendarStatusClass = 'ar-dayview';
 				$scope.currentDay = day;
-				$(".navbar-toggle").trigger( "click" );
+				$scope.currentDayIndex = index;
+				$("#ar-collapsable-menu").removeClass( "in" ).removeClass("collapsing").addClass("collapse");
 			}
 		};
+		//UX: keyboard shortcuts
+		hotkeys.bindTo($scope)
+			.add({
+				combo: 'right',
+				callback: function(event, hotkey) {
+					var di = $scope.currentDayIndex;
+					di = (di + 1) % $scope.currentMonth.days.length;
+					$scope.currentDay = $scope.currentMonth.days[ di ];
+					$scope.currentDayIndex = di;
+					event.stopPropagation();
+					event.preventDefault();
+				}			
+			})
+			.add({
+				combo: 'left',
+				callback: function(event, hotkey) {
+					var di = $scope.currentDayIndex;
+					if(--di < 0)
+						di = $scope.currentMonth.days.length - 1;
+					$scope.currentDay = $scope.currentMonth.days[ di ];
+					$scope.currentDayIndex = di;
+					event.stopPropagation();
+					event.preventDefault();
+				}
+			})
+			.add({
+				combo: 'down',
+				callback: function(event, hotkey) {
+					if($scope.currentDay.activities && $scope.calendarStatusClass == ''){
+						var di = $scope.currentDayIndex + 7;
+						if(di < $scope.currentMonth.days.length){
+							$scope.currentDay = $scope.currentMonth.days[ di ];
+							$scope.currentDayIndex = di;
+						}
+						event.stopPropagation();
+						event.preventDefault();
+					} else if ($scope.calendarStatusClass == 'ar-dayview'){
+
+						event.stopPropagation();
+						event.preventDefault();
+					}
+				}
+			})
+			.add({
+				combo: 'up',
+				callback: function(event, hotkey) {
+					if($scope.currentDay.activities){
+						var di = $scope.currentDayIndex - 7;
+						if(di >= 0){
+							$scope.currentDay = $scope.currentMonth.days[ di ];
+							$scope.currentDayIndex = di;
+						}
+						event.stopPropagation();
+						event.preventDefault();
+					}
+				}
+			})
+			.add({
+				combo: 'enter',
+				callback: function(event, hotkey) {
+					console.log($scope.calendarStatusClass);
+					if($scope.currentDayIndex && $scope.calendarStatusClass == ''){
+						$scope.dayView( $scope.currentDay, $scope.currentDayIndex );
+					}
+				}
+			})
+			.add({
+				combo: 'esc',
+				callback: function(event, hotkey) {
+					$scope.mainView();
+				}
+			});
 	}]);
 })();	
 </script>

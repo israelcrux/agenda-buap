@@ -7,11 +7,6 @@
 @stop
 
 @section('content')
-	<h1>Comunicación Institucional, Eventos y Actividades</h1>
-	<p>
-		Portal de gestión de difusión de la DCI
-	</p>
-
-	<p>Calendario de Eventos:</p>
+	<h5>Portal de gestión de difusión de la DCI</h5>
 	@include('calendar')
 @stop
