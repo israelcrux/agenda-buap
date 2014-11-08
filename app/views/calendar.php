@@ -687,6 +687,7 @@ $(document).ready(function(){
 
 		//Today? ...doesn't really matter
 		$scope.currentDayIndex = 0;
+		$scope.calendarStatusClass = '';
 
 		//UX -------------------
 		$scope.mainView = function(){
@@ -706,14 +707,10 @@ $(document).ready(function(){
 			.add({
 				combo: 'right',
 				callback: function(event, hotkey) {
-					if($scope.currentDay.activities){
-						var di = $scope.currentDayIndex;
-						di = (di + 1) % $scope.currentMonth.days.length;
-						$scope.currentDay = $scope.currentMonth.days[ di ];
-						$scope.currentDayIndex = di;
-					} else {
-						console.log('Next month!');
-					}
+					var di = $scope.currentDayIndex;
+					di = (di + 1) % $scope.currentMonth.days.length;
+					$scope.currentDay = $scope.currentMonth.days[ di ];
+					$scope.currentDayIndex = di;
 					event.stopPropagation();
 					event.preventDefault();
 				}			
@@ -721,14 +718,11 @@ $(document).ready(function(){
 			.add({
 				combo: 'left',
 				callback: function(event, hotkey) {
-					if($scope.currentDay.activities){
-						var di = $scope.currentDayIndex;
-						di = Math.abs( (di - 1) % $scope.currentMonth.days.length );
-						$scope.currentDay = $scope.currentMonth.days[ di ];
-						$scope.currentDayIndex = di;
-					} else {
-						console.log('Prev month!');
-					}
+					var di = $scope.currentDayIndex;
+					if(--di < 0)
+						di = $scope.currentMonth.days.length - 1;
+					$scope.currentDay = $scope.currentMonth.days[ di ];
+					$scope.currentDayIndex = di;
 					event.stopPropagation();
 					event.preventDefault();
 				}
@@ -736,33 +730,50 @@ $(document).ready(function(){
 			.add({
 				combo: 'down',
 				callback: function(event, hotkey) {
-					if($scope.currentDay.activities){
-						var di = $scope.currentDayIndex;
-						di = (di + 7) % $scope.currentMonth.days.length;
-						$scope.currentDay = $scope.currentMonth.days[ di ];
-						$scope.currentDayIndex = di;
-					} else {
-						console.log('Next month!');
+					if($scope.currentDay.activities && $scope.calendarStatusClass == ''){
+						var di = $scope.currentDayIndex + 7;
+						if(di < $scope.currentMonth.days.length){
+							$scope.currentDay = $scope.currentMonth.days[ di ];
+							$scope.currentDayIndex = di;
+						}
+						event.stopPropagation();
+						event.preventDefault();
+					} else if ($scope.calendarStatusClass == 'ar-dayview'){
+
+						event.stopPropagation();
+						event.preventDefault();
 					}
-					event.stopPropagation();
-					event.preventDefault();
 				}
 			})
 			.add({
 				combo: 'up',
 				callback: function(event, hotkey) {
 					if($scope.currentDay.activities){
-						var di = $scope.currentDayIndex;
-						di = Math.abs( (di - 7) % $scope.currentMonth.days.length );
-						$scope.currentDay = $scope.currentMonth.days[ di ];
-						$scope.currentDayIndex = di;
-					} else {
-						console.log('Prev month!');
+						var di = $scope.currentDayIndex - 7;
+						if(di >= 0){
+							$scope.currentDay = $scope.currentMonth.days[ di ];
+							$scope.currentDayIndex = di;
+						}
+						event.stopPropagation();
+						event.preventDefault();
 					}
-					event.stopPropagation();
-					event.preventDefault();				
 				}
-			});			
+			})
+			.add({
+				combo: 'enter',
+				callback: function(event, hotkey) {
+					console.log($scope.calendarStatusClass);
+					if($scope.currentDayIndex && $scope.calendarStatusClass == ''){
+						$scope.dayView( $scope.currentDay, $scope.currentDayIndex );
+					}
+				}
+			})
+			.add({
+				combo: 'esc',
+				callback: function(event, hotkey) {
+					$scope.mainView();
+				}
+			});
 	}]);
 })();	
 </script>
