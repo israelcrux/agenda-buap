@@ -23,7 +23,7 @@
 				<input class="form-control" name="email" type="text" id="username" placeholder="E-mail" autocomplete="off" required="true" value="{{ Input::old('email'); }}">
 				<input class="form-control" name="password" type="password" value="" id="password" placeholder="Contraseña" required="true">
 				<input class="form-control" type="submit" value="Entrar">
-		    {{ Form::close(); }}		    
+		    {{ Form::close(); }}
 		</div>
 	</div>
 	<section class="ar-reg-msg">

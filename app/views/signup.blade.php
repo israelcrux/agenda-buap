@@ -10,10 +10,10 @@
 				<input class="form-control" name="last_name" type="text" id="last_name" placeholder="Apellidos" autocomplete="off" value="{{ Input::old('last_name'); }}" required>
 				<input class="form-control" name="phone" type="text" id="phone" placeholder="Teléfono" autocomplete="off" value="{{ Input::old('phone'); }}">
 				<input class="form-control" name="extension_phone" type="text" id="extension_phone" placeholder="Extensión" autocomplete="off" value="{{ Input::old('extension_phone'); }}">
-				<select name="academic_administrative_unit" id="" value="{{ Input::old('academic_administrative_unit'); }}" required>
+				<select name="academic_administrative_unit" id="" value="" required>
 					<option value="">Unidad Acádemica/Administrativa</option>
 					@foreach($aaunits as $aaunit)
-						<option value="{{ $aaunit['id'] }}">{{ $aaunit['name'] }}</option>
+						<option value="{{ $aaunit['id'] }}" {{ Input::old('academic_administrative_unit') == $aaunit['id'] ? 'selected' : '' }}>{{ $aaunit['name'] }}</option>
 					@endforeach
 				</select>
 				<input class="form-control" name="email" type="text" id="username" placeholder="E-mail" autocomplete="off" value="{{ Input::old('email'); }}" required>

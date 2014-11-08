@@ -15,6 +15,11 @@
 		 */
 		protected $hidden = array('password', 'remember_token');
 
+        /*
+         * Table fields guarded, need admin privileges to modify.
+        */
+        protected $guarded = array('user_type_id');
+
 		/**
          * Get the unique identifier for the user.
          */

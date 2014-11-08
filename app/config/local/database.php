@@ -22,7 +22,7 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '148.228.24.80',
+			'host'      => 'localhost',
 			'database'  => 'buap-comunication',
 			'username'  => 'buapcomunication',
 			'password'  => 'buapcomunication',
