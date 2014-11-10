@@ -34,8 +34,10 @@ Route::post('/register', 'UserController@register');
 /* Group of routes that need authentication */
 Route::group(array('before' => 'auth'), function(){
 
+    /* Route to close session */
     Route::get('/logout', 'UserController@logout');
 
+    /* Rote to view the dashboard */
     Route::get('/dashboard', function(){
         return View::make('dashboard');
     });

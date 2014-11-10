@@ -20,6 +20,11 @@
         */
         protected $guarded = array('user_type_id');
 
+        /*
+         * Unabled automatic updated_at, created_at
+        */
+        public $timestamps = false;
+
 		/**
          * Get the unique identifier for the user.
          */
