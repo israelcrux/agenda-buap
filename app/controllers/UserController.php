@@ -16,7 +16,7 @@
             }
 
             /* Verifying that email is an e-mail */
-            if(!preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email)){
+            if(!$this->validateEmail($email)){
                 return Redirect::to('login')->with('alert', 'Proporcione un e-mail');
             }
 
@@ -68,11 +68,18 @@
             }
 
             /* Verifying the email format and generating encrypted password */
-            if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', Input::get('email'))) {
+            $email = Input::get('email');
+            if($this->validateEmail($email)) {
                 $crypt_password = Hash::make(Input::get('password'));
             }
             else {
                 return Redirect::to('signup')->with('alert', 'El e-mail proporcionado no es válido')->withInput(Input::except('password'));
+            }
+
+            /* Verifying if the user exists through email */
+            $existing_user = User::where('email', '=', $email)->first();
+            if($existing_user){
+                return Redirect::to('signup')->with('alert', 'El email que proporcionó ya se encuentra registrado')->withInput(Input::except('password'));
             }
 
             /* Getting data */
@@ -82,13 +89,46 @@
                 'phone'                           => Input::get('phone'),
                 'extension_phone'                 => Input::get('extension_phone'),
                 'academic_administrative_unit_id' => Input::get('academic_administrative_unit'),
-                'email'                           => Input::get('email'),
+                'email'                           => $email,
                 'password'                        => $crypt_password
             );
 
             /* Storing the new user */
             $user = User::create($user_data);
 
+            /* Verifying if user needs email validation */
+            if(preg_match('/buap.mx/', $email)) {
+                $user->status = 1;
+                $user->save();
+                $message = 'Ahora puede hacer uso de su cuenta, inicie sesión';
+            }
+            else {
+                $now = new DateTime();
+                $user_auth_activation             = new UserAuthOperation();
+                $user_auth_activation->token      = str_random(40);
+                $user_auth_activation->expiration = $now->add(new DateInterval('P1D'));
+                $user_auth_activation->type       = 1;
+                $user_auth_activation->used       = 0;
+                $user_auth_activation->user_id    = $user->id;
+                $user_auth_activation->save();
+
+                Mail::send('emails.auth.register', array('token' => $user_auth_activation->token), function($message) use($user){
+                    $message->to($user->email)->subject('Bienvenido a la DCI!');
+                });
+
+                $message = 'Validación requerida, en breve recibirá un correo de confirmación';
+            }
+
+            return Redirect::to('login')->with('alert', $message);
+
+        }
+
+
+        private function validateEmail($email) {
+            if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email)) {
+                return true;
+            }
+            return false;
         }
 
     }
