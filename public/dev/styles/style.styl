@@ -275,7 +275,6 @@ ul.nav.navbar-nav li a
 
 .ar-form-wrapper
 	max-width 500px
-	min-height 400px
 	background-color palid_gray
 	margin 0 auto
 	panel-shadow()
@@ -528,6 +527,8 @@ section.ar-reg-msg
 	.ar-login-form .ar-form-container
 		margin 30px auto 30px auto
 @media (min-width:768px)
+	.ar-form-wrapper
+		min-height 400px
 	.nav.navbar
 		position fixed
 		width 100%
@@ -564,6 +565,17 @@ section.ar-reg-msg
 		float none
 
 @media (max-width:767px)
+	h1,.ar-form-container h1
+		font-size 1.6em
+	h3, .h3
+		font-size 18px
+		font-weight 600
+	.ar-form-container
+		padding 0px
+		padding-right 10px
+		padding-left 10px
+		margin 0px
+		min-height 0px
 	.ar-moarrr
 		display none	
 	/*Login*/
@@ -572,8 +584,6 @@ section.ar-reg-msg
 		padding-bottom 1px
 		margin 0px auto
 		box-shadow none
-	.ar-form-container
-		margin 10px auto 10px auto
 	/*Calendar*/
 	.ar-day
 		width 100%
