@@ -28,6 +28,9 @@ standard-background()
 	background-position center center
 	background-repeat no-repeat
 
+panel-shadow()
+	box-shadow 4px 4px 0px shadow
+
 html,body
 	height 100%
 	max-height 100%
@@ -99,6 +102,9 @@ a.ar-footer-logo
 
 input 
 	border 0px
+
+.ar-nopad
+	padding 0px
 
 .btn-primary
 	background-color light_blue
@@ -195,9 +201,6 @@ ul.nav.navbar-nav li a
 .ar-hidden
 	display none
 
-.ar-vwrap
-	overflow auto
-
 .navbar-form
 	margin-top 23px
 	padding 0px
@@ -226,6 +229,48 @@ ul.nav.navbar-nav li a
 	-o-transition top .5s ease
 	transition top .5s ease
 
+/****************************	ADMIN   ****************************/
+
+.ar-dashboard-wrapper
+	max-width 1000px
+	background-color palid_gray
+	panel-shadow()
+	margin 0 auto
+	.ar-eventlist
+		padding 15px
+	.ar-row
+		line-height 60px
+	.ar-down
+		standard-background()
+		background-image url(../img/arrows_down.svg)
+		background-color light_blue
+		height 60px
+		cursor pointer
+	.ar-down.up
+		background-image url(../img/arrows_up.svg)
+
+.dropdown-toggle 
+	standard-background()
+	width 50px
+	background-size 60%
+	opacity 0.5
+	background-image url(../img/gear.png)
+	background-image url(../img/gear.svg)
+	cursor pointer
+	span 
+		color transparent
+
+.ar-eid
+	background-color deep_blue
+	color light_blue
+.ar-field
+	background-color gray
+
+@media (min-width:768px)
+	.ar-dashboard-wrapper
+		h4
+			padding 15px
+
 /****************************	LOGIN   ****************************/
 
 .ar-form-wrapper
@@ -233,7 +278,7 @@ ul.nav.navbar-nav li a
 	min-height 400px
 	background-color palid_gray
 	margin 0 auto
-	box-shadow 4px 4px 0px shadow
+	panel-shadow()
 
 section.ar-reg-msg
 	padding 15px
