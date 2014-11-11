@@ -7,7 +7,7 @@
 	{{ HTML::style('css/everything.css'); }}
 	{{ HTML::script('js/everything.js'); }}
 </head>
-<body ng-app="dgi">
+<body ng-app="dashboard">
 	<div class="ar-above">
 		<div class="nav navbar navbar-default" role="navigation">
 			<div class="container-fluid ar-wrapper ar-navfl">
@@ -19,7 +19,6 @@
 						<span class="icon-bar"></span>
 					</button>
 					<div class="navbar-brand">
-
 						<div class="ar-buap-logo">
 							BUAP
 						</div>
@@ -32,16 +31,14 @@
 				</div>
 				<div class="collapse navbar-collapse navbar-right" id="ar-collapsable-menu">
 			      <ul class="nav navbar-nav">
-			        <li>{{ HTML::link('/logout','Salir') }}</li>
-			        <li>
-			        <!--
-					  <form class="navbar-form navbar-left" role="search">
-				        <div class="form-group">
-				          <input type="text" class="form-control" placeholder="Buscar">
-				        </div>
-				      </form>
-				    -->
-			        </li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Configuración</a></li>
+							<li class="divider"></li>
+							<li>{{ HTML::link('/logout','Salir') }}</li>
+						</ul>
+					</li>			        
 			      </ul>
 			    </div>  
 			</div>
