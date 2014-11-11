@@ -43,3 +43,9 @@ Route::group(array('before' => 'auth'), function(){
     });
 
 });
+
+Route::get('/event/', function(){
+    return View::make('event');
+});
+
+Route::post('/event/add', 'EventController@addEvent');
