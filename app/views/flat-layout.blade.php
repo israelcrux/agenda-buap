@@ -8,40 +8,23 @@
 	{{ HTML::style('css/everything.css'); }}
 	{{ HTML::script('js/everything.js'); }}
 </head>
-<body ng-app="dashboard">
+<body ng-app="dgi">
 	<div class="ar-above">
 		<div class="nav navbar navbar-default" role="navigation">
 			<div class="container-fluid ar-wrapper ar-navfl">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ar-collapsable-menu">
-						<span class="sr-only">Menu</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
 					<div class="navbar-brand">
-						<div class="ar-buap-logo">
-							BUAP
-						</div>
-						<div class="ar-dep">
-							<span class="ar-long">Dirección de Comunicación Institucional</span>						
-							<span class="ar-short">DGI</span>
-						</div>
-
+						<a href="{{ URL::to('/') }}">
+							<div class="ar-buap-logo">
+								BUAP
+							</div>
+							<div class="ar-dep">
+								<span class="ar-long">Dirección de Comunicación Institucional</span>
+								<span class="ar-short">DGI</span>
+							</div>
+						</a>
 					</div>
 				</div>
-				<div class="collapse navbar-collapse navbar-right" id="ar-collapsable-menu">
-			      <ul class="nav navbar-nav">
-					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Configuración</a></li>
-							<li class="divider"></li>
-							<li>{{ HTML::link('/logout','Salir') }}</li>
-						</ul>
-					</li>			        
-			      </ul>
-			    </div>  
 			</div>
 		</div>
 		<div class="ar-wrapper ar-thecontent">

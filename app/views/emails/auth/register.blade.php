@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Dirección de Comunicación Institucional</h1>
+    <h1>Dirección de Comunicación Institucional - BUAP</h1>
     <h2>Active su cuenta</h2>
     <p>
         Active su cuenta en la Dirección de Comunicación Institucional dando click en el link siguiente. <br>
-        <a href="">Activar mi cuenta</a> <br>
-        Necesitamos comunicarnos con usted vía correo electrónico, por lo que es necesario verificar su e-mail.
-    </p>
-    <p>
-        Si usted no ha solicitado registrarse en la Dirección de Comunicación Institucional por favor dé click en el link siguiente <br>
-        <a href="">Yo no he solicitado un registro</a>
     </p>
     <p>Dirección de Comunicación Institucional</p>
+    <a href="{{ URL::to('/register') }}" style="background-color: #00b2e2;color: #fff;width: 250px;margin-left: 0;margin-right: 0;font-size: 1.5em;text-align: center;position: relative;border-radius: 0;margin: 25px;box-shadow: 0 6px #059dc1;cursor: pointer;padding: 7px;">Activar mi cuenta</a>
 </body>
 </html>
