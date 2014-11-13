@@ -2,18 +2,55 @@
 	<h4>Eventos y Solicitudes</h4>
 	<div class="ar-eventlist ar-vwrap">
 		<div class="ar-event" ng-repeat="event in events">
-			<div class="ar-vwrap ar-row">
-				<div class="col-xs-12 col-sm-9 ar-nopad">
-					<div class="col-xs-2 ar-eid">{{event.pid}}</div>
-					<div class="col-xs-10 ar-field">{{event.title}}</div>
+			<div class="ar-vwrap ar-row" ng-class="{'expanded':event.expanded}">
+			
+				<div class="ar-vwrap">
+					<div class="col-xs-12 col-sm-9 ar-nopad">
+						<div class="col-xs-12 col-sm-2 ar-eid">{{event.pid}}</div>
+						<div class="col-xs-12 col-sm-10 ar-field ar-ellipsable ar-lnnormal">{{event.title}}</div>
+					</div>
+					<div class="col-xs-12 col-sm-3 ar-nopad">
+						<div class="col-xs-10 ar-field">{{event.begins}}</div>
+						<div class="col-xs-2 ar-down" ng-click="event.expanded=!event.expanded"></div>
+					</div>
 				</div>
-				<div class="col-xs-12 col-sm-3 ar-nopad">
-					<div class="col-xs-10 ar-field">{{event.begins}}</div>
-					<div class="col-xs-2 ar-down" ></div>
+
+				<div class="ar-expanded-wea ar-vwrap">
+					<div class="ar-expanded-wea-container">
+
+						<div class="ar-row ar-vwrap col-xs-12 col-sm-4 ar-nopad">
+							<div class="ar-lnnormal ar-service-status ar-vwrap">
+								<div class="ar-place">Complejo Cultural Universitario</div>
+								<div class="ar-row ar-vwrap">
+									<div class="col-xs-12 col-sm-6 ar-colgroup">45/78/12</div>
+									<div class="col-xs-12 col-sm-6 ar-colgroup">45/78/12</div>
+								</div>								
+							</div>
+							<div class="ar-lnnormalst ar-desc" ng-class="{'expanded':event.descExpanded}" ng-click="event.descExpanded=!event.descExpanded">
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse deserunt dolor excepturi reiciendis adipisci ullam optio animi, hic repellat eligendi tempore reprehenderit ipsa libero quibusdam impedit necessitatibus asperiores omnis nihil quaerat cupiditate! Alias ad ducimus, asperiores deleniti delectus sint veniam ab nihil fugiat aspernatur aut, tempore eaque. Cum odio vero, non voluptates necessitatibus sint, dolorem omnis, fuga, tempore perferendis alias. Officiis omnis illum quod autem, quaerat laboriosam aliquam praesentium! Doloribus molestiae soluta omnis voluptas ex fuga atque ipsum odio ut aspernatur unde neque reiciendis veritatis, cumque quia? Consectetur consequuntur possimus, mollitia laboriosam maiores quo sit asperiores unde minus aspernatur porro dolorem quod, quae voluptatibus eaque aperiam neque nostrum, dicta veritatis quibusdam dignissimos obcaecati fuga. In praesentium, expedita ducimus fugiat corporis iusto dolor aspernatur quo facilis.
+								</p>
+							</div>
+						</div>
+
+						<div class="ar-row col-xs-12 col-sm-6 ar-services">
+							<div class="ar-row ar-hideon768 ar-title-row">
+								<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">Servicio</div>
+								<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">Estado</div>
+							</div>	
+							<div class="ar-row" ng-repeat="service in event.services">
+								<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">{{service.name}}</div>
+								<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.status}}</div>
+							</div>
+						</div>
+						<div class="ar-row ar-hideon768 col-xs-12 col-sm-2 ar-services">
+							<div>Editar evento</div>
+							<div>Editar solicitud</div>
+						</div>
+
+					</div>
 				</div>
-				<div class="ar-expanded-wea">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere quibusdam quidem enim fuga omnis iure cum illum sed aperiam, suscipit unde tenetur explicabo minima, adipisci, dolorem quia quas aliquid voluptates praesentium modi, nesciunt impedit repellat mollitia? Molestiae unde mollitia autem id culpa minima quas, perferendis neque earum facilis inventore laudantium blanditiis expedita a eum quibusdam natus quisquam. Impedit iure fugit illo aliquid rem, culpa aspernatur, porro maxime reiciendis velit ipsam, neque ab ea aut illum, deleniti recusandae eaque ex dolores eum a dolor. Totam commodi nam alias numquam quas quo esse est, eveniet enim quia soluta impedit repudiandae nisi delectus cupiditate dolorem itaque maiores voluptates officiis ipsam eligendi. Quisquam recusandae fugit obcaecati, consequatur asperiores commodi dolorem accusamus! Assumenda quos a, itaque odit inventore repellendus deleniti dolores tenetur tempore quam culpa dolor esse perspiciatis maxime. Amet iste vel adipisci nostrum voluptate commodi itaque odit quibusdam hic alias culpa, quam a. Magnam non aspernatur nihil id est blanditiis sed vel accusamus, asperiores nulla maxime vero debitis error pariatur commodi veritatis, ad quos officiis iure quisquam beatae! Quis fuga laboriosam cum maiores perspiciatis praesentium, rerum labore ipsam porro sequi vitae, aperiam eos, asperiores. Sint eaque, nam temporibus ratione, officia et nihil ea corporis possimus doloremque aliquam quidem minima facere veritatis nesciunt, enim dolor consequuntur necessitatibus in! Molestias ex, quisquam recusandae sit, veritatis dicta fugit, quas sed quam eaque ducimus, voluptas deserunt velit ut! Deserunt voluptates blanditiis, nam autem iure sed aut iste est harum, labore sint quia, accusantium quasi voluptatibus, quis odit voluptate.
-				</div>
+
 			</div>
 		</div>
 	</div>
@@ -23,9 +60,33 @@
 		.controller('DashboardController',[ '$scope' ,function($scope){
 			$scope.events = [
 				{
+					/*
+						1: pendiente
+						2: aprobada
+						3: en proceso
+						4: concluida
+					*/
 					pid: '20150110',
 					title: 'Mexican International Conference on Artificial Intelligence',
-					begins: '15/Enero/2015'
+					begins: '15/Enero/2015',
+					services: [
+						{ 
+							name : 'Spot de Radio',
+							status: 'Pendiente'
+						},
+						{ 
+							name : 'Banner Web',
+							status: 'Aprobada'
+						},
+						{ 
+							name : 'Publicación en Periódico',
+							status: 'Concluida'
+						},
+						{ 
+							name : 'Publicación en Periódico',
+							status: 'Concluida'
+						}						
+					]
 				}
 			];
 		}]);

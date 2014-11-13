@@ -235,7 +235,7 @@ ul.nav.navbar-nav li a
 /****************************	ADMIN   ****************************/
 
 .ar-dashboard-wrapper
-	max-width 1000px
+	// max-width 1000px
 	background-color palid_gray
 	panel-shadow()
 	margin 0 auto
@@ -243,6 +243,10 @@ ul.nav.navbar-nav li a
 		padding 15px
 	.ar-row
 		line-height 60px
+	.ar-row.ar-services .ar-row
+		line-height normal
+		padding-top 20px
+		padding-bottom 20px
 	.ar-down
 		standard-background()
 		background-image url(../img/arrows_down.svg)
@@ -251,6 +255,29 @@ ul.nav.navbar-nav li a
 		cursor pointer
 	.ar-down.up
 		background-image url(../img/arrows_up.svg)
+
+
+.ar-desc
+	max-height 115px
+	overflow hidden
+	background-color shadow
+	p
+		margin 7px
+.ar-desc.expanded
+	max-height 900px
+
+.ar-colgroup
+	border-left 1px solid shadow
+	text-align center
+.ar-colgroup:first-child
+	border-left 0px
+
+
+.ar-ellipsable
+	white-space nowrap
+	text-overflow ellipsis
+	overflow hidden
+
 
 .dropdown-toggle 
 	standard-background()
@@ -263,16 +290,73 @@ ul.nav.navbar-nav li a
 	span 
 		color transparent
 
+.ar-place
+	background-image url(../img/map.png)
+	background-size cover
+	text-indent 10px
+	font-size 1.2em
+	color deep_blue
+
 .ar-eid
 	background-color deep_blue
 	color light_blue
 .ar-field
 	background-color gray
 
-@media (min-width:768px)
+.ar-row.expanded 
+	.ar-expanded-wea
+		max-height 1900px
+	.ar-down
+		background-image url(../img/arrows_up.svg)
+.ar-expanded-wea
+	background-color gray
+	border-top 1px solid shadow
+	max-height 0
+	overflow hidden
+	-webkit-transition max-height .5s ease
+	-moz-transition max-height .5s ease
+	-ms-transition max-height .5s ease
+	-o-transition max-height .5s ease
+	transition max-height .5s ease
+	.ar-expanded-wea-container 
+		line-height normal
+	.ar-colgroup
+		font-size 1.2em
+
+.ar-title-row div
+	color deep_blue
+	font-weight 600
+
+.ar-lnnormalst
+	line-height normal
+
+.ar-divider
+	height 1px
+	background-color shadow
+	width 100%
+
+@media (max-width:768px)
+	.ar-service-status
+		text-align right
+	.ar-lnnormal
+		line-height normal
+		padding-top 5px
+		padding-bottom 5px
+	.ar-hideon768
+		display none
+@media (min-width:769px)
+	.ar-services
+		margin-left 0px
+		padding-left 40px
+		border-left 1px solid shadow
+	.ar-field
+		font-size 1.3em
+	.ar-tfield
+		font-size 1.25em
 	.ar-dashboard-wrapper
 		h4
 			padding 15px
+	
 
 /****************************	LOGIN   ****************************/
 
