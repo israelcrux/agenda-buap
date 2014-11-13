@@ -11,6 +11,9 @@
 |
 */
 
+/* Global patterns */
+Route::pattern('key', '[a-zA-Z0-9]*');
+
 /* Route to home */
 Route::get('/', function()
 {
@@ -30,6 +33,9 @@ Route::get('/signup', 'UserController@signup');
 
 /* Route to register an user */
 Route::post('/register', 'UserController@register');
+
+/* Route to validate an user with a non institutional email */
+Route::get('/activate/{key}', 'UserController@activate');
 
 /* Group of routes that need authentication */
 Route::group(array('before' => 'auth'), function(){

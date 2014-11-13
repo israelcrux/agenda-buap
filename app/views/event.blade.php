@@ -10,11 +10,13 @@
                 <input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required>
                 <input type="date" name="start_day" id="start_day" placeholder="Seleccione la fecha de inicio" autocomplete="off" required>
                 <input type="date" name="end_day" id="end_day" placeholder="Seleccione la fecha de termino" autocomplete="off" required>
-                <input type="text" class="form-horizontal" name="place" id="place" placeholder="Nombre del responsable" autocomplete="off" required>
+                <input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar del evento" autocomplete="off" required>
                 <input type="time" name="time" id="time" placeholder="Hora" autocomplete="off" required>
                 <input type="text" class="form-horizontal" name="head_name" id="head_name" placeholder="Nombre del responsable" autocomplete="off" required>
                 <input type="text" class="form-horizontal" name="head_email" id="head_email" placeholder="Email del responsable" autocomplete="off" required>
                 <input type="text" class="form-horizontal" name="head_phone" id="head_phone" placeholder="Teléfono del responsable" autocomplete="off" required>
+                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                <input class="form-control" type="submit" value="Agregar evento">
             {{ Form::close(); }}
         </div>
     </div>
