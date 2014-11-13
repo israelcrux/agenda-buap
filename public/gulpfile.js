@@ -33,6 +33,7 @@ gulp.task('scripts', function() {
   return gulp.src([
         devjs+'jquery.min.js',
         devjs+'bootstrap.min.js',
+        devjs+'bootstrap-datepicker.js',
         devjs+'angular.min.js',
         devjs+'hotkeys.min.js',
         devjs+'angular-app.js'
