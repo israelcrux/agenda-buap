@@ -49,8 +49,6 @@ $(document).ready(function(){
 	var $body = $('body'),
     	$scrollable = $('.scrollable');	
 
-    console.log($scrollable);
-
     $scrollable.on({
           'mouseenter': function () {
             // add hack class to prevent workspace scroll when scroll outside
@@ -68,9 +66,6 @@ $(document).ready(function(){
 	var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 	var monthNames = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']; 
 	function calendarize(year, month, days){
-
-		console.log('MONT: '+month);
-
 		var calendarDays =[];
 		var calendarDummies =[];
 		var date = new Date(year,month-1,1);
@@ -122,8 +117,7 @@ $(document).ready(function(){
 				$scope.currentMonth = DataService.calendar(year,monthIndex);
 				$scope.currentMonth.then(function(data){
 					$scope.currentMonth = data;
-					$scope.allMonths[data.name+'-'+data.year] = data;
-					console.log($scope.allMonths);
+					$scope.allMonths[monthIndex+'-'+year] = data;
 				});				
 			}
 		}
@@ -153,14 +147,6 @@ $(document).ready(function(){
 		$scope.allMonths = {};
 
 		assignMonth(year,month);
-		/*
-		$scope.currentMonth = DataService.calendar(year,month);
-		$scope.currentMonth.then(function(data){
-			$scope.currentMonth = data;
-			$scope.allMonths[data.monthIndex+'-'+data.year] = data;
-			console.log($scope.allMonths);
-		});
-		*/
 
 		$scope.currentDay = {};
 	
@@ -182,17 +168,12 @@ $(document).ready(function(){
 
 		$scope.prevMonth = function(){
 
-			console.log('$scope.currentMonthIndex:::');
-			console.log($scope.currentMonthIndex);
-
 			if($scope.currentMonthIndex == 0){
 				$scope.currentYear -= 1;
 				$scope.currentMonthIndex = 11;
 			} else {
 				$scope.currentMonthIndex -= 1;
 			}
-
-			console.log('currentMonthIndex:'+$scope.currentMonthIndex);
 
 			assignMonth($scope.currentYear,$scope.currentMonthIndex+1);
 		};
