@@ -20,7 +20,7 @@
 				<div class="btn btn-mainbtn"></div>
 			</div>
 		</div>
-		<div class="ar-day-month" class="ar-disabled-day" ng-repeat="day in dummies" ng-show="mode=='month'">
+		<div class="ar-day-month" class="ar-disabled-day" ng-repeat="day in currentMonth.dummies" ng-show="mode=='month'">
 		</div>
 		<div class="ar-day-month" ng-class="{'selected':day.ntag&&currentDay.ntag==day.ntag}" ng-repeat="day in currentMonth.days" ng-click="dayView(day,$index)" ng-show="mode=='month'">
 			<div class="ar-daytag">
@@ -30,7 +30,7 @@
 			<div class="ar-daymonth-container">
 				<div class="ar-event" ng-show="day.activities[0]">
 					<div class="ar-eventtitle"> {{day.activities[0].name}} </div>
-					<div class="ar-eventtime"> {{day.activities[0].begins}} </div>
+					<div class="ar-eventtime"> {{day.activities[0].time}} </div>
 				</div>
 				<div class="ar-moarrr" ng-show="day.activities[1]">
 					<span></span>
@@ -66,7 +66,7 @@ $(document).ready(function(){
 (function(){
 
 	var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-
+	var monthNames = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']; 
 	function calendarize(year, month, days){
 		var calendarDays =[];
 		var calendarDummies =[];
@@ -83,7 +83,7 @@ $(document).ready(function(){
 			calendarDays.push( days[i] );
 		};
 
-		return { days: calendarDays, dummies: calendarDummies};
+		return { days: calendarDays, dummies: calendarDummies, name: monthNames[month], year: year};
 	}
 
 	var app = angular.module('dgi',['cfp.hotkeys'])
@@ -91,7 +91,21 @@ $(document).ready(function(){
 			hotkeysProvider.includeCheatSheet = false;
 		})
 
-	app.controller('CalendarController',['$scope','$http','hotkeys',function($scope,$http,hotkeys){
+	app.factory('DataService',function($http){
+		return {
+			calendar : function(year,month){
+				return $http.get('/comunicacion-buap/public/calendar/'+year+'-'+month)
+					.then(function(response){					
+						return calendarize(2014,11,response.data);
+					},
+					function(){
+						console.log('Could not load calendar!');
+					})
+			}
+		};
+	});
+
+	app.controller('CalendarController',['$scope','$http','hotkeys','DataService',function($scope,$http,hotkeys,DataService){
 
 		$scope.mode = 'month';
 		
@@ -102,591 +116,24 @@ $(document).ready(function(){
 			]
 		};
 
-		var dnd = calendarize(2014,11,[
-				{
-					activities : [
-						{ 
-							name: 'Feria del alumno', 
-							place: 'Complejo Cultural Universitario', 
-							begins: '6:00pm'
-						},
-						{ 
-							name: 'Reunión anual de directores',
-							place: 'Edificio Carolino', 
-							begins: '3:00pm'
-						}						
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Universiada Nacional 2014', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						}
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},						
-					]
-				},
-				{
-					activities : [
-						{ 
-							name: 'Lorem ipsum.', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Svenska devritm', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-						{ 
-							name: 'Waka waka eh eh', 
-							place: 'Complejo Deportivo de Alto Rendimiento', 
-							begins: '9:00am'
-						},
-					]
-				},
-			]);
+		var date = new Date(),
+			day   = date.getDate(),
+			month = date.getMonth()*1 + 1,
+			year  = date.getFullYear();
 
-		$scope.dummies = dnd.dummies;
+		console.log('Displaying:'+year+'-'+month+' : '+day);
 
-		$scope.currentMonth = {
-			name : 'Noviembre',
-			year : '2014',
-			days : dnd.days
-		};
+		$scope.currentMonthIndex = month - 1;
+		$scope.currentDayIndex = day;
+
+		$scope.currentMonth = DataService.calendar(year,month);
+		$scope.currentMonth.then(function(data){
+			$scope.currentMonth = data;
+		});
 
 		$scope.currentDay = {};
 
-		//Today? ...doesn't really matter
-		$scope.currentDayIndex = 0;
+		
 		$scope.calendarStatusClass = '';
 
 		//UX -------------------
@@ -762,7 +209,6 @@ $(document).ready(function(){
 			.add({
 				combo: 'enter',
 				callback: function(event, hotkey) {
-					console.log($scope.calendarStatusClass);
 					if($scope.currentDayIndex && $scope.calendarStatusClass == ''){
 						$scope.dayView( $scope.currentDay, $scope.currentDayIndex );
 					}

@@ -22,7 +22,8 @@ Route::get('/', function()
 });
 
 /* Route experimental to home */
-Route::get('/home/{year_month}', 'EventController@showEvents');
+//calendar mejor :P
+Route::get('/calendar/{year_month}', 'EventController@showEvents');
 
 /* Route to show the login form */
 Route::get('/login', function(){

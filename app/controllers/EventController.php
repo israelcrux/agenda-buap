@@ -12,11 +12,11 @@
             while($start_date <= $end_date) {
                 $events = EventDCI::where('start_day', '=', $start_date)->orderBy('time')->get(array('name', 'place', 'time'));
 
-                if(count($events)) {
-                    $activities['activities'] = $events->toArray();
-                    array_push($calendar, $activities);
-                    $activities = [];
-                }
+                //if(count($events)) {
+                $activities['activities'] = $events->toArray();
+                array_push($calendar, $activities);
+                $activities = [];
+                //}
 
                 $next_date = new DateTime($start_date);
                 $next_date->add(new DateInterval('P1D'));
