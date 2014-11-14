@@ -22,6 +22,10 @@
 
             /* Verifying that the user exists and correct credentials */
             if(Auth::attempt(array('email' => $email, 'password' => $password))) {
+                /* Verifying status user */
+                if(Auth::user()->status == '2'){
+                    return Redirect::to('login')->with('alert', 'Usuario requiere activación')->withInput(Input::except('password'));
+                }
                 return Redirect::intended('dashboard');
             }
             else {
@@ -34,7 +38,7 @@
         */
         public function logout() {
             Auth::logout();
-            return View::make('home');
+            return Redirect::to('/');
         }
 
         /*
@@ -78,7 +82,7 @@
 
             /* Verifying if the user exists through email */
             $existing_user = User::where('email', '=', $email)->first();
-            if($existing_user){
+            if($existing_user) {
                 return Redirect::to('signup')->with('alert', 'El email que proporcionó ya se encuentra registrado')->withInput(Input::except('password'));
             }
 
@@ -112,7 +116,7 @@
                 $user_auth_activation->user_id    = $user->id;
                 $user_auth_activation->save();
 
-                Mail::send('emails.auth.register', array('token' => $user_auth_activation->token), function($message) use($user){
+                Mail::send('emails.auth.activate', array('token' => $user_auth_activation->token), function($message) use($user) {
                     $message->to($user->email)->subject('Bienvenido a la DCI!');
                 });
 
@@ -120,6 +124,35 @@
             }
 
             return Redirect::to('login')->with('alert', $message);
+
+        }
+
+
+        public function activate($token) {
+            $user_auth_activation = UserAuthOperation::whereRaw('token = ? and type = ?', array($token, 1))->first();
+
+            if(!$user_auth_activation) {
+                return Redirect::to('login')->with('alert', 'Activación invalida');
+            }
+
+            if($user_auth_activation->used == 1) {
+                return Redirect::to('login')->with('alert', 'El mécanismo de activación del e-mail ha sido utilizado');
+            }
+
+            $expiration_date = new DateTime($user_auth_activation->expiration);
+            $now = new DateTime();
+            if($now > $expiration_date) {
+                return Redirect::to('login')->with('alert', 'El token de validación ha expirado');
+            }
+
+            $user_auth_activation->used = 1;
+            $user_auth_activation->save();
+
+            $user = User::find($user_auth_activation->user_id);
+            $user->status = 1;
+            $user->save();
+
+            return Redirect::to('login')->with('alert', 'Su cuenta ha sido activada, ahora puede iniciar sesión');
 
         }
 

@@ -14,6 +14,7 @@
     	</div>
     </div>
 	
+    @include('alert')
 	@include('dashboard-angular')
 
 	<script>

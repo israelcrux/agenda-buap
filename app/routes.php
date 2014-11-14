@@ -11,11 +11,18 @@
 |
 */
 
+/* Global patterns */
+Route::pattern('key', '[a-zA-Z0-9]*'); /* Pattern for a key generated automatically */
+Route::pattern('year_month', '[0-9]{4}-[0-9]{2}'); /* Pattern for a year and month */
+
 /* Route to home */
 Route::get('/', function()
 {
 	return View::make('home');
 });
+
+/* Route experimental to home */
+Route::get('/home/{year_month}', 'EventController@showEvents');
 
 /* Route to show the login form */
 Route::get('/login', function(){
@@ -31,6 +38,9 @@ Route::get('/signup', 'UserController@signup');
 /* Route to register an user */
 Route::post('/register', 'UserController@register');
 
+/* Route to validate an user with a non institutional email */
+Route::get('/activate/{key}', 'UserController@activate');
+
 /* Group of routes that need authentication */
 Route::group(array('before' => 'auth'), function(){
 
@@ -42,10 +52,9 @@ Route::group(array('before' => 'auth'), function(){
         return View::make('dashboard');
     });
 
-});
+    Route::get('/event/', function(){
+        return View::make('event');
+    });
 
-Route::get('/event/', function(){
-    return View::make('event');
-});
-
-Route::post('/event/add', 'EventController@addEvent');
+    Route::post('/event/add', 'EventController@addEvent')
+;});
