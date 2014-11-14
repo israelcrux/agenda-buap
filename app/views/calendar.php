@@ -14,10 +14,10 @@
 	</div>	
 	<div class="ar-month" ng-show="mode=='month'" >
 		<div class="ar-vwrap ar-right">
-			<div class="ar-ri ar-uptitle">{{currentMonth.name}}</div>
+			<div class="ar-ri ar-uptitle">{{currentMonth.name}} - {{currentMonth.year}}</div>
 			<div class="ar-ri buttongroup ar-arrows">
-				<div class="btn btn-mainbtn"></div>
-				<div class="btn btn-mainbtn"></div>
+				<div class="btn btn-mainbtn" ng-click="prevMonth()"></div>
+				<div class="btn btn-mainbtn" ng-click="nextMonth()"></div>
 			</div>
 		</div>
 		<div class="ar-day-month" class="ar-disabled-day" ng-repeat="day in currentMonth.dummies" ng-show="mode=='month'">
@@ -68,6 +68,9 @@ $(document).ready(function(){
 	var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 	var monthNames = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']; 
 	function calendarize(year, month, days){
+
+		console.log('MONT: '+month);
+
 		var calendarDays =[];
 		var calendarDummies =[];
 		var date = new Date(year,month-1,1);
@@ -83,7 +86,11 @@ $(document).ready(function(){
 			calendarDays.push( days[i] );
 		};
 
-		return { days: calendarDays, dummies: calendarDummies, name: monthNames[month], year: year};
+		return { days: calendarDays, dummies: calendarDummies, name: monthNames[month], year: year, monthIndex : month-1};
+	}
+
+	function twoDigits(month){
+		return  (month < 10)? '0' + month : month ;
 	}
 
 	var app = angular.module('dgi',['cfp.hotkeys'])
@@ -94,9 +101,9 @@ $(document).ready(function(){
 	app.factory('DataService',function($http){
 		return {
 			calendar : function(year,month){
-				return $http.get('/comunicacion-buap/public/calendar/'+year+'-'+month)
+				return $http.get('/comunicacion-buap/public/calendar/'+year+'-'+twoDigits(month))
 					.then(function(response){					
-						return calendarize(2014,11,response.data);
+						return calendarize(year,month,response.data);
 					},
 					function(){
 						console.log('Could not load calendar!');
@@ -106,6 +113,22 @@ $(document).ready(function(){
 	});
 
 	app.controller('CalendarController',['$scope','$http','hotkeys','DataService',function($scope,$http,hotkeys,DataService){
+
+		//UTILITIES --------------------------------------------------------
+		function assignMonth(year,monthIndex){
+			if($scope.allMonths[monthIndex+'-'+year]){
+				$scope.currentMonth = $scope.allMonths[monthIndex+'-'+year];
+			} else {
+				$scope.currentMonth = DataService.calendar(year,monthIndex);
+				$scope.currentMonth.then(function(data){
+					$scope.currentMonth = data;
+					$scope.allMonths[data.name+'-'+data.year] = data;
+					console.log($scope.allMonths);
+				});				
+			}
+		}
+
+		//CONTROLLER --------------------------------------------------------		
 
 		$scope.mode = 'month';
 		
@@ -123,20 +146,57 @@ $(document).ready(function(){
 
 		console.log('Displaying:'+year+'-'+month+' : '+day);
 
+		$scope.currentYear = year;
 		$scope.currentMonthIndex = month - 1;
-		$scope.currentDayIndex = day;
+		$scope.currentDayIndex = day - 1;
 
+		$scope.allMonths = {};
+
+		assignMonth(year,month);
+		/*
 		$scope.currentMonth = DataService.calendar(year,month);
 		$scope.currentMonth.then(function(data){
 			$scope.currentMonth = data;
+			$scope.allMonths[data.monthIndex+'-'+data.year] = data;
+			console.log($scope.allMonths);
 		});
+		*/
 
 		$scope.currentDay = {};
-
-		
+	
 		$scope.calendarStatusClass = '';
 
+
 		//UX -------------------
+		$scope.nextMonth = function(){
+			
+			if($scope.currentMonthIndex == 11){
+				$scope.currentYear += 1;
+				$scope.currentMonthIndex = 0;
+			} else {
+				$scope.currentMonthIndex += 1;
+			}
+
+			assignMonth($scope.currentYear,$scope.currentMonthIndex+1);
+		};
+
+		$scope.prevMonth = function(){
+
+			console.log('$scope.currentMonthIndex:::');
+			console.log($scope.currentMonthIndex);
+
+			if($scope.currentMonthIndex == 0){
+				$scope.currentYear -= 1;
+				$scope.currentMonthIndex = 11;
+			} else {
+				$scope.currentMonthIndex -= 1;
+			}
+
+			console.log('currentMonthIndex:'+$scope.currentMonthIndex);
+
+			assignMonth($scope.currentYear,$scope.currentMonthIndex+1);
+		};
+
 		$scope.mainView = function(){
 			$scope.calendarStatusClass = '';
 			$scope.currentDay = {};
