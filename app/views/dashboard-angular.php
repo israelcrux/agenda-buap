@@ -1,8 +1,8 @@
 <section ng-controller="DashboardController">
 	
 
-<div class="ar-modal-background" ng-show="new_event"></div>
-<div class="ar-modal-wrapper" ng-show="new_event">
+<div class="ar-modal-background" ng-show="new_event" style="display:none"></div>
+<div class="ar-modal-wrapper" ng-show="new_event" style="display:none">
 	<div class="ar-modal-container">
 		<div class="ar-modal-title">Agendar Evento</div>
 		<div class="ar-modal-closebtn" ng-click="new_event=false"></div>
@@ -173,8 +173,8 @@
 				
 					<div class="ar-vwrap ar-lnhh">
 						<div class="col-xs-12 col-sm-9 ar-nopad">
-							<div class="col-xs-12 col-sm-2 ar-eid">{{event.pid}}</div>
-							<div class="col-xs-12 col-sm-10 ar-field ar-ellipsable ar-eventname ar-lnnormal">{{event.title}}</div>
+							<div class="col-xs-12 col-sm-2 ar-eid">{{event.id_dci}}</div>
+							<div class="col-xs-12 col-sm-10 ar-field ar-ellipsable ar-eventname ar-lnnormal">{{event.name}}</div>
 						</div>
 						<div class="col-xs-12 col-sm-3 ar-nopad">
 							<div class="col-xs-12 col-sm-10 ar-field">{{event.start_day}}</div>
@@ -182,7 +182,7 @@
 						</div>
 					</div>
 
-					<div class="ar-expanded-wea ar-vwrap">
+					<div class="ar-expanded-wea ar-vwrap" style="display:none;">
 						<div class="ar-expanded-wea-container">
 
 							<div class="ar-row ar-vwrap col-xs-12 col-sm-4 ar-nopad">

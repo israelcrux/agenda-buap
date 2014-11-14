@@ -23,7 +23,10 @@ Route::get('/', function()
 
 /* Route experimental to home */
 //calendar mejor :P
-Route::get('/calendar/{year_month}', 'EventController@showEvents');
+Route::get('/calendar/{year_month}', 'EventController@calendar');
+
+//tal vez necesite autenticación pero que hueva moverlo de línea :P
+Route::get('/events/{user_id}', 'EventController@eventsByUser');
 
 /* Route to show the login form */
 Route::get('/login', function(){
