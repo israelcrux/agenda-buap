@@ -57,5 +57,7 @@ Route::group(array('before' => 'auth'), function(){
         return View::make('event');
     });
 
+    Route::post('/eventp/', 'EventController@addEventp');
+
     Route::post('/event/add', 'EventController@addEvent')
 ;});

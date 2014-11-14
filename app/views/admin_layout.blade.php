@@ -25,7 +25,7 @@
 						</div>
 						<div class="ar-dep">
 							<span class="ar-long">Dirección de Comunicación Institucional</span>						
-							<span class="ar-short">DGI</span>
+							<span class="ar-short">DCI</span>
 						</div>
 
 					</div>
