@@ -26,7 +26,8 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('javdv6win81', 'Jesus-RI'),
+	'local' => array('javdv6win81'),
+    'local/dbremote' => array('Jesus-RI'),
 
 ));
 
