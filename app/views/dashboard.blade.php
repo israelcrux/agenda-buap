@@ -19,12 +19,15 @@
 	@include('dashboard-angular')
 
 	<script>
+
+		ROOT_PATH = "<?php echo URL::to('/'); ?>";
+
 		$('.datepicker').datepicker();
 		angular.module('dashboard',[])
 		.factory('DataService',function($http){
 			return {
 				events : function(year,month){
-					return $http.get('/comunicacion-buap/public/events/<?php echo Auth::user()->id ?>')
+					return $http.get(ROOT_PATH+'/events/<?php echo Auth::user()->id ?>')
 						.then(function(response){					
 							return response.data;
 						},

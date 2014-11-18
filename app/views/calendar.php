@@ -44,6 +44,9 @@
 </div>
 <script>
 
+//'/comunicacion-buap/public/calendar/'
+ROOT_PATH = "<?php echo URL::to('/'); ?>";
+
 //jq
 $(document).ready(function(){
 	var $body = $('body'),
@@ -96,7 +99,7 @@ $(document).ready(function(){
 	app.factory('DataService',function($http){
 		return {
 			calendar : function(year,month){
-				return $http.get('/comunicacion-buap/public/calendar/'+year+'-'+twoDigits(month))
+				return $http.get(ROOT_PATH+'/calendar/'+year+'-'+twoDigits(month))
 					.then(function(response){					
 						return calendarize(year,month,response.data);
 					},
