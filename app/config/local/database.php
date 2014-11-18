@@ -17,15 +17,13 @@ return array(
 	| choice installed on your machine before you begin development.
 	|
 
-	mysql --host=148.228.24.80 --user=buapcomunication --password=buapcomunication buap-comunication
-	
 	*/
 
 	'connections' => array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '148.228.24.80',
+			'host'      => 'localhost',
 			'database'  => 'buap-comunication',
 			'username'  => 'buapcomunication',
 			'password'  => 'buapcomunication',

@@ -127,27 +127,35 @@
 
         }
 
-
+        /*
+         * Process that verify an user through e-mail validation
+        */
         public function activate($token) {
+            // Checking on database if the token exists
             $user_auth_activation = UserAuthOperation::whereRaw('token = ? and type = ?', array($token, 1))->first();
 
+            // Verifying that the token is valid
             if(!$user_auth_activation) {
                 return Redirect::to('login')->with('alert', 'Activación invalida');
             }
 
+            // Verifying that the token has not been used
             if($user_auth_activation->used == 1) {
                 return Redirect::to('login')->with('alert', 'El mécanismo de activación del e-mail ha sido utilizado');
             }
 
+            // Verifying that the token has not been expired
             $expiration_date = new DateTime($user_auth_activation->expiration);
             $now = new DateTime();
             if($now > $expiration_date) {
                 return Redirect::to('login')->with('alert', 'El token de validación ha expirado');
             }
 
+            // Updating the information for the token as used
             $user_auth_activation->used = 1;
             $user_auth_activation->save();
 
+            // Updating the user information with status active
             $user = User::find($user_auth_activation->user_id);
             $user->status = 1;
             $user->save();
@@ -156,7 +164,9 @@
 
         }
 
-
+        /*
+         * Verifying that an email has the standard construction
+        */
         private function validateEmail($email) {
             if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email)) {
                 return true;

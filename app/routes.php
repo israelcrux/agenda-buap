@@ -62,5 +62,5 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::post('/eventp/', 'EventController@addEventp');
 
-    Route::post('/event/add', 'EventController@addEvent')
-;});
+    Route::post('/event/add', 'EventController@addEvent');
+});

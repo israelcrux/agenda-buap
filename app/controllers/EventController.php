@@ -7,25 +7,27 @@
             return json_encode($events);
         }
 
+        /*
+         * Return a JSON that contain all events for a certain year and month
+        */
         public function calendar($year_month) {
 
+            /* Getting the data and creating the first and last day of a month */
             $start_date = date('Y-m-d', strtotime($year_month.'-01'));
             $end_date = date('Y-m-t', strtotime($year_month.'-01'));
 
+            /* Querying the database to get the events for all days of certain month of the year */
             $calendar = [];
             $activities = [];
             while($start_date <= $end_date) {
-                //$events = EventDCI::where('start_day', '=', $start_date)->orderBy('time')->get(array('name', 'place', 'time'));
 
                 $events = EventDCI::where('end_day', '>=', $start_date)
                     ->where('start_day', '<=', $start_date)
                     ->orderBy('time')->get(array('name', 'place', 'time'));
 
-                //if(count($events)) {
                 $activities['activities'] = $events->toArray();
                 array_push($calendar, $activities);
                 $activities = [];
-                //}
 
                 $next_date = new DateTime($start_date);
                 $next_date->add(new DateInterval('P1D'));
@@ -37,53 +39,52 @@
 
         }
 
+        /*
+         * Adding an event to the database
+        */
         public function addEvent() {
 
+            /* Verifying that user write a name to the event */
             if(!Input::has('name')) {
                 return Redirect::to('event')->with('alert', 'Nombre del evento requerido')->withInput();
             }
+
+            /* Verifying that the user select a start day to the event */
             if(!Input::has('start_day')) {
                 return Redirect::to('event')->with('alert', 'Fecha de inicio requerida')->withInput();
             }
+
+            /* Verifying that the user select a end day to the event */
             if(!Input::has('end_day')) {
                 return Redirect::to('event')->with('alert', 'Fecha de término requerida')->withInput();
             }
+
+            /* Verifying that the user write a place to the event */
             if(!Input::has('place')) {
                 return Redirect::to('event')->with('alert', 'Lugar de evento requerido')->withInput();
             }
+
+            /* Verifying that the user select a time to the event */
             if(!Input::has('time')) {
                 return Redirect::to('event')->with('alert', 'Hora de evento requerido')->withInput();
             }
-            /*
-            //wea fome weon culiao
-            if(!Input::has('head_name')) {
-                return Redirect::to('event')->with('alert', 'Nombre de responsable requerido')->withInput();
-            }
-            if(!Input::has('head_email')) {
-                return Redirect::to('event')->with('alert', 'E-mail de responsable requerido')->withInput();
-            }
-            if(!Input::has('head_phone')) {
-                return Redirect::to('event')->with('alert', 'Teléfono de responsable requerido')->withInput();
-            }
-            if(!$this->validateEmail(Input::get('head_email'))) {
-                return Redirect::to('event')->with('alert', 'E-mail de responsable inválido')->withInput();
-            }            
-            */
-
+            
+            /* Creating a PHP date objects to manipulate dates */
             $start_day = new DateTime(Input::get('start_day'));
             $end_day = new DateTime(Input::get('end_day'));
             $now = new DateTime();
 
+            /* Verifying that the event end day is after now */
             if($end_day < $now) {
                 return Redirect::to('event')->with('alert', 'Fecha de término de evento anterior al día actual')->withInput();
             }
 
+            /* Verifying that the event start day is before event end day */
             if($start_day > $end_day) {
                 return Redirect::to('event')->with('alert', 'Fecha de inicio de evento no puede ser posterior a fecha de término')->withInput();
             }
 
-
-            
+            /* Collecting all event data to store */
             $event_data = array(
                 'id_dci' => strftime('%y%m%d'),
                 'name' => Input::get('name'),
@@ -91,40 +92,19 @@
                 'end_day' => Input::get('end_day'),
                 'place' => Input::get('place'),
                 'time' => Input::get('time'),
-                
-                /*
-                'head_name' => Input::get('head_name'),
-                'head_email' => Input::get('head_email'),
-                'head_phone' => Input::get('head_phone'),
-                */
-                'head_name' => Auth::user()->first_name . " " . Auth::user()->last_name,
-                'head_email' => Auth::user()->email,
-                'head_phone' => Auth::user()->phone,
-
                 'description' => Input::get('description'),
                 'user_id' => Auth::user()->id
             );
 
+            /* Creating and storing the event */
             $event = EventDCI::create($event_data);
-
-            // $event = new EventDCI;
-            // $event->id_dci = strftime('%y%m%d');
-            // $event->name = Input::get('name');
-            // $event->start_day = Input::get('start_day');
-            // $event->end_day = Input::get('end_day');
-            // $event->place = Input::get('place');
-            // $event->time = Input::get('time');
-            // $event->head_name = Input::get('head_name');
-            // $event->head_email = Input::get('head_email');
-            // $event->head_phone = Input::get('head_phone');
-            // $event->description = Input::get('description');
-            // $event->user_id = Auth::user()->id;
-            // $event->save();
 
             return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente '.$event->id_dci);
         }
 
-
+        /*
+         * Verifying that an email has the standard construction
+        */
         private function validateEmail($email) {
             if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email)) {
                 return true;
