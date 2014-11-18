@@ -1,8 +1,8 @@
 <section ng-controller="DashboardController">
 	
 
-<div class="ar-modal-background" ng-show="new_event" style="display:none"></div>
-<div class="ar-modal-wrapper" ng-show="new_event" style="display:none">
+<div class="ar-modal-background" ng-show="new_event"></div>
+<div class="ar-modal-wrapper" ng-show="new_event">
 	<div class="ar-modal-container">
 		<div class="ar-modal-title">Agendar Evento</div>
 		<div class="ar-modal-closebtn" ng-click="new_event=false"></div>
@@ -182,7 +182,7 @@
 						</div>
 					</div>
 
-					<div class="ar-expanded-wea ar-vwrap" style="display:none;">
+					<div class="ar-expanded-wea ar-vwrap">
 						<div class="ar-expanded-wea-container">
 
 							<div class="ar-row ar-vwrap col-xs-12 col-sm-4 ar-nopad">
@@ -226,8 +226,8 @@
 				<p>
 					Para informar a la DGI sobre un evento o solicitar difusión, es necesario: 
 				</p>		
-				<!-- <button class="btn btn-primary" ng-click="new_event=true">Agendar Evento</button> -->
-				<?php echo HTML::link('/event','Agendar evento'); ?>
+				<button class="btn btn-primary" ng-click="new_event=true">Agendar Evento</button>
+				<?php /* echo HTML::link('/event','Agendar evento'); */ ?>
 			</div>
 
 		</div>
