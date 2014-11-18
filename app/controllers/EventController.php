@@ -59,14 +59,14 @@
                 return Redirect::to('event')->with('alert', 'Fecha de término requerida')->withInput();
             }
 
-            /* Verifying that the user write a place to the event */
-            if(!Input::has('place')) {
-                return Redirect::to('event')->with('alert', 'Lugar de evento requerido')->withInput();
-            }
-
             /* Verifying that the user select a time to the event */
             if(!Input::has('time')) {
                 return Redirect::to('event')->with('alert', 'Hora de evento requerido')->withInput();
+            }
+
+            /* Verifying that the user write a place to the event */
+            if(!Input::has('place')) {
+                return Redirect::to('event')->with('alert', 'Lugar de evento requerido')->withInput();
             }
             
             /* Creating a PHP date objects to manipulate dates */
@@ -90,8 +90,8 @@
                 'name' => Input::get('name'),
                 'start_day' => Input::get('start_day'),
                 'end_day' => Input::get('end_day'),
-                'place' => Input::get('place'),
                 'time' => Input::get('time'),
+                'place' => Input::get('place'),
                 'description' => Input::get('description'),
                 'user_id' => Auth::user()->id
             );
