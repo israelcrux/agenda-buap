@@ -22,13 +22,14 @@
 
 		ROOT_PATH = "<?php echo URL::to('/'); ?>";
 
-		$('.datepicker').datepicker();
+		$('.datepicker').datepicker({autoclose: true});
+
 		angular.module('dashboard',[])
 		.factory('DataService',function($http){
 			return {
 				events : function(year,month){
 					return $http.get(ROOT_PATH+'/events/<?php echo Auth::user()->id ?>')
-						.then(function(response){					
+						.then(function(response){
 							return response.data;
 						},
 						function(){
