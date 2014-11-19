@@ -12,12 +12,6 @@
                 <input type="date" name="end_day" id="end_day" placeholder="Seleccione la fecha de termino" autocomplete="off" value="{{ Input::old('end_day'); }}" required>
                 <input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar del evento" autocomplete="off" value="{{ Input::old('place'); }}" required>
                 <input type="time" name="time" id="time" placeholder="Hora" autocomplete="off" value="{{ Input::old('time'); }}" required>
-                
-                <!--
-                <input type="text" class="form-horizontal" name="head_name" id="head_name" placeholder="Nombre del responsable" autocomplete="off" value="{{ Input::old('head_name'); }}" required>
-                <input type="text" class="form-horizontal" name="head_email" id="head_email" placeholder="Email del responsable" autocomplete="off" value="{{ Input::old('head_email'); }}" required>
-                <input type="text" class="form-horizontal" name="head_phone" id="head_phone" placeholder="Teléfono del responsable" autocomplete="off" value="{{ Input::old('head_phone'); }}" required>
-                -->
                 <textarea name="description" id="description" cols="30" rows="10" value="{{ Input::old('description'); }}"></textarea>
                 <input class="form-control" type="submit" value="Agregar evento">
             {{ Form::close(); }}

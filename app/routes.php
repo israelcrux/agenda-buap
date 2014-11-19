@@ -14,23 +14,16 @@
 /* Global patterns */
 Route::pattern('key', '[a-zA-Z0-9]*'); /* Pattern for a key generated automatically */
 Route::pattern('year_month', '[0-9]{4}-[0-9]{2}'); /* Pattern for a year and month */
+Route::pattern('user_id', '[0-9]+');
 
 /* Route to home */
-Route::get('/', function()
-{
+Route::get('/', function(){
 	return View::make('home');
 });
 
-/* Route experimental to home */
-//calendar mejor :P
-Route::get('/calendar/{year_month}', 'EventController@calendar');
-
-//tal vez necesite autenticación pero que hueva moverlo de línea :P
-Route::get('/events/{user_id}', 'EventController@eventsByUser');
-
 /* Route to show the login form */
 Route::get('/login', function(){
-	return View::make('login');
+    return View::make('login');
 });
 
 /* Route to make login */
@@ -60,7 +53,16 @@ Route::group(array('before' => 'auth'), function(){
         return View::make('event');
     });
 
-    Route::post('/eventp/', 'EventController@addEventp');
-
     Route::post('/event/add', 'EventController@addEvent');
+    
+    Route::get('/events/{user_id}', 'EventController@eventsByUser');
 });
+
+/*
+ *
+ * EXPERIMENTAL ROUTES
+ *
+*/
+
+/* JSON for calendar */
+Route::get('/calendar/{year_month}', 'EventController@calendar');
