@@ -36,6 +36,29 @@
 
 		});
 
+		function yymmddToddmmyy(str){
+			var yymmdd = str.split('-');
+			return yymmdd[2] +'/'+ yymmdd[1] +'/'+ yymmdd[0];
+		}
+
+		function niceDates(data){
+			for (var i = data.length - 1; i >= 0; i--) {
+				
+				data[i].end_day = yymmddToddmmyy(data[i].end_day);
+				data[i].start_day = yymmddToddmmyy(data[i].start_day);
+
+				// data[i].end_day = data[i].end_day.replace(/-/g,"/");
+				// data[i].start_day = data[i].start_day.replace(/-/g,"/");
+
+
+				// var ed = new Date(data[i].end_day.replace(/-/g,"/"));
+				// console.log( ed );
+				// console.log( ed.getDate() );
+			};
+			return data;
+		}
+
+
 		angular.module('dashboard',[])
 		.factory('DataService',function($http){
 			return {
@@ -52,10 +75,11 @@
 		})
 		.controller('DashboardController',[ '$scope', 'DataService' ,function($scope,DataService){
 
+			$scope.costs = ['Entrada libre','Evento con Costo'];
 
 			$scope.events = DataService.events();
 			$scope.events.then(function(data){
-				$scope.events = data;
+				$scope.events = niceDates(data);
 				console.log(data);
 			});
 

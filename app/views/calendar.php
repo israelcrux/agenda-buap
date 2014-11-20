@@ -5,10 +5,20 @@
 		<h4>{{currentDay.ttag}} {{currentDay.ntag}} de {{currentMonth.name}}</h4>
 		<div class="ar-container scrollable">
 			<div class="ar-event" ng-repeat="activity in currentDay.activities">
-				<a class="ar-eventtitle" ng-href="#"> {{activity.name}} </a>
-				<div class="ar-eventtime"> {{activity.begins}} </div>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum necessitatibus officiis doloremque, odio dolorum eveniet, facilis distinctio qui tenetur cum omnis obcaecati, reprehenderit illo aliquid recusandae nulla. Deserunt, repellat vel.</p>
+				<div class="ar-eventtitle"> {{activity.name}}</div>
+				<div class="ar-row ar-inforow">
+					<div class="col-xs-12 col-sm-6">{{activity.place}}</div>
+					<div class="col-xs-12 col-sm-3">{{activity.time}} hrs</div>
+					<div class="col-xs-12 col-sm-3" ng-show="activity.has_cost==0">Entrada libre</div>
+				</div>
+				<p>{{activity.description}}</p>
+				<a class="ar-moreinfo" target="_blank" href="{{activity.link}}">Más información</a>
 			</div>
+			
+			<div class="ar-emptylist ar-eventempty" ng-show="currentDay.activities.length==0">
+				Aún no hay eventos para este día
+			</div>
+
 		</div>
 
 	</div>	
@@ -91,6 +101,10 @@ $(document).ready(function(){
 		return  (month < 10)? '0' + month : month ;
 	}
 
+	function timef(t){
+		return t.substring(0,t.length-1);
+	}
+
 	var app = angular.module('dgi',['cfp.hotkeys'])
 		.config(function(hotkeysProvider) {
 			hotkeysProvider.includeCheatSheet = false;
@@ -126,6 +140,9 @@ $(document).ready(function(){
 		}
 
 		//CONTROLLER --------------------------------------------------------		
+		
+		//static data
+		$scope.costs = ['Entrada libre','Evento con Costo'];
 
 		$scope.mode = 'month';
 		

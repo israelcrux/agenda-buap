@@ -3,7 +3,7 @@
     class EventController extends BaseController {
 
         public function eventsByUser($user_id) {
-            $events = EventDCI::where('user_id', '=', $user_id)->orderBy('time')->get(array('*'));
+            $events = EventDCI::where('user_id', '=', $user_id)->orderBy('time')->get();
             return json_encode($events);
         }
 
@@ -23,7 +23,7 @@
 
                 $events = EventDCI::where('end_day', '>=', $start_date)
                     ->where('start_day', '<=', $start_date)
-                    ->orderBy('time')->get(array('name', 'place', 'time', 'description', 'directed_to', 'directed_to'));
+                    ->orderBy('time')->get();
 
                 $activities['activities'] = $events->toArray();
                 array_push($calendar, $activities);

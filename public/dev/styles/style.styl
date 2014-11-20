@@ -346,8 +346,9 @@ ul.nav.navbar-nav li a
 .ar-desc
 	max-height 115px
 	overflow hidden
-	background-color shadow
+	border-top 1px solid shadow
 	p
+		color subtile-text-color
 		margin 7px
 .ar-desc.expanded
 	max-height 900px
@@ -357,6 +358,12 @@ ul.nav.navbar-nav li a
 	text-align center
 .ar-colgroup:first-child
 	border-left 0px
+
+.ar-field.ar-datie
+	font-size 1em
+	span
+		font-weight bold
+		color deep_blue
 
 .ar-flatbtn
 	padding 10px
@@ -590,6 +597,12 @@ section.ar-reg-msg
 .ar-calendar
 	position relative
 	margin 0 auto
+.ar-inforow
+	padding-top 10px
+	padding-bottom 10px
+	div
+		color #f2f2f2
+
 .ar-arrows
 	div
 		standard-background()
@@ -600,7 +613,20 @@ section.ar-reg-msg
 	div:last-child
 		background-image url(../img/arrows_right.svg)
 
-	
+a.ar-moreinfo
+	width 100%
+	float right
+	color gray
+	text-align right
+
+.ar-eventempty
+	width 100%
+	height 200px
+	background-color gray
+	text-align center
+	font-size 1.1em
+	padding-top 50px
+
 .ar-day-month:hover,
 .ar-day-month.selected
 	
@@ -663,9 +689,8 @@ section.ar-reg-msg
 .ar-eventtitle
 	font-weight 600
 	color deep_blue
-	width 65%
-	float left
-
+	width 100%
+	float none
 
 .ar-eventtime
 	font-size 0.85em

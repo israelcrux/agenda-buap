@@ -200,7 +200,7 @@
 							<div class="col-xs-12 col-sm-10 ar-field ar-ellipsable ar-eventname ar-lnnormal">{{event.name}}</div>
 						</div>
 						<div class="col-xs-12 col-sm-3 ar-nopad">
-							<div class="col-xs-12 col-sm-10 ar-field">{{event.start_day}}</div>
+							<div class="col-xs-12 col-sm-10 ar-field ar-datie">De <span >{{event.start_day}}</span> a <span >{{event.end_day}}</span> </div>
 							<div class="col-xs-12 col-sm-2 ar-down ar-hideon768" ng-click="event.expanded=!event.expanded"></div>
 						</div>
 					</div>
@@ -212,8 +212,8 @@
 								<div class="ar-lnnormal ar-vwrap">
 									<div class="ar-place">{{event.place}}</div>
 									<div class="ar-row ar-vwrap">
-										<div class="col-xs-6 col-sm-6 ar-date ar-colgroup">{{event.start_day}}</div>
-										<div class="col-xs-6 col-sm-6 ar-date ar-colgroup">{{event.end_day}}</div>
+										<div class="col-xs-6 col-sm-6 ar-date ar-colgroup">{{event.time}} hrs</div>
+										<div class="col-xs-6 col-sm-6 ar-date ar-colgroup">{{costs[event.has_cost]}}</div>
 									</div>								
 								</div>
 								<div class="ar-lnnormalst ar-desc" ng-class="{'expanded':event.descExpanded}" ng-click="event.descExpanded=!event.descExpanded">
@@ -225,18 +225,24 @@
 
 							<div class="ar-row col-xs-12 col-sm-6 ar-services">
 								<p>Servicios de difusión</p>
-								<div class="ar-row ar-hideon768 ar-title-row">
-									<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">Servicio</div>
-									<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">Estado</div>
-								</div>	
-								<div class="ar-row ar-service" ng-repeat="service in event.services">
-									<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">{{service.name}}</div>
-									<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.status}}</div>
+								<div ng-hide="event.services.length" class="ar-emptylist ar-eventempty">
+									Aún no hay servicios de difusión
+								</div>
+								<div ng-show="event.services.length">
+									<div class="ar-row ar-hideon768 ar-title-row">
+										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">Servicio</div>
+										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">Estado</div>
+									</div>	
+									<div class="ar-row ar-service" ng-repeat="service in event.services">
+										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">{{service.name}}</div>
+										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.status}}</div>
+									</div>
 								</div>
 							</div>
 							<div class="ar-row col-xs-12 col-sm-2">
 								<div class="ar-flatbtn">Editar evento</div>
-								<div class="ar-flatbtn">Editar solicitud</div>
+								<div class="ar-flatbtn" ng-hide="event.services.length">Solicitar Difusión</div>
+								<div class="ar-flatbtn" ng-show="event.services.length">Editar solicitud</div>
 							</div>
 
 						</div>
