@@ -25,6 +25,13 @@
         */
         public $timestamps = false;
 
+        /*
+         * One user has many events
+        */
+        public function events() {
+            return $this->hasMany('EventDCI');
+        }
+
 		/**
          * Get the unique identifier for the user.
          */

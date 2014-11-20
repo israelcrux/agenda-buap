@@ -49,6 +49,11 @@ Route::group(array('before' => 'auth'), function(){
         return View::make('dashboard');
     });
 
+    Route::get('/dashboard_test', function(){
+        $add_event_data = Service::all();
+        return View::make('dashboard', $add_event_data);
+    });
+
     Route::get('/event/', function(){
         return View::make('event');
     });
