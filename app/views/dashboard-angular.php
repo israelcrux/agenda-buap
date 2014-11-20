@@ -255,7 +255,7 @@
 				<p>
 					Para informar a la DGI sobre un evento o solicitar difusión, es necesario: 
 				</p>		
-				<button class="btn btn-primary" ng-click="new_event=true">Agendar Evento</button>
+				<button class="btn btn-primary" ng-click="showCreateForm()">Agendar Evento</button>
 				<?php /* echo HTML::link('/event','Agendar evento'); */ ?>
 			</div>
 
