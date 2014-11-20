@@ -17,4 +17,18 @@
         */
         public $timestamps = false;
 
+        /*
+         * Many events belongs to an user
+        */
+        public function user() {
+            return $this->belongsTo('User');
+        }
+
+        /*
+         * Many events have many services
+        */
+        public function services() {
+            return $this->belongsToMany('Service');
+        }
+
     }
