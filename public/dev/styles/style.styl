@@ -59,6 +59,7 @@ a
 ul
 	list-style none
 	padding 0px
+	overflow auto
 
 
 input[type="date"]:before
@@ -252,13 +253,13 @@ ul.nav.navbar-nav li a
 	top 0px
 	left 0px
 	width 100%
+	height 100%
 	z-index 11
 
 .ar-modal-container
 	background-color bgc
-	padding 15px
-	margin 50px auto
 	max-width 900px
+	max-height 100%
 	position relative
 
 .ar-modal-closebtn
@@ -291,7 +292,10 @@ ul.nav.navbar-nav li a
 	background-color deep_blue
 
 .ar-modal-content
-	padding-top 35px
+	padding 15px
+	padding-top 55px
+	max-height 100%
+	overflow auto
 	.ar-form-container
 		max-width 100%
 
@@ -317,7 +321,7 @@ ul.nav.navbar-nav li a
 	-o-transition top .5s ease
 	transition top .5s ease
 
-/****************************	ADMIN   ****************************/
+/****************************	USER   ****************************/
 
 .ar-dashboard-wrapper
 	// max-width 1000px
@@ -382,6 +386,11 @@ ul.nav.navbar-nav li a
 	span 
 		color transparent
 
+
+p.ar-ptitle
+	margin-bottom 0px
+	margin-top 15px
+
 .ar-place
 	background-image url(../img/map.png)
 	background-size cover
@@ -435,9 +444,24 @@ ul.nav.navbar-nav li a
 .ar-media-list .checkbox
 	margin-top 10px
 	margin-bottom 10px
-	
 
-@media (max-width:768px)
+.ar-plist
+	padding-left 5px	
+
+.ar-eventlist .ar-event
+	margin-bottom 25px
+
+button.btn.btn-sourcefiles
+	border 1px dashed subtile-text-color
+	background-color transparent
+	color standard-text-color
+
+@media (max-width:767px)
+	.ar-modal-content
+		padding-left 0px
+		padding-right 0px
+	.ar-modal-wrapper .ar-modal-content .ar-form-container
+		padding 0px
 	.ar-expanded-wea
 		max-height 1900px
 	.ar-eventname.ar-ellipsable
@@ -453,9 +477,22 @@ ul.nav.navbar-nav li a
 		line-height normal
 		padding-top 5px
 		padding-bottom 5px
+	.ar-modal-title
+		position absolute
+		z-index 3
+	.ar-modal-container
+		height 100%
 	.ar-hideon768
 		display none
-@media (min-width:769px)
+	.ar-modal-closebtn
+		z-index 4
+	.ar-eventlist .ar-event
+		margin-bottom 25px
+		panel-shadow()
+		
+@media (min-width:768px)
+	.ar-modal-container
+		margin 50px auto
 	.ar-services
 		margin-left 0px
 		padding-left 40px

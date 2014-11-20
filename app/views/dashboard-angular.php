@@ -15,26 +15,43 @@
 					<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required>
 					
 					<?php /* type date */?>
-					<input class="datepicker" type="text"  pattern="[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]" name="start_day" id="start_day" placeholder="Inicio dd/mm/aaaa" autocomplete="off" required>
+					<input class="datepicker" type="text"  pattern="[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required>
 					<?php /* type date */?>
-					<input class="datepicker" type="text" name="end_day" id="end_day" placeholder="Término dd/mm/aaaa" autocomplete="off" required>
+					<input class="datepicker" type="text" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required>
 					<?php /* type time */?>
 					<input type="text" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required>
 					
 					<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" autocomplete="off" required>
+					
+					<p>Dirigido a</p>
+					<select name="directed_to" id="directed_to">
+						<option value="0">Público en general</option>
+						<option value="1">Comunidad Buap</option>
+						<option value="2">Profesores</option>
+						<option value="3">Estudiantes</option>
+					</select>
+					
+					<textarea name="description" id="description" placeholder="Descripción"></textarea>
+					
+					<div class="checkbox">
+						<label>
+							<input name="hast_cost" id="has_cost" type="checkbox"> El evento es gratuito
+						</label>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+
 					<div class="checkbox">
 						<label>
 							<input ng-model="diff" type="checkbox"> Solicitar difusión
 						</label>
 					</div>
-				</div>
-				<div class="col-xs-12 col-sm-4">
 					
 					<div ng-show="diff" >
 						
 						<p>Servicios de difusión a solicitar:</p>	
 
-						<ul class="ar-media-list">
+						<ul class="ar-plist">
 							
 							<li>
 								<div class="checkbox">
@@ -72,10 +89,17 @@
 								</div>
 							</li>							
 						</ul>
-						<p>
+						
+						<input type="file" name="files" multiple>
+						<div class="btn btn-sourcefiles" onclick="">
+							Adjuntar material de apoyo
+						</div>
+						<p></p>
+						<p></p>
+						<p class="ar-ptitle">
 							Fuente de Recursos
 						</p>
-						<ul class="ar-testimonial-list">
+						<ul>
 							<li class="col-xs-12 col-sm-6">
 								<div class="checkbox">
 									<label>
@@ -104,9 +128,11 @@
 									</label>
 								</div>
 							</li>							
-						</ul>						
-					</div>
+						</ul>
 
+						<textarea name="justfication" id="justfication" placeholder="Justificación"></textarea>
+					</div>
+					
 					<!--
 					<input type="text" class="form-horizontal" name="head_name" id="head_name" placeholder="Nombre del responsable" autocomplete="off" required>
 					<input type="text" class="form-horizontal" name="head_email" id="head_email" placeholder="Email del responsable" autocomplete="off" required>
@@ -115,11 +141,11 @@
 				</div>
 				<div class="col-xs-12 col-sm-4">
 					<div ng-show="diff">
-						<textarea name="justfication" id="justfication" placeholder="Justificación"></textarea>
-						<p>
+						
+						<p class="ar-ptitle">
 							Testigos que presentará
 						</p>
-						<ul class="ar-testimonial-list">
+						<ul class="ar-plist">
 							<li>
 								<div class="checkbox">
 									<label>
@@ -149,9 +175,7 @@
 								</div>
 							</li>							
 						</ul>						
-						<button class="btn btn-default">
-							Adjuntar material de apoyo
-						</button>
+
 					</div>
 
 					<button class="btn btn-primary">
