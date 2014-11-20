@@ -249,7 +249,7 @@ ul.nav.navbar-nav li a
 	opacity 0.9
 	z-index 10
 .ar-modal-wrapper
-	position fixed
+	position absolute
 	top 0px
 	left 0px
 	width 100%
@@ -259,7 +259,6 @@ ul.nav.navbar-nav li a
 .ar-modal-container
 	background-color bgc
 	max-width 900px
-	max-height 100%
 	position relative
 
 .ar-modal-closebtn
@@ -451,12 +450,23 @@ p.ar-ptitle
 .ar-eventlist .ar-event
 	margin-bottom 25px
 
-button.btn.btn-sourcefiles
+.btn.btn-sourcefiles.loaded
+	background-color silver
+	font-weight bold
+.btn.btn-sourcefiles:hover
+	border 1px dashed light_blue
+	
+.btn.btn-sourcefiles
 	border 1px dashed subtile-text-color
 	background-color transparent
 	color standard-text-color
+	width 100%
+	padding-top 15px
+	padding-bottom 15px
 
 @media (max-width:767px)
+	.ar-modal-wrapper
+		position fixed
 	.ar-modal-content
 		padding-left 0px
 		padding-right 0px
@@ -466,7 +476,6 @@ button.btn.btn-sourcefiles
 		max-height 1900px
 	.ar-eventname.ar-ellipsable
 		white-space normal
-
 	.ar-service-status
 		text-align right
 	.ar-service div:first-child
@@ -489,7 +498,7 @@ button.btn.btn-sourcefiles
 	.ar-eventlist .ar-event
 		margin-bottom 25px
 		panel-shadow()
-		
+
 @media (min-width:768px)
 	.ar-modal-container
 		margin 50px auto

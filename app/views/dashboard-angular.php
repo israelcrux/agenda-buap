@@ -9,7 +9,7 @@
 		<div class="ar-modal-content">
 
 			<div class="ar-form-container ar-vwrap">
-			<?php echo Form::open(array('url' => 'event/add', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal')); ?>
+			<?php echo Form::open(array('url' => 'event/add', 'method' => 'post', 'role' => 'form', 'enctype'=> 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 				
 				<div class="col-xs-12 col-sm-4">
 					<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required>
@@ -90,10 +90,11 @@
 							</li>							
 						</ul>
 						
-						<input type="file" name="files" multiple>
-						<div class="btn btn-sourcefiles" onclick="">
+						<input type="file" id="files" name="files" ng-model="fileInput" multiple style="display:none;">
+						<div id="filebtn" class="btn btn-sourcefiles">
 							Adjuntar material de apoyo
 						</div>
+
 						<p></p>
 						<p></p>
 						<p class="ar-ptitle">
@@ -177,10 +178,8 @@
 						</ul>						
 
 					</div>
-
-					<button class="btn btn-primary">
-						Agendar Evento
-					</button>
+					
+					<input type="submit" value="Agendar Evento">
 				</div>
 			<?php echo Form::close(); ?>
 			</div>

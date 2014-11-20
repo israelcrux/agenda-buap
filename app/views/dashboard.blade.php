@@ -24,6 +24,26 @@
 
 		$('.datepicker').datepicker({autoclose: true});
 
+
+		var fileInput = $('#files'),
+			fileButton = $("#filebtn");
+
+		fileButton.click(function(){
+			fileInput.click();
+		});
+		fileInput.change(function(e){
+			var n = e.target.files.length,
+				text = (n==1)? 'archivo seleccionado' : 'archivos seleccionados';
+
+			if(n == 0){
+
+				fileButton.removeClass('loaded').text('Adjuntar material de apoyo');
+			} else {
+				fileButton.addClass('loaded').text(n+' '+text);				
+			}
+
+		});
+
 		angular.module('dashboard',[])
 		.factory('DataService',function($http){
 			return {
@@ -45,6 +65,7 @@
 			$scope.events.then(function(data){
 				$scope.events = data;
 			});
+
 			/*
 			$scope.events = [
 				{
