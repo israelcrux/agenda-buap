@@ -26,7 +26,7 @@
         public $timestamps = false;
 
         /*
-         * One user has many events
+         * User has many events
         */
         public function events() {
             return $this->hasMany('EventDCI');

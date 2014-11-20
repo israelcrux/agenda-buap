@@ -52,42 +52,18 @@
 						<p>Servicios de difusión a solicitar:</p>	
 
 						<ul class="ar-plist">
-							
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Radio
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> TV
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Web
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Redes sociales
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Medios Impresos
-									</label>
-								</div>
-							</li>							
+							<?php foreach($services as $service) {  ?>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input 
+                                                name="<?php echo $service['standardized_name']; ?>" 
+                                                type="checkbox"> 
+                                                    <?php echo $service['name']; ?>
+                                        </label>
+                                    </div>
+                                </li>
+                            <?php } ?>				
 						</ul>
 						
 						<input type="file" id="files" name="files" ng-model="fileInput" multiple style="display:none;">
@@ -101,34 +77,18 @@
 							Fuente de Recursos
 						</p>
 						<ul>
-							<li class="col-xs-12 col-sm-6">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" checked="checked"> Tesorería
-									</label>
-								</div>
-							</li>
-							<li class="col-xs-12 col-sm-6">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Fondo fijo
-									</label>
-								</div>
-							</li>
-							<li class="col-xs-12 col-sm-6">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Apoyos especiales
-									</label>
-								</div>
-							</li>
-							<li class="col-xs-12 col-sm-6">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Otros
-									</label>
-								</div>
-							</li>							
+							<?php foreach ($resources_sources as $resource_source) { ?>
+                                <li class="col-xs-12 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input 
+                                                name="<?php echo $resource_source['standardized_name']; ?>" 
+                                                type="checkbox"> 
+                                                    <?php echo $resource_source['name']; ?>
+                                        </label>
+                                    </div>
+                                </li>
+                            <?php } ?>
 						</ul>
 
 						<textarea name="justfication" id="justfication" placeholder="Justificación"></textarea>
@@ -147,34 +107,18 @@
 							Testigos que presentará
 						</p>
 						<ul class="ar-plist">
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" checked="checked"> Ejemplar de impresión
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Carátula de libros, revistas o folletos
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Fotografías de rótulos colocados
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Fotografías
-									</label>
-								</div>
-							</li>							
+							<?php foreach ($witnesses as $witness) { ?>
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input 
+                                            name="<?php echo $witness['standardized_name']; ?>" 
+                                            type="checkbox"> 
+                                                <?php echo $witness['name']; ?>
+                                    </label>
+                                </div>
+                            </li>
+                            <?php } ?>
 						</ul>						
 
 					</div>
