@@ -31,4 +31,18 @@
             return $this->belongsToMany('Service');
         }
 
+        /*
+         * Many event have many witnesses
+        */
+        public function witnesses() {
+            return $this->belongsToMany('Witness')
+        }
+
+        /*
+         * Many event have many resources source
+        */
+        public function resource_source() {
+            return $this->belongsToMany('ResourceSource');
+        }
+
     }

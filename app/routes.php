@@ -50,8 +50,13 @@ Route::group(array('before' => 'auth'), function(){
     });
 
     Route::get('/dashboard_test', function(){
-        $add_event_data = Service::all();
-        return View::make('dashboard', $add_event_data);
+        return View::make('dashboard_test', 
+            array(
+                'services' => Service::all(),
+                'resources_sources' => ResourceSource::all(),
+                'witnesses' => Witness::all(),
+            )
+        );
     });
 
     Route::get('/event/', function(){
