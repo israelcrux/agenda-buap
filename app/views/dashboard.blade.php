@@ -22,25 +22,17 @@
 
 		ROOT_PATH = "<?php echo URL::to('/'); ?>";
 
+		//JQ
 		$('.datepicker').datepicker({autoclose: true});
-
-
 		var fileInput = $('#files'),
 			fileButton = $("#filebtn");
-
-		fileButton.click(function(){
-			fileInput.click();
-		});
+		fileButton.click(function(){ fileInput.click(); });
 		fileInput.change(function(e){
 			var n = e.target.files.length,
 				text = (n==1)? 'archivo seleccionado' : 'archivos seleccionados';
 
-			if(n == 0){
-
-				fileButton.removeClass('loaded').text('Adjuntar material de apoyo');
-			} else {
-				fileButton.addClass('loaded').text(n+' '+text);				
-			}
+			if(n == 0) fileButton.removeClass('loaded').text('Adjuntar material de apoyo');
+			else fileButton.addClass('loaded').text(n+' '+text);
 
 		});
 
@@ -64,6 +56,7 @@
 			$scope.events = DataService.events();
 			$scope.events.then(function(data){
 				$scope.events = data;
+				console.log(data);
 			});
 
 			/*
