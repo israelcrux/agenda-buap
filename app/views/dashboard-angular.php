@@ -27,17 +27,17 @@
 					
 					<p>Dirigido a</p>
 					<select name="directed_to" id="directed_to">
-						<option value="0">Público en general</option>
-						<option value="1">Comunidad Buap</option>
-						<option value="2">Profesores</option>
-						<option value="3">Estudiantes</option>
+						<option value="Público en general">Público en general</option>
+						<option value="Comunidad BUAP">Comunidad Buap</option>
+						<option value="Profesores">Profesores</option>
+						<option value="Estudiantes">Estudiantes</option>
 					</select>
 					
 					<textarea name="description" id="description" placeholder="Descripción"></textarea>
 					
 					<div class="checkbox">
 						<label>
-							<input name="hast_cost" id="has_cost" type="checkbox"> El evento es gratuito
+							<input name="has_cost" id="has_cost" type="checkbox"> El evento es gratuito
 						</label>
 					</div>
 				</div>
@@ -59,8 +59,9 @@
                                     <div class="checkbox">
                                         <label>
                                             <input 
-                                                name="<?php echo $service['standardized_name']; ?>" 
-                                                type="checkbox"> 
+                                                name="services[]" 
+                                                type="checkbox"
+                                                value="<?php echo $service['id']; ?>"> 
                                                     <?php echo $service['name']; ?>
                                         </label>
                                     </div>
@@ -84,8 +85,9 @@
                                     <div class="checkbox">
                                         <label>
                                             <input 
-                                                name="<?php echo $resource_source['standardized_name']; ?>" 
-                                                type="checkbox"> 
+                                            	name="resources_sources[]"
+                                                type="checkbox"
+                                                value="<?php echo $resource_source['id']; ?>">
                                                     <?php echo $resource_source['name']; ?>
                                         </label>
                                     </div>
@@ -93,7 +95,7 @@
                             <?php } ?>
 						</ul>
 
-						<textarea name="justfication" id="justfication" placeholder="Justificación"></textarea>
+						<textarea name="justification" id="justfication" placeholder="Justificación"></textarea>
 					</div>
 					
 					<!--
@@ -114,8 +116,9 @@
                                 <div class="checkbox">
                                     <label>
                                         <input 
-                                            name="<?php echo $witness['standardized_name']; ?>" 
-                                            type="checkbox"> 
+                                        	name="witnesses[]"
+                                            type="checkbox"
+                                            value="<?php echo $witness['id']; ?>">
                                                 <?php echo $witness['name']; ?>
                                     </label>
                                 </div>

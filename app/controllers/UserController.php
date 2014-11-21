@@ -23,7 +23,7 @@
             /* Verifying that the user exists and correct credentials */
             if(Auth::attempt(array('email' => $email, 'password' => $password))) {
                 /* Verifying status user */
-                if(Auth::user()->status == '2'){
+                if(Auth::user()->status == '2') {
                     return Redirect::to('login')->with('alert', 'Usuario requiere activación')->withInput(Input::except('password'));
                 }
                 return Redirect::intended('dashboard');
@@ -168,10 +168,7 @@
          * Verifying that an email has the standard construction
         */
         private function validateEmail($email) {
-            if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email)) {
-                return true;
-            }
-            return false;
+            return preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email);
         }
 
     }
