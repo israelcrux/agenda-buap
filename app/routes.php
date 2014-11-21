@@ -46,11 +46,7 @@ Route::group(array('before' => 'auth'), function(){
 
     /* Rote to view the dashboard */
     Route::get('/dashboard', function(){
-        return View::make('dashboard');
-    });
-
-    Route::get('/dashboard_test', function(){
-        return View::make('dashboard_test', 
+        return View::make('dashboard', 
             array(
                 'services' => Service::all(),
                 'resources_sources' => ResourceSource::all(),

@@ -21,9 +21,20 @@
 	<script>
 
 		ROOT_PATH = "<?php echo URL::to('/'); ?>";
+		FORM_ENABLED = false;
+		<?php if( isset($form) ): ?>
+			FORM_ENABLED = true;
+		<?php endif; ?>
 
 		//JQ
-		$('.datepicker').datepicker({autoclose: true});
+		
+		$(document).ready(function(){
+			$('.datepicker').datepicker({autoclose: true}).on('changeDate', function(){
+				$('.datepicker.dropdown-menu').hide();
+			});
+		});
+
+
 		var fileInput = $('#files'),
 			fileButton = $("#filebtn");
 		fileButton.click(function(){ fileInput.click(); });
@@ -82,6 +93,7 @@
 				$scope.events = niceDates(data);
 				console.log(data);
 			});
+
 
 			$scope.showCreateForm = function(){
 				$scope.new_event=true; 

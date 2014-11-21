@@ -11,7 +11,14 @@
 					<div class="col-xs-12 col-sm-3">{{activity.time}} hrs</div>
 					<div class="col-xs-12 col-sm-3" ng-show="activity.has_cost==0">Entrada libre</div>
 				</div>
-				<p>{{activity.description}}</p>
+				<p ng-show="!long_desc">
+					{{activity.croppedDescription}}
+					<a href="#" class="ar-morelink" ng-show="activity.long_description" ng-click="long_desc=!long_desc">más</a>
+				</p>
+				<p ng-show="long_desc">
+					{{activity.description}}
+					<!-- <a href="#" class="ar-morelink" ng-click="long_desc=!long_desc">menos</a> -->
+				</p>
 				<a class="ar-moreinfo" target="_blank" href="{{activity.link}}">Más información</a>
 			</div>
 			
@@ -91,6 +98,15 @@ $(document).ready(function(){
 		for (var i = 0, j = fd; i < days.length; i++, j = (j+1) % 7 ) {
 			days[i].ttag = dayNames[j];
 			days[i].ntag = (i+1);
+
+			for (var j = days[i].activities.length - 1; j >= 0; j--) {
+				if(days[i].activities[j].description.length > 220){
+					days[i].activities[j].long_description = true;
+				}
+				days[i].activities[j].croppedDescription = _.str.prune( days[i].activities[j].description, 220 );
+				days[i].activities[j].time = nicetime(days[i].activities[j].time);
+			};
+
 			calendarDays.push( days[i] );
 		};
 
@@ -101,8 +117,9 @@ $(document).ready(function(){
 		return  (month < 10)? '0' + month : month ;
 	}
 
-	function timef(t){
-		return t.substring(0,t.length-1);
+	function nicetime(t){
+		var n = (t.charAt(0) == '0')? 1 : 0;
+		return t.substring(n,t.length - 3) + ' hrs';
 	}
 
 	var app = angular.module('dgi',['cfp.hotkeys'])

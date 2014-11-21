@@ -1,11 +1,11 @@
 <section ng-controller="DashboardController">
 	
 
-<div class="ar-modal-background" ng-show="new_event"></div>
-<div class="ar-modal-wrapper" ng-show="new_event">
+<div class="ar-modal-background" ng-show="FORM_ENABLED||new_event"></div>
+<div class="ar-modal-wrapper" ng-show="FORM_ENABLED||new_event">
 	<div class="ar-modal-container">
 		<div class="ar-modal-title">Agendar Evento</div>
-		<div class="ar-modal-closebtn" ng-click="new_event=false"></div>
+		<div class="ar-modal-closebtn" ng-click="new_event=false;FORM_ENABLED=false;"></div>
 		<div class="ar-modal-content">
 
 			<div class="ar-form-container ar-vwrap">
@@ -15,13 +15,15 @@
 					<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required>
 					
 					<?php /* type date */?>
-					<input class="datepicker" type="text"  pattern="[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required>
+					<input class="datepicker" type="text"  pattern="^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required>
 					<?php /* type date */?>
-					<input class="datepicker" type="text" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required>
+					<input class="datepicker" type="text"  pattern="^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required>
 					<?php /* type time */?>
 					<input type="text" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required>
 					
 					<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" autocomplete="off" required>
+					<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" autocomplete="off" required>
+
 					
 					<p>Dirigido a</p>
 					<select name="directed_to" id="directed_to">

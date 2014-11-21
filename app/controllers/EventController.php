@@ -46,27 +46,27 @@
 
             /* Verifying that user write a name to the event */
             if(!Input::has('name')) {
-                return Redirect::to('event')->with('alert', 'Nombre del evento requerido')->withInput();
+                return Redirect::to('dashboard')->with('alert', 'Nombre del evento requerido')->with('form','enabled')->withInput();
             }
 
             /* Verifying that the user select a start day to the event */
             if(!Input::has('start_day')) {
-                return Redirect::to('event')->with('alert', 'Fecha de inicio requerida')->withInput();
+                return Redirect::to('dashboard')->with('alert', 'Fecha de inicio requerida')->with('form','enabled')->withInput();
             }
 
             /* Verifying that the user select a end day to the event */
             if(!Input::has('end_day')) {
-                return Redirect::to('event')->with('alert', 'Fecha de término requerida')->withInput();
+                return Redirect::to('dashboard')->with('alert', 'Fecha de término requerida')->with('form','enabled')->withInput();
             }
 
             /* Verifying that the user select a time to the event */
             if(!Input::has('time')) {
-                return Redirect::to('event')->with('alert', 'Hora de evento requerido')->withInput();
+                return Redirect::to('dashboard')->with('alert', 'Hora de evento requerido')->with('form','enabled')->withInput();
             }
 
             /* Verifying that the user write a place to the event */
             if(!Input::has('place')) {
-                return Redirect::to('event')->with('alert', 'Lugar de evento requerido')->withInput();
+                return Redirect::to('dashboard')->with('alert', 'Lugar de evento requerido')->with('form','enabled')->withInput();
             }
             
             /* Creating a PHP date objects to manipulate dates */
@@ -76,12 +76,12 @@
 
             /* Verifying that the event end day is after now */
             if($end_day < $now) {
-                return Redirect::to('event')->with('alert', 'Fecha de término de evento anterior al día actual')->withInput();
+                return Redirect::to('dashboard')->with('alert', 'Fecha de término de evento anterior al día actual')->with('form','enabled')->withInput();
             }
 
             /* Verifying that the event start day is before event end day */
             if($start_day > $end_day) {
-                return Redirect::to('event')->with('alert', 'Fecha de inicio de evento no puede ser posterior a fecha de término')->withInput();
+                return Redirect::to('dashboard')->with('alert', 'Fecha de inicio de evento no puede ser posterior a fecha de término')->with('form','enabled')->withInput();
             }
 
             /* Collecting all event data to store */

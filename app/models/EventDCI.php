@@ -35,7 +35,7 @@
          * Many event have many witnesses
         */
         public function witnesses() {
-            return $this->belongsToMany('Witness')
+            return $this->belongsToMany('Witness');
         }
 
         /*

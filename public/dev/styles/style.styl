@@ -564,6 +564,7 @@ section.ar-reg-msg
 	input[type="email"],
 	input[type="password"],
 	input[type="date"],
+	input[type="url"],
 	input[type="time"],
 	textarea,
 	select
@@ -638,6 +639,15 @@ a.ar-moreinfo
 	background-color silver
 	border-bottom 0px
 
+.ar-morelink
+	color gray
+	margin-left 5px
+.ar-morelink:before
+	content '['
+.ar-morelink:after
+	content ']'
+	
+
 .ar-day-month
 	float left
 	background-color silver
@@ -650,6 +660,8 @@ a.ar-moreinfo
 	position relative
 	.ar-daymonth-container
 		padding 10px
+		padding-top 0px
+		padding-bottom 0px
 	.ar-daytag
 		font-size 1.05
 		padding 5px
@@ -694,7 +706,6 @@ a.ar-moreinfo
 
 .ar-eventtime
 	font-size 0.85em
-	float right
 	color subtile-text-color
 .ar-disabled-day
 	background-color palid_gray

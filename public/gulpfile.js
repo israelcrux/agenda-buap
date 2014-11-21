@@ -36,6 +36,7 @@ gulp.task('scripts', function() {
         devjs+'bootstrap-datepicker.js',
         devjs+'angular.min.js',
         devjs+'hotkeys.min.js',
+        devjs+'underscore.string.min.js',
         devjs+'angular-app.js'
         ])
     .pipe(concat('everything.js'))

@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'superjaca10@live.com.mx', 'name' => 'Javier Aguila'),
+	'from' => array('address' => 'cidd@correo.buap.mx', 'name' => 'Dirección de Comunicación Institucional'),
 
 	/*
 	|--------------------------------------------------------------------------
