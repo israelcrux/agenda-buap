@@ -12,11 +12,6 @@
         */
         protected $guarded = array('status');
 
-         /*
-         * Unabled automatic updated_at, created_at
-        */
-        public $timestamps = false;
-
         /*
          * Many events belongs to an user
         */
@@ -28,21 +23,21 @@
          * Many events have many services
         */
         public function services() {
-            return $this->belongsToMany('Service');
+            return $this->belongsToMany('Service', 'event_service');
         }
 
         /*
          * Many event have many witnesses
         */
         public function witnesses() {
-            return $this->belongsToMany('Witness');
+            return $this->belongsToMany('Witness', 'event_witness');
         }
 
         /*
          * Many event have many resources source
         */
         public function resource_source() {
-            return $this->belongsToMany('ResourceSource');
+            return $this->belongsToMany('ResourceSource', 'event_resource_source');
         }
 
     }
