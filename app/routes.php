@@ -23,6 +23,9 @@ Route::get('/', function(){
 
 /* Route to show the login form */
 Route::get('/login', function(){
+    if(Auth::check()){
+        return Redirect::to('dashboard');
+    }
     return View::make('login');
 });
 

@@ -29,7 +29,7 @@
 		//JQ
 		
 		$(document).ready(function(){
-			$('.datepicker').datepicker({autoclose: true}).on('changeDate', function(){
+			$('.datepicker').datepicker({autoclose: true,format: 'yyyy-mm-dd'}).on('changeDate', function(){
 				$('.datepicker.dropdown-menu').hide();
 			});
 		});

@@ -15,14 +15,14 @@
 					<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required>
 					
 					<?php /* type date */?>
-					<input class="datepicker" type="text"  pattern="^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required>
+					<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required>
 					<?php /* type date */?>
-					<input class="datepicker" type="text"  pattern="^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required>
+					<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required>
 					<?php /* type time */?>
-					<input type="text" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required>
+					<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="17:00:00">
 					
-					<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" autocomplete="off" required>
-					<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" autocomplete="off" required>
+					<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" required>
+					<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" required>
 
 					
 					<p>Dirigido a</p>
@@ -189,6 +189,7 @@
 								<div class="ar-flatbtn">Editar evento</div>
 								<div class="ar-flatbtn" ng-hide="event.services.length">Solicitar Difusión</div>
 								<div class="ar-flatbtn" ng-show="event.services.length">Editar solicitud</div>
+								<div class="ar-flatbtn ar-cancelbtn">Cancelar Evento</div>
 							</div>
 
 						</div>

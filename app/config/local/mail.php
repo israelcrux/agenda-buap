@@ -54,7 +54,8 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'cidd@correo.buap.mx', 'name' => 'Dirección de Comunicación Institucional'),
+	//'from' => array('address' => 'cidd@correo.buap.mx', 'name' => 'Dirección de Comunicación Institucional'),
+	'from' => array('address' => 'postmaster@sandbox2d3c01c513a84ca3a1325b7b38e50c97.mailgun.org', 'name' => 'Dirección de Comunicación Institucional'),
 
 	/*
 	|--------------------------------------------------------------------------

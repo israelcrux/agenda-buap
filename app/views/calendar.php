@@ -95,16 +95,16 @@ $(document).ready(function(){
 			calendarDummies.push({disabled: true});
 		}
 
-		for (var i = 0, j = fd; i < days.length; i++, j = (j+1) % 7 ) {
-			days[i].ttag = dayNames[j];
+		for (var i = 0, dd = fd; i < days.length; i++, dd = (dd+1) % 7 ) {
+			days[i].ttag = dayNames[dd];
 			days[i].ntag = (i+1);
 
-			for (var j = days[i].activities.length - 1; j >= 0; j--) {
-				if(days[i].activities[j].description.length > 220){
-					days[i].activities[j].long_description = true;
+			for (var k = days[i].activities.length - 1; k >= 0; k--) {
+				if(days[i].activities[k].description.length > 220){
+					days[i].activities[k].long_description = true;
 				}
-				days[i].activities[j].croppedDescription = _.str.prune( days[i].activities[j].description, 220 );
-				days[i].activities[j].time = nicetime(days[i].activities[j].time);
+				days[i].activities[k].croppedDescription = _.str.prune( days[i].activities[k].description, 220 );
+				days[i].activities[k].time = nicetime(days[i].activities[k].time);
 			};
 
 			calendarDays.push( days[i] );
