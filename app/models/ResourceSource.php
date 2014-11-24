@@ -16,7 +16,7 @@
          * Many resources source belongs to many events
         */
         public function events() {
-            return $this->belongsToMany('EventDCI', 'event_resource_source');
+            return $this->belongsToMany('EventDCI', 'event_resource_source', 'event_id', 'resource_source_id');
         }
 
     }

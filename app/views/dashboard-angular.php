@@ -69,7 +69,7 @@
                             <?php } ?>				
 						</ul>
 						
-						<input type="file" id="files" name="files" ng-model="fileInput" multiple style="display:none;">
+						<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
 						<div id="filebtn" class="btn btn-sourcefiles">
 							Adjuntar material de apoyo
 						</div>

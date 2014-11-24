@@ -115,32 +115,62 @@
             $event = new EventDCI($event_data);
             $event = $user->events()->save($event);
 
+            $message = 'Evento creado exitosamente '.$event->id_dci;
+
             /* Getting information about diffusion */
-            // if(Input::has('services') && Input::has('resources_sources') && Input::has('witnesses')) {
-            //     /* Storing services to the event */
-            //     $services = Input::get('services');
-            //     $data_services = array(
-            //         'start_service' => Input::get('start_day'),
-            //         'end_service' => Input::get('end_day'),
-            //     );
+            if(Input::has('services')) {
+                /* Storing services to the event */
+                $services = Input::get('services');
+                $data_services = array(
+                    'start_service' => Input::get('start_day'),
+                    'end_service' => Input::get('end_day'),
+                );
 
-            //     foreach ($services as $service) {
-            //         $event->services()->attach($service, $data_services);
-            //     }
+                foreach ($services as $service) {
+                    $event->services()->attach($service, $data_services);
+                }
 
-            //     /* Storing resources sources to the event */
-            //     $resources_sources = Input::get('resources_sources');
-            //     $event->resource_source()->attach($resources_sources);
+                /* Storing support material to the event */
+                if(Input::hasFile('files')) {
+                    $files = Input::file('files');
 
-            //     /* Storing witnesses to the event */
-            //     $witnesses = Input::get('witnesses');
-            //     $event->witnesses()->attach($witnesses);
-            // }
-            // else {
-            //     return Redirect::to('dashboard')->with('alert', 'Para solicitar difusión debe proporciona información de difusión, recursos y testigos. Podrá editarlo más tarde.')->with('form','enabled')->withInput();
-            // }
+                    foreach ($files as $file) {
+                        $new_name = str_random(20).'.'.$file->getClientOriginalExtension();
+                        $file->move('./support_materials', $new_name);
 
-            return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente '.$event->id_dci);
+                        $support_material_data = array(
+                            'file' => 'support_materials/'.$new_name,
+                        );
+
+                        $support_material = new SupportMaterial($support_material_data);
+                        $event->support_materials()->save($support_material);
+                    }
+                }
+
+            }
+            else {
+                $message += 'Recuerde agregar servicios de difusión a su evento.\n';
+            }
+
+            if(Input::has('resources_sources')) {
+                /* Storing resources sources to the event */
+                $resources_sources = Input::get('resources_sources');
+                $event->resource_source()->attach($resources_sources);
+            }
+            else {
+                $message += 'Recuerde agregar fuentes de recursos a su evento.\n';
+            }
+
+            if(Input::has('witnesses')) {
+                /* Storing witnesses to the event */
+                $witnesses = Input::get('witnesses');
+                $event->witnesses()->attach($witnesses);
+            }
+            else {
+                $message += 'Recuerde agregar información de testigos a presentar a su evento.\n';
+            }
+
+            return Redirect::to('dashboard')->with('alert', $message);
         }
 
         /*

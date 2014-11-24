@@ -23,21 +23,28 @@
          * Many events have many services
         */
         public function services() {
-            return $this->belongsToMany('Service', 'event_service');
+            return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id');
         }
 
         /*
          * Many event have many witnesses
         */
         public function witnesses() {
-            return $this->belongsToMany('Witness', 'event_witness');
+            return $this->belongsToMany('Witness', 'event_witness', 'event_id', 'witness_id');
         }
 
         /*
          * Many event have many resources source
         */
         public function resource_source() {
-            return $this->belongsToMany('ResourceSource', 'event_resource_source');
+            return $this->belongsToMany('ResourceSource', 'event_resource_source', 'event_id', 'resource_source_id');
+        }
+
+        /*
+         * Events has many support materials
+        */
+        public function support_materials() {
+            return $this->hasMany('SupportMaterial', 'event_id', 'id');
         }
 
     }
