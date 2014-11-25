@@ -1,5 +1,8 @@
 <section ng-controller="DashboardController">
-	
+
+<?php 
+	$FORM_ENABLED = Session::get('FORM_ENABLED') ? 'ng-show' : 'ng-hide';
+?>
 
 <div class="ar-modal-background" ng-show="FORM_ENABLED||new_event"></div>
 <div class="ar-modal-wrapper" ng-show="FORM_ENABLED||new_event">
@@ -12,17 +15,17 @@
 			<?php echo Form::open(array('url' => 'event/add', 'method' => 'post', 'role' => 'form', 'enctype'=> 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 				
 				<div class="col-xs-12 col-sm-4">
-					<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required>
+					<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" value="<?php echo Input::old('name'); ?>">
 					
 					<?php /* type date */?>
-					<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required>
+					<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required value="<?php echo Input::old('start_day'); ?>">
 					<?php /* type date */?>
-					<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required>
+					<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required value="<?php echo Input::old('end_day'); ?>">
 					<?php /* type time */?>
-					<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="17:00:00">
+					<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="17:00:00" value="<?php echo Input::old('time'); ?>">
 					
-					<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" required>
-					<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" required>
+					<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" required value="<?php echo Input::old('place'); ?>">
+					<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" required value="<?php echo Input::old('link'); ?>">
 
 					
 					<p>Dirigido a</p>
@@ -97,12 +100,6 @@
 
 						<textarea name="justification" id="justfication" placeholder="Justificación"></textarea>
 					</div>
-					
-					<!--
-					<input type="text" class="form-horizontal" name="head_name" id="head_name" placeholder="Nombre del responsable" autocomplete="off" required>
-					<input type="text" class="form-horizontal" name="head_email" id="head_email" placeholder="Email del responsable" autocomplete="off" required>
-					<input type="text" class="form-horizontal" name="head_phone" id="head_phone" placeholder="Teléfono del responsable" autocomplete="off" required>
-					-->
 				</div>
 				<div class="col-xs-12 col-sm-4">
 					<div ng-show="diff">
@@ -206,7 +203,6 @@
 					Para informar a la DGI sobre un evento o solicitar difusión, es necesario: 
 				</p>		
 				<button class="btn btn-primary" ng-click="showCreateForm()">Agendar Evento</button>
-				<?php /* echo HTML::link('/event','Agendar evento'); */ ?>
 			</div>
 
 		</div>
