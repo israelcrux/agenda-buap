@@ -81,6 +81,15 @@
 						function(){
 							console.log('Could not load events!');
 						})
+				},
+				cancelEvent : function(event_id){
+					return $http.get(ROOT_PATH+'/event/delete')
+						.then(function(response){
+							return response.data;
+						},
+						function(){
+							console.log('Could not delete event');
+						});
 				}
 			};
 		})
@@ -94,6 +103,12 @@
 				console.log(data);
 			});
 
+			$scope.cancelEvent = function(event){
+				DataService.cancelEvent(event.id).then(function(data){
+					console.log(data);
+					alert('evento cancelao?');
+				});
+			}
 
 			$scope.showCreateForm = function(){
 				$scope.new_event=true; 

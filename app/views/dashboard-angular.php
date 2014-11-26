@@ -235,10 +235,9 @@
 								</div>
 							</div>
 							<div class="ar-row col-xs-12 col-sm-2">
-								<div class="ar-flatbtn">Editar evento</div>
 								<div class="ar-flatbtn" ng-hide="event.services.length">Solicitar Difusión</div>
-								<div class="ar-flatbtn" ng-show="event.services.length">Editar solicitud</div>
-								<div class="ar-flatbtn ar-cancelbtn">Cancelar Evento</div>
+								<div class="ar-flatbtn" >Editar Evento/Solicitud</div>
+								<div class="ar-flatbtn ar-cancelbtn" ng-click="cancelEvent(event)">event Evento</div>
 							</div>
 
 						</div>
