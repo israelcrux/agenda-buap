@@ -23,7 +23,7 @@
          * Many events have many services
         */
         public function services() {
-            return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id');
+            return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id')->withPivot('start_service', 'end_service', 'status');
         }
 
         /*

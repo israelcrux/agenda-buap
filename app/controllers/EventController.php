@@ -175,9 +175,9 @@
         public function viewEvent($id) {
             $event = EventDCI::find($id);
             if($event->user_id == Auth::user()->id) {
-                $event['services']          = $event->services;
-                $event['resources_sources'] = $event->resources_sources;
-                $event['witnesses']         = $event->witnesses;
+                $event['services']          = $event->services()->get();
+                $event['resources_sources'] = $event->resources_sources()->get();
+                $event['witnesses']         = $event->witnesses()->get();
                 return json_encode($event);
             }
             else {
