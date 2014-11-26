@@ -6,6 +6,11 @@
             $events = EventDCI::where('user_id', '=', $user_id)
                                 ->where('user_status', '=', 'Activo')
                                 ->orderBy('time')->get();
+            
+            foreach ($events as $event) {
+                $event['services'] = $event->services;
+            }
+
             return json_encode($events);
         }
 
@@ -152,7 +157,7 @@
             if(Input::has('resources_sources')) {
                 /* Storing resources sources to the event */
                 $resources_sources = Input::get('resources_sources');
-                $event->resource_source()->attach($resources_sources);
+                $event->resources_sources()->attach($resources_sources);
             }
 
             if(Input::has('witnesses')) {
@@ -162,6 +167,22 @@
             }
 
             return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente ' . $event->id_dci);
+        }
+
+        /*
+         * Viewing an event information
+        */
+        public function viewEvent($id) {
+            $event = EventDCI::find($id);
+            if($event->user_id == Auth::user()->id) {
+                $event['services']          = $event->services;
+                $event['resources_sources'] = $event->resources_sources;
+                $event['witnesses']         = $event->witnesses;
+                return json_encode($event);
+            }
+            else {
+                return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para ver este evento');
+            }
         }
 
         /*
