@@ -208,19 +208,6 @@
             }
         }
 
-        public function deleteEvent() {
-            $id = Input::get('id');
-            $event = EventDCI::find($id);
-            if($event->user_id == Auth::user()->id) {
-                $event->user_status = 'Inactivo';
-                $event->save();
-                return '{"status":"success","message":"Evento eliminado exitosamente"}';
-            }
-            else {
-                return '{"status":"success","message":"Usted no tiene permisos para eliminar este evento"}';
-            }
-        }
-
         /*
          * Verifying that an email has the standard construction
         */

@@ -1,7 +1,8 @@
-//jq...
+//jq
 $(document).ready(function(){
 	var $body = $('body'),
-    	$scrollable = $('.scrollable');
+    	$scrollable = $('.scrollable');	
+
     $scrollable.on({
           'mouseenter': function () {
             // add hack class to prevent workspace scroll when scroll outside
@@ -53,10 +54,10 @@ $(document).ready(function(){
 		return t.substring(n,t.length - 3) + ' hrs';
 	}
 
-	var app = angular.module('dci',['cfp.hotkeys'])
+	var app = angular.module('dgi',['cfp.hotkeys'])
 		.config(function(hotkeysProvider) {
 			hotkeysProvider.includeCheatSheet = false;
-		});
+		})
 
 	app.factory('DataService',['$http',function($http){
 		return {

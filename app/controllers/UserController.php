@@ -45,7 +45,7 @@
          * Show the form to register an user
         */
         public function signup() {
-            $units = AcademicAdministrativeUnit::all(array('id', 'name'))->toArray();
+            $units = AcademicAdministrativeUnit::all(array('id', 'name', 'type'))->toArray();
             return View::make('signup', array('aaunits' => $units));
         }
 

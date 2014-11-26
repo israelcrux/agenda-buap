@@ -36,8 +36,7 @@ gulp.task('scripts', function() {
         devjs+'bootstrap-datepicker.js',
         devjs+'angular.min.js',
         devjs+'hotkeys.min.js',
-        devjs+'underscore.string.min.js',
-        devjs+'angular-app.js'
+        devjs+'underscore.string.min.js'
         ])
     .pipe(concat('everything.js'))
     //.pipe(gulp.dest('js/'))
@@ -45,6 +44,13 @@ gulp.task('scripts', function() {
     .pipe(uglify())
     .pipe(gulp.dest('js/'))
     .pipe(notify({ message: 'Scripts task complete' }));
+});
+
+gulp.task('angular-app',function(){
+    return gulp.src([devjs+'angular-app.js'])
+        .pipe(uglify())
+        .pipe(gulp.dest('js/'))
+        .pipe(notify({message:'I\'m done buddy'}));
 });
 
 gulp.task('default', function() {

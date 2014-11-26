@@ -6,9 +6,13 @@
 	<meta name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" >
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700' rel='stylesheet' type='text/css'>
 	{{ HTML::style('css/everything.css'); }}
+	<script>
+		//'/comunicacion-buap/public/calendar/'
+		ROOT_PATH = "<?php echo URL::to('/'); ?>";
+	</script>
 	{{ HTML::script('js/everything.js'); }}
 </head>
-<body ng-app="dgi">
+<body>
 	<div class="ar-above">
 		<div class="nav navbar navbar-default" role="navigation">
 			<div class="container-fluid ar-wrapper ar-navfl">

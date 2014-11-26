@@ -1,4 +1,4 @@
-<div class="ar-calendar {{calendarStatusClass}}" ng-controller="CalendarController as calendar">
+<div class="ar-calendar {{calendarStatusClass}}" ng-app="dci" ng-controller="CalendarController as calendar">
 	<div class="ar-day">
 	
 		<div class="ar-closebtn" ng-click="mainView()"></div>
@@ -57,18 +57,12 @@
 			</div>
 		</div>
 	</div>
-
 </div>
-<script>
-
-//'/comunicacion-buap/public/calendar/'
-ROOT_PATH = "<?php echo URL::to('/'); ?>";
-
+<script>	
 //jq
 $(document).ready(function(){
 	var $body = $('body'),
-    	$scrollable = $('.scrollable');	
-
+    	$scrollable = $('.scrollable');
     $scrollable.on({
           'mouseenter': function () {
             // add hack class to prevent workspace scroll when scroll outside
@@ -80,9 +74,7 @@ $(document).ready(function(){
           }
         });
 });
-
 (function(){
-
 	var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 	var monthNames = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']; 
 	function calendarize(year, month, days){
@@ -122,15 +114,15 @@ $(document).ready(function(){
 		return t.substring(n,t.length - 3) + ' hrs';
 	}
 
-	var app = angular.module('dgi',['cfp.hotkeys'])
+	var app = angular.module('dci',['cfp.hotkeys'])
 		.config(function(hotkeysProvider) {
 			hotkeysProvider.includeCheatSheet = false;
-		})
+		});
 
-	app.factory('DataService',function($http){
+	app.factory('DataService',['$http',function($http){
 		return {
 			calendar : function(year,month){
-				return $http.get(ROOT_PATH+'/calendar/'+year+'-'+twoDigits(month))
+				return $http.get(window['ROOT_PATH']+'/calendar/'+year+'-'+twoDigits(month))
 					.then(function(response){					
 						return calendarize(year,month,response.data);
 					},
@@ -139,7 +131,7 @@ $(document).ready(function(){
 					})
 			}
 		};
-	});
+	}]);
 
 	app.controller('CalendarController',['$scope','$http','hotkeys','DataService',function($scope,$http,hotkeys,DataService){
 
