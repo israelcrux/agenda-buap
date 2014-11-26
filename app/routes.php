@@ -18,8 +18,11 @@ Route::pattern('user_id', '[0-9]+');
 
 /* Route to home */
 Route::get('/', function(){
-	return View::make('home');
+    return View::make('home');
 });
+
+/* JSON for calendar */
+Route::get('/calendar/{year_month}', 'EventController@calendar');
 
 /* Route to show the login form */
 Route::get('/login', function(){
@@ -58,20 +61,11 @@ Route::group(array('before' => 'auth'), function(){
         );
     });
 
-    Route::get('/event/', function(){
-        return View::make('event');
-    });
-
     Route::post('/event/add', 'EventController@addEvent');
+
+    Route::post('/event/edit', 'EventController@editEvent');
+
+    Route::post('/event/delete', 'EventController@deleteEvent');
     
     Route::get('/events/{user_id}', 'EventController@eventsByUser');
 });
-
-/*
- *
- * EXPERIMENTAL ROUTES
- *
-*/
-
-/* JSON for calendar */
-Route::get('/calendar/{year_month}', 'EventController@calendar');

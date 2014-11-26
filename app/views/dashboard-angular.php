@@ -36,11 +36,19 @@
 						<option value="Estudiantes">Estudiantes</option>
 					</select>
 					
-					<textarea name="description" id="description" placeholder="Descripción"></textarea>
+					<textarea name="description" id="description" placeholder="Descripción"><?php echo Input::old('description'); ?></textarea>
 					
 					<div class="checkbox">
 						<label>
-							<input name="has_cost" id="has_cost" type="checkbox"> El evento es gratuito
+							<input 	name="has_cost"
+									id="has_cost" 
+									type="checkbox" 
+									<?php 
+										if(Input::old('has_cost')) {
+											echo 'checked="checked"';
+										}
+									?>
+									> El evento es gratuito
 						</label>
 					</div>
 				</div>
@@ -48,7 +56,15 @@
 
 					<div class="checkbox">
 						<label>
-							<input ng-model="diff" type="checkbox"> Solicitar difusión
+							<input 	name="request_diffusion" 
+									ng-model="diff" 
+									type="checkbox" 
+									<?php 
+										if(Input::old('request_diffusion')) {
+											echo 'checked="checked"';
+										}
+									?>
+									> Solicitar difusión
 						</label>
 					</div>
 					
@@ -64,8 +80,19 @@
                                             <input 
                                                 name="services[]" 
                                                 type="checkbox"
-                                                value="<?php echo $service['id']; ?>"> 
-                                                    <?php echo $service['name']; ?>
+                                                value="<?php echo $service['id']; ?>"
+                                                <?php 
+                                                	if(Input::old('services')){
+	                                                	$old_services = Input::old('services');
+	                                                	foreach ($old_services as $old_service) {
+	                                                		if ($service['id'] == $old_service) {
+	                                                			echo 'checked="checked"';
+	                                                			break;
+	                                                		}
+	                                                	}
+                                                	}
+                                                ?>
+                                                > <?php echo $service['name']; ?>
                                         </label>
                                     </div>
                                 </li>
@@ -90,15 +117,26 @@
                                             <input 
                                             	name="resources_sources[]"
                                                 type="checkbox"
-                                                value="<?php echo $resource_source['id']; ?>">
-                                                    <?php echo $resource_source['name']; ?>
+                                                value="<?php echo $resource_source['id']; ?>"
+                                                <?php 
+                                                	if(Input::old('resources_sources')) {
+                                                		$old_resources_sources = Input::old('resources_sources');
+                                                		foreach ($old_resources_sources as $old_resource_source) {
+                                                			if($resource_source['id'] == $old_resource_source) {
+                                                				echo 'checked="checked"';
+                                                				break;
+                                                			}
+                                                		}
+                                                	}
+                                                ?>
+                                                > <?php echo $resource_source['name']; ?>
                                         </label>
                                     </div>
                                 </li>
                             <?php } ?>
 						</ul>
 
-						<textarea name="justification" id="justfication" placeholder="Justificación"></textarea>
+						<textarea name="justification" id="justfication" placeholder="Justificación"><?php echo Input::old('justification'); ?></textarea>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-4">
@@ -115,8 +153,19 @@
                                         <input 
                                         	name="witnesses[]"
                                             type="checkbox"
-                                            value="<?php echo $witness['id']; ?>">
-                                                <?php echo $witness['name']; ?>
+                                            value="<?php echo $witness['id']; ?>"
+                                            <?php 
+                                            	if(Input::old('witnesses')) {
+                                            		$old_witnesses = Input::old('witnesses');
+                                            		foreach ($old_witnesses as $old_witness) {
+                                            			if($witness['id'] ==  $old_witness) {
+                                            				echo 'checked="checked"';
+                                            				break;
+                                            			}
+                                            		}
+                                            	}
+                                            ?>
+                                            > <?php echo $witness['name']; ?>
                                     </label>
                                 </div>
                             </li>

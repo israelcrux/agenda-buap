@@ -3,7 +3,9 @@
     class EventController extends BaseController {
 
         public function eventsByUser($user_id) {
-            $events = EventDCI::where('user_id', '=', $user_id)->orderBy('time')->get();
+            $events = EventDCI::where('user_id', '=', $user_id)
+                                ->where('user_status', '=', 'Activo')
+                                ->orderBy('time')->get();
             return json_encode($events);
         }
 
@@ -21,8 +23,8 @@
             $activities = [];
             while($start_date <= $end_date) {
 
-                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and (status = ? or status = ?)', 
-                    array($start_date, $start_date, 'En Proceso', 'Aprobado'))
+                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and (dci_status = ? or dci_status = ?) and user_status = ?', 
+                    array($start_date, $start_date, 'En Proceso', 'Aprobado', 'Activo'))
                     ->orderBy('time')->get();
 
                 $activities['activities'] = $events->toArray();
@@ -115,8 +117,6 @@
             $event = new EventDCI($event_data);
             $event = $user->events()->save($event);
 
-            $message = 'Evento creado exitosamente '.$event->id_dci;
-
             /* Getting information about diffusion */
             if(Input::has('services')) {
                 /* Storing services to the event */
@@ -148,17 +148,11 @@
                 }
 
             }
-            else {
-                $message += 'Recuerde agregar servicios de difusión a su evento.\n';
-            }
 
             if(Input::has('resources_sources')) {
                 /* Storing resources sources to the event */
                 $resources_sources = Input::get('resources_sources');
                 $event->resource_source()->attach($resources_sources);
-            }
-            else {
-                $message += 'Recuerde agregar fuentes de recursos a su evento.\n';
             }
 
             if(Input::has('witnesses')) {
@@ -166,11 +160,31 @@
                 $witnesses = Input::get('witnesses');
                 $event->witnesses()->attach($witnesses);
             }
-            else {
-                $message += 'Recuerde agregar información de testigos a presentar a su evento.\n';
-            }
 
-            return Redirect::to('dashboard')->with('alert', $message);
+            return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente ' . $event->id_dci);
+        }
+
+        /*
+         * Editing an event
+        */
+        public function editEvent() {
+            
+        }
+
+        /*
+         * Deleting an event, in database user_status inactive
+        */
+        public function deleteEvent() {
+            $id = Input::get('id');
+            $event = EventDCI::find($id);
+            if($event->user_id == Auth::user()->id) {
+                $event->user_status = 'Inactivo';
+                $event->save();
+                return Redirect::to('dashboard')->with('alert', 'Evento eliminado exitosamente' . $event->id_dci);
+            }
+            else {
+                return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para eliminar este evento' . $event->id_dci);
+            }
         }
 
         /*
