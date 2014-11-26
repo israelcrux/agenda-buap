@@ -14,7 +14,7 @@
 /* Global patterns */
 Route::pattern('key', '[a-zA-Z0-9]*'); /* Pattern for a key generated automatically */
 Route::pattern('year_month', '[0-9]{4}-[0-9]{2}'); /* Pattern for a year and month */
-Route::pattern('user_id', '[0-9]+');
+Route::pattern('id', '[0-9]+');
 
 /* Route to home */
 Route::get('/', function(){
@@ -61,11 +61,18 @@ Route::group(array('before' => 'auth'), function(){
         );
     });
 
+    /* Route to store a new event */
     Route::post('/event/add', 'EventController@addEvent');
 
+    /* Route to view an existing event */
+    Route::get('/event/view/{id}', 'EventController@viewEvent');
+
+    /* Route to edit an existing event */
     Route::post('/event/edit', 'EventController@editEvent');
 
+    /* Route to delete (inactivate) an event */
     Route::post('/event/delete', 'EventController@deleteEvent');
     
-    Route::get('/events/{user_id}', 'EventController@eventsByUser');
+    /* Route to get events of certain user */
+    Route::get('/events/{id}', 'EventController@eventsByUser');
 });

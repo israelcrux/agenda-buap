@@ -36,7 +36,7 @@
         /*
          * Many event have many resources source
         */
-        public function resource_source() {
+        public function resources_sources() {
             return $this->belongsToMany('ResourceSource', 'event_resource_source', 'event_id', 'resource_source_id');
         }
 
