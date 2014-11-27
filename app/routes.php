@@ -61,18 +61,22 @@ Route::group(array('before' => 'auth'), function(){
         );
     });
 
-    /* Route to store a new event */
-    Route::post('/event/add', 'EventController@addEvent');
+    Route::group(array('prefix' => 'event'), function(){
 
-    /* Route to view an existing event */
-    Route::get('/event/view/{id}', 'EventController@viewEvent');
+        /* Route to store a new event */
+        Route::post('/add', 'EventController@addEvent');
 
-    /* Route to edit an existing event */
-    Route::post('/event/edit', 'EventController@editEvent');
+        /* Route to view an existing event */
+        Route::get('/view/{id}', 'EventController@viewEvent');
 
-    /* Route to delete (inactivate) an event */
-    Route::post('/event/delete', 'EventController@deleteEvent');
-    
+        /* Route to edit an existing event */
+        Route::post('/edit', 'EventController@editEvent');
+
+        /* Route to delete (inactivate) an event */
+        Route::post('/delete', 'EventController@deleteEvent');
+        
+    });
+
     /* Route to get events of certain user */
     Route::get('/events/{id}', 'EventController@eventsByUser');
 });

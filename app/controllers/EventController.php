@@ -51,56 +51,11 @@
         */
         public function addEvent() {
 
-            /* Verifying that user write a name to the event */
-            if(!Input::has('name')) {
-                return Redirect::back()->with('alert', 'Nombre del evento requerido')->with('FORM_ENABLED','true')->withInput();
-            }
+            /* Verifying that event has a correct and valid data */
+            $validation = $this->validateEvent();
 
-            /* Verifying that the user select a start day to the event */
-            if(!Input::has('start_day')) {
-                return Redirect::back()->with('alert', 'Fecha de inicio requerida')->with('FORM_ENABLED','true')->withInput();
-            }
-
-            /* Verifying that the user select a end day to the event */
-            if(!Input::has('end_day')) {
-                return Redirect::back()->with('alert', 'Fecha de término requerida')->with('FORM_ENABLED','true')->withInput();
-            }
-
-            /* Verifying that the user select a time to the event */
-            if(!Input::has('time')) {
-                return Redirect::back()->with('alert', 'Hora de evento requerido')->with('FORM_ENABLED','true')->withInput();
-            }
-
-            /* Verifying that the user write a place to the event */
-            if(!Input::has('place')) {
-                return Redirect::back()->with('alert', 'Lugar de evento requerido')->with('FORM_ENABLED','true')->withInput();
-            }
-
-            /* Verifying that the link to the event has a correct form */
-            if(Input::has('link')) {
-                if(!$this->validateUrl(Input::get('link'))) {
-                    return Redirect::back()->with('alert', 'URL del evento no valido')->with('FORM_ENABLED','true')->withInput();
-                }
-            }
-
-            /* Verifying that the event has audience target */
-            if(!Input::has('directed_to')) {
-                return Redirect::back()->with('alert', 'Seleccione a quién va dirigido el evento')->with('FORM_ENABLED','true')->withInput();
-            }
-
-            /* Creating a PHP date objects to manipulate dates */
-            $start_day = new DateTime(Input::get('start_day'));
-            $end_day   = new DateTime(Input::get('end_day'));
-            $now       = new DateTime();
-
-            /* Verifying that the event end day is after now */
-            if($end_day < $now) {
-                return Redirect::back()->with('alert', 'Fecha de término de evento anterior al día actual')->with('FORM_ENABLED','true')->withInput();
-            }
-
-            /* Verifying that the event start day is before event end day */
-            if($start_day > $end_day) {
-                return Redirect::back()->with('alert', 'Fecha de inicio de evento posterior a fecha de término')->with('FORM_ENABLED','true')->withInput();
+            if(!$validation['isValid']) {
+                return Redirect::to('dashboard')->with('alert', $validation['message'])->with('FORM_ENABLED','true')->withInput();
             }
 
             /* Collecting all event data to store */
@@ -190,6 +145,13 @@
         */
         public function editEvent() {
             
+            /* Verifying that event has a correct and valid data */
+            $validation = $this->validateEvent();
+
+            if(!$validation['isValid']) {
+                return Redirect::to('dashboard')->with('alert', $validation['message'])->with('FORM_ENABLED','true')->withInput();
+            }
+
         }
 
         /*
@@ -201,7 +163,7 @@
             if($event->user_id == Auth::user()->id) {
                 $event->user_status = 'Inactivo';
                 $event->save();
-                return Redirect::to('dashboard')->with('alert', 'Evento eliminado exitosamente' . $event->id_dci);
+                return Redirect::to('dashboard')->with('alert', 'Evento eliminado exitosamente ' . $event->id_dci);
             }
             else {
                 return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para eliminar este evento' . $event->id_dci);
@@ -220,6 +182,67 @@
         */
         private function validateUrl($url) {
             return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
+        }
+
+        /*
+         *
+        */
+        public function validateEvent() {
+
+            /* Verifying that user write a name to the event */
+            if(!Input::has('name')) {
+                return array('isValid' => false, 'message' => 'Nombre del evento requerido');
+            }
+
+            /* Verifying that the user select a start day to the event */
+            if(!Input::has('start_day')) {
+                return array('isValid' => false, 'message' => 'Fecha de inicio requerida');
+            }
+
+            /* Verifying that the user select a end day to the event */
+            if(!Input::has('end_day')) {
+                return array('isValid' => false, 'message' => 'Fecha de término requerida');
+            }
+
+            /* Verifying that the user select a time to the event */
+            if(!Input::has('time')) {
+                return array('isValid' => false, 'message' => 'Hora de evento requerido');
+            }
+
+            /* Verifying that the user write a place to the event */
+            if(!Input::has('place')) {
+                return array('isValid' => false, 'message' => 'Lugar de evento requerido');
+            }
+
+            /* Verifying that the link to the event has a correct form */
+            if(Input::has('link')) {
+                if(!$this->validateUrl(Input::get('link'))) {
+                    return array('isValid' => false, 'message' => 'URL del evento no valido');
+                }
+            }
+
+            /* Verifying that the event has audience target */
+            if(!Input::has('directed_to')) {
+                return array('isValid' => false, 'message' => 'Seleccione a quién va dirigido el evento');
+            }
+
+            /* Creating a PHP date objects to manipulate dates */
+            $start_day = new DateTime(Input::get('start_day'));
+            $end_day   = new DateTime(Input::get('end_day'));
+            $now       = new DateTime();
+
+            /* Verifying that the event end day is after now */
+            if($end_day < $now) {
+                return array('isValid' => false, 'message' => 'Fecha de término de evento anterior al día actual');
+            }
+
+            /* Verifying that the event start day is before event end day */
+            if($start_day > $end_day) {
+                return array('isValid' => false, 'message' => 'Fecha de inicio de evento posterior a fecha de término');
+            }
+            
+            return array('isValid' => true, 'message' => '');
+        
         }
 
     }

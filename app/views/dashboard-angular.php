@@ -412,7 +412,7 @@
 									</div>	
 									<div class="ar-row ar-service" ng-repeat="service in event.services">
 										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">{{service.name}}</div>
-										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">Pendiente de aprobación</div>
+										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.pivot.status}}</div>
 										<!-- <div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.status}}</div> -->
 									</div>
 								</div>
