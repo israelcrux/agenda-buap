@@ -70,13 +70,28 @@
 		}
 
 
+		function serewi(events){
+			for (var i = events.length - 1; i >= 0; i--) {
+				for (var j = events[i].services.length - 1; j >= 0; j--) {
+					events[i]['service_'+events[i].services[j].id] = true;
+				}
+				for (var j = events[i].resources_sources.length - 1; j >= 0; j--) {
+					events[i]['resources_source_'+events[i].resources_sources[j].id] = true;					
+				}
+				for (var j = events[i].witnesses.length - 1; j >= 0; j--) {
+					events[i]['witness_'+events[i].witnesses[j].id] = true;					
+				}
+			};
+			return events;
+		}
+
 		angular.module('dashboard',[])
 		.factory('DataService',function($http){
 			return {
 				events : function(year,month){
-					return $http.get(ROOT_PATH+'/events/<?php echo Auth::user()->id ?>')
+					return $http.get(ROOT_PATH+'/events/user/<?php echo Auth::user()->id ?>')
 						.then(function(response){
-							return response.data;
+							return serewi(response.data);
 						},
 						function(){
 							console.log('Could not load events!');
@@ -90,8 +105,7 @@
 
 			$scope.events = DataService.events();
 			$scope.events.then(function(data){
-				$scope.events = niceDates(data);
-				console.log(data);
+				$scope.events = data;
 			});
 
 			$scope.showCreateForm = function(){
@@ -101,7 +115,6 @@
 
 			$scope.showEditForm = function(event){
 				$scope.currentEvent = event;
-				console.log(event);
 			};
 
 		}]);

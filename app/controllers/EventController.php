@@ -8,7 +8,10 @@
                                 ->orderBy('time')->get();
             
             foreach ($events as $event) {
-                $event['services'] = $event->services;
+                $event['services']          = $event->services;
+                //$event['services']          = $event->services()->get();
+                $event['resources_sources'] = $event->resources_sources()->get();
+                $event['witnesses']         = $event->witnesses()->get();                
             }
 
             return json_encode($events);

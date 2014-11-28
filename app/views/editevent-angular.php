@@ -59,33 +59,25 @@
 							<p>Servicios de difusión a solicitar:</p>	
 
 							<ul class="ar-plist">
-                                <li ng-repeat="service in currentEvent.services">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input 
-                                                name="services[]" 
-                                                type="checkbox"
-                                                value="<?php echo $service['id']; ?>"
-                                                <?php 
-                                                	if(Input::old('services')){
-	                                                	$old_services = Input::old('services');
-	                                                	foreach ($old_services as $old_service) {
-	                                                		if ($service['id'] == $old_service) {
-	                                                			echo 'checked="checked"';
-	                                                			break;
-	                                                		}
-	                                                	}
-                                                	}
-                                                ?>
-                                                > <?php echo $service['name']; ?>
-                                        </label>
-                                    </div>
-                                </li>
+								<?php foreach($services as $service) {  ?>
+	                                <li>
+	                                    <div class="checkbox">
+	                                        <label>
+	                                            <input 
+	                                                name="services[]" 
+	                                                type="checkbox"
+	                                                value="<?php echo $service['id']; ?>"
+	                                                ng-checked="currentEvent.service_<?php echo $service['id']; ?>"
+	                                                > <?php echo $service['name']; ?>
+	                                        </label>
+	                                    </div>
+	                                </li>
+	                            <?php } ?>
 							</ul>
 							
 							<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
 							<div id="filebtn" class="btn btn-sourcefiles">
-								Adjuntar material de apoyo
+								Adjuntar material de apoyo ?
 							</div>
 
 							<p></p>
@@ -102,17 +94,7 @@
 	                                            	name="resources_sources[]"
 	                                                type="checkbox"
 	                                                value="<?php echo $resource_source['id']; ?>"
-	                                                <?php 
-	                                                	if(Input::old('resources_sources')) {
-	                                                		$old_resources_sources = Input::old('resources_sources');
-	                                                		foreach ($old_resources_sources as $old_resource_source) {
-	                                                			if($resource_source['id'] == $old_resource_source) {
-	                                                				echo 'checked="checked"';
-	                                                				break;
-	                                                			}
-	                                                		}
-	                                                	}
-	                                                ?>
+	                                                ng-checked="currentEvent.resource_source_<?php echo $resource_source['id']; ?>"
 	                                                > <?php echo $resource_source['name']; ?>
 	                                        </label>
 	                                    </div>
@@ -138,17 +120,7 @@
 	                                        	name="witnesses[]"
 	                                            type="checkbox"
 	                                            value="<?php echo $witness['id']; ?>"
-	                                            <?php 
-	                                            	if(Input::old('witnesses')) {
-	                                            		$old_witnesses = Input::old('witnesses');
-	                                            		foreach ($old_witnesses as $old_witness) {
-	                                            			if($witness['id'] ==  $old_witness) {
-	                                            				echo 'checked="checked"';
-	                                            				break;
-	                                            			}
-	                                            		}
-	                                            	}
-	                                            ?>
+	                                            ng-checked="currentEvent.witness_<?php echo $witness['id']; ?>"
 	                                            > <?php echo $witness['name']; ?>
 	                                    </label>
 	                                </div>
@@ -158,7 +130,7 @@
 
 						</div>
 						
-						<input type="submit" value="Agendar Evento">
+						<input type="submit" value="Guardar cambios">
 					</div>
 				<?php echo Form::close(); ?>
 				</div>

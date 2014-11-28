@@ -78,5 +78,5 @@ Route::group(array('before' => 'auth'), function(){
     });
 
     /* Route to get events of certain user */
-    Route::get('/events/{id}', 'EventController@eventsByUser');
+    Route::get('/events/user/{id}', 'EventController@eventsByUser');
 });
