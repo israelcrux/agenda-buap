@@ -28,8 +28,14 @@
             $activities = [];
             while($start_date <= $end_date) {
 
-                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and (dci_status = ? or dci_status = ?) and user_status = ?', 
-                    array($start_date, $start_date, 'En Proceso', 'Aprobado', 'Activo'))
+                //Temporalmente, pedido por Amparo, ¿Qué te dije?, igual y mañana se queja de que se ven los eventos sin aprobar :P
+                /*
+                    $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and (dci_status = ? or dci_status = ?) and user_status = ?', 
+                        array($start_date, $start_date, 'En Proceso', 'Aprobado', 'Activo'))
+                        ->orderBy('time')->get();
+                */
+                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and user_status = ?', 
+                    array($start_date, $start_date, 'Activo'))
                     ->orderBy('time')->get();
 
                 $activities['activities'] = $events->toArray();

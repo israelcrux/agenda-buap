@@ -25,14 +25,14 @@
 						<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="17:00:00" value="<?php echo Input::old('time'); ?>">
 						
 						<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" required value="<?php echo Input::old('place'); ?>">
-						<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" required value="<?php echo Input::old('link'); ?>">
+						<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" value="<?php echo Input::old('link'); ?>">
 
 						
 						<p>Dirigido a</p>
 						<select name="directed_to" id="directed_to">
 							<option value="Público en general">Público en general</option>
 							<option value="Comunidad BUAP">Comunidad Buap</option>
-							<option value="Profesores">Profesores</option>
+							<option value="Profesores/Investigadores">Profesores/Investigadores</option>
 							<option value="Estudiantes">Estudiantes</option>
 						</select>
 						
@@ -419,7 +419,7 @@
 							</div>
 							<div class="ar-row col-xs-12 col-sm-2">
 								<!-- <div class="ar-flatbtn" ng-hide="event.services.length">Solicitar Difusión</div> -->
-								<!-- <div class="ar-flatbtn" >Editar Evento/Solicitud</div> -->
+								<div class="ar-flatbtn" ng-click="showEditForm(event)" >Editar Evento/Solicitud</div>
 								<?php echo Form::open(array('url' => 'event/delete', 'method' => 'post', 'role' => 'form', 'class' => 'noform')); ?>
 									<input type="hidden" value="{{event.id}}" name="id" id="id" style="display:none !important;">
 									<input type="submit" class="ar-flatbtn ar-cancelbtn" value="Cancelar Evento" >

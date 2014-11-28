@@ -1,4 +1,5 @@
 <div class="ar-calendar {{calendarStatusClass}}" ng-app="dci" ng-controller="CalendarController as calendar">
+	<h5 class="ar-tagtitle">Agenda</h5>
 	<div class="ar-day">
 	
 		<div class="ar-closebtn" ng-click="mainView()"></div>

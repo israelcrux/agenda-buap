@@ -99,6 +99,11 @@
 				$('html, body').animate({ scrollTop: 0 }, 'slow');
 			};
 
+			$scope.showEditForm = function(event){
+				$scope.currentEvent = event;
+				console.log(event);
+			};
+
 		}]);
 	</script>
 @stop

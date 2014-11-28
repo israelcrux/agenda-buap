@@ -11,9 +11,9 @@
 				<input class="form-control" name="phone" type="text" id="phone" placeholder="Teléfono" autocomplete="off" value="{{ Input::old('phone'); }}" pattern="([0-9]+|-|\s)+" title="Ejemplos: 888888, 8-888-888, 8 888 888">
 				<input class="form-control" name="extension_phone" type="text" id="extension_phone" placeholder="Teléfono/Extensión Buap" autocomplete="off" value="{{ Input::old('extension_phone'); }}">
 				<select name="academic_administrative_unit_type" id="aaut" value="" required>
-					<option value="0">Unidad Académica</option>
-					<option value="1">Unidades Administrativas</option>
-					<option value="2">Unidades Académicas</option>
+					<option value="0">Seleccionar Procedencia</option>
+					<option value="1">Unidad Administrativa</option>
+					<option value="2">Unidad Académica</option>
 					<option value="3">Otro</option>
 				</select>
 

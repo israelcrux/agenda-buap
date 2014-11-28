@@ -120,7 +120,7 @@
                     $message->to($user->email)->subject('Bienvenido a la DCI!');
                 });
 
-                $message = 'Validación requerida, en breve recibirá un correo de confirmación';
+                $message = 'Gracias por registrarse, en breve recibirá un correo de confirmación';
             }
 
             return Redirect::to('login')->with('alert', $message);
