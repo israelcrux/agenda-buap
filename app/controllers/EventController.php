@@ -141,7 +141,7 @@
                 $event['services']          = $event->services()->get();
                 $event['resources_sources'] = $event->resources_sources()->get();
                 $event['witnesses']         = $event->witnesses()->get();
-                $event['support_materials'] = $event->support_materials;
+                $event['support_materials'] = $event->support_materials()->get();
                 return json_encode($event);
             }
             else {
