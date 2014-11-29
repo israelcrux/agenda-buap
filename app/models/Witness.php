@@ -16,7 +16,8 @@
          * Many witness belongs to many events
         */
         public function events() {
-            return $this->belongsToMany('EventDCI', 'event_witness', 'event_id', 'witness_id');
+            return $this->belongsToMany('EventDCI', 'event_witness', 'event_id', 'witness_id')
+                        ->withPivot('file', 'dci_status', 'user_status');
         }
 
     }

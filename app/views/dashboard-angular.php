@@ -195,6 +195,7 @@
 				<?php echo Form::open(array('url' => 'event/edit', 'method' => 'post', 'role' => 'form', 'enctype'=> 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 					
 					<div class="col-xs-12 col-sm-4">
+						<input type="hidden" class="form-horizontal" name="id" id="id" value="{{currentEvent.id}}">
 						<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" value="{{currentEvent.name}}">
 						
 						<?php /* type date */?>
@@ -369,7 +370,7 @@
 									</div>	
 									<div class="ar-row ar-service" ng-repeat="service in event.services">
 										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal">{{service.name}}</div>
-										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.pivot.status}}</div>
+										<div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.pivot.dci_status}}</div>
 										<!-- <div class="col-xs-12 col-sm-6 ar-tfield ar-lnnormal ar-service-status">{{service.status}}</div> -->
 									</div>
 								</div>

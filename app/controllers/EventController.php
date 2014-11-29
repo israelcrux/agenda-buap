@@ -6,12 +6,11 @@
             $events = EventDCI::where('user_id', '=', $user_id)
                                 ->where('user_status', '=', 'Activo')
                                 ->orderBy('time')->get();
-            
+
             foreach ($events as $event) {
-                $event['services']          = $event->services;
-                //$event['services']          = $event->services()->get();
+                $event['services']          = $event->services()->get();
                 $event['resources_sources'] = $event->resources_sources()->get();
-                $event['witnesses']         = $event->witnesses()->get();                
+                $event['witnesses']         = $event->witnesses()->get();
             }
 
             return json_encode($events);
@@ -142,6 +141,7 @@
                 $event['services']          = $event->services()->get();
                 $event['resources_sources'] = $event->resources_sources()->get();
                 $event['witnesses']         = $event->witnesses()->get();
+                $event['support_materials'] = $event->support_materials;
                 return json_encode($event);
             }
             else {
@@ -153,6 +153,18 @@
          * Editing an event
         */
         public function editEvent() {
+
+            /* Searching the event */
+            $event = EventDCI::find(Input::get('id'));
+
+            if(!isset($event)) {
+                return Redirect::to('dashboard')->with('alert', 'No existe el evento especificado')->with('FORM_ENABLED','true')->withInput();
+            }
+
+            /* Validating that the event belongs to the user login user */
+            if($event->user_id != Auth::user()->id) {
+                return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para modificar el evento especificado')->with('FORM_ENABLED','true')->withInput();
+            }
             
             /* Verifying that event has a correct and valid data */
             $validation = $this->validateEvent();
@@ -160,6 +172,76 @@
             if(!$validation['isValid']) {
                 return Redirect::to('dashboard')->with('alert', $validation['message'])->with('FORM_ENABLED','true')->withInput();
             }
+
+            /* Updating the event */
+            $event->name        = Input::get('name');
+            $event->start_day   = Input::get('start_day');
+            $event->end_day     = Input::get('end_day');
+            $event->time        = Input::get('time');
+            $event->place       = Input::get('place');
+            $event->link        = Input::get('link');
+            $event->directed_to = Input::get('directed_to');
+            $event->has_cost    = !Input::has('has_cost');
+            $event->description = Input::get('description');
+            $event->save();
+
+            /* Getting information about diffusion */
+            // /*if(Input::has('services')) {
+            //     /* Storing services to the event */
+            //     $new_services = Input::get('services');
+            //     $old_services = $event->services()->get();
+
+            //     $old_services->user_status = 'Inactivo';
+
+            //     foreach ($new_services as $new_service) {
+            //         $service_exist = false;
+            //         foreach ($old_services as $old_service) {
+            //             if($old_service->service_id == $new_service) {
+            //                 $service_exist = true;
+            //                 $old_service->user_status = 'Activo';
+            //                 break;
+            //             }
+            //         }
+            //         if(!$service_exist) {
+            //             $event->services()->updateExistingPivot($);
+            //         }
+            //     }
+
+            //     $event->services()->save();
+            //     return;
+
+            //     /* Storing support material to the event */
+            //     if(Input::hasFile('files')) {
+            //         $files = Input::file('files');
+
+            //         foreach ($files as $file) {
+            //             $new_name = str_random(20).'.'.$file->getClientOriginalExtension();
+            //             $file->move('./support_materials', $new_name);
+
+            //             $support_material_data = array(
+            //                 'file' => 'support_materials/'.$new_name,
+            //             );
+
+            //             $support_material = new SupportMaterial($support_material_data);
+            //             $event->support_materials()->save($support_material);
+            //         }
+            //     }
+
+            // }
+
+            // if(Input::has('resources_sources')) {
+            //     /* Storing resources sources to the event */
+            //     $resources_sources = Input::get('resources_sources');
+            //     $event->resources_sources()->attach($resources_sources);
+            // }
+
+            // if(Input::has('witnesses')) {
+            //     /* Storing witnesses to the event */
+            //     $witnesses = Input::get('witnesses');
+            //     $event->witnesses()->attach($witnesses);
+            // }*/
+
+            return Redirect::to('dashboard')->with('alert', 'Evento editado exitosamente ' . $event->id_dci);
 
         }
 

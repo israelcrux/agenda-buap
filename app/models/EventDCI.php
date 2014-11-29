@@ -23,21 +23,24 @@
          * Many events have many services
         */
         public function services() {
-            return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id')->withPivot('start_service', 'end_service', 'status');
+            return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id')
+                        ->withPivot('start_service', 'end_service', 'dci_status', 'user_status');
         }
 
         /*
          * Many event have many witnesses
         */
         public function witnesses() {
-            return $this->belongsToMany('Witness', 'event_witness', 'event_id', 'witness_id');
+            return $this->belongsToMany('Witness', 'event_witness', 'event_id', 'witness_id')
+                        ->withPivot('file', 'dci_status', 'user_status');
         }
 
         /*
          * Many event have many resources source
         */
         public function resources_sources() {
-            return $this->belongsToMany('ResourceSource', 'event_resource_source', 'event_id', 'resource_source_id');
+            return $this->belongsToMany('ResourceSource', 'event_resource_source', 'event_id', 'resource_source_id')
+                        ->withPivot('user_status');
         }
 
         /*
