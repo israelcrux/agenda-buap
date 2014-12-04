@@ -23,6 +23,7 @@
 		ROOT_PATH = "<?php echo URL::to('/'); ?>";
 		FORM_ENABLED = false;
 		<?php if( isset($FORM_ENABLED) ): ?>
+			console.log('form enabled');
 			FORM_ENABLED = true;
 		<?php endif; ?>
 

@@ -64,7 +64,11 @@
             $validation = $this->validateEvent();
 
             if(!$validation['isValid']) {
-                return Redirect::to('dashboard')->with('alert', $validation['message'])->with('FORM_ENABLED','true')->withInput();
+                return Redirect::to('dashboard')
+                            ->with('alert', $validation['message'])
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
             }
 
             /* Collecting all event data to store */
@@ -159,19 +163,31 @@
             $event = EventDCI::find(Input::get('id'));
 
             if(!isset($event)) {
-                return Redirect::to('dashboard')->with('alert', 'No existe el evento especificado')->with('FORM_ENABLED','true')->withInput();
+                return Redirect::to('dashboard')
+                            ->with('alert', 'No existe el evento especificado')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action', 'edit')
+                            ->withInput();
             }
 
             /* Validating that the event belongs to the user login user */
             if($event->user_id != Auth::user()->id) {
-                return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para modificar el evento especificado')->with('FORM_ENABLED','true')->withInput();
+                return Redirect::to('dashboard')
+                            ->with('alert', 'Usted no tiene permisos para modificar el evento especificado')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action', 'edit')
+                            ->withInput();
             }
             
             /* Verifying that event has a correct and valid data */
             $validation = $this->validateEvent();
 
             if(!$validation['isValid']) {
-                return Redirect::to('dashboard')->with('alert', $validation['message'])->with('FORM_ENABLED','true')->withInput();
+                return Redirect::to('dashboard')
+                            ->with('alert', $validation['message'])
+                            ->with('FORM_ENABLED','true')
+                            ->with('action', 'edit')
+                            ->withInput();
             }
 
             /* Updating the event */
