@@ -1,9 +1,4 @@
 <section  ng-controller="DashboardController">
-
-<?php 
-	$FORM_ENABLED = Session::get('FORM_ENABLED') ? 'ng-show' : 'ng-hide';
-?>
-
 	<div class="ar-modal-background" ng-show="FORM_ENABLED||new_event"></div>
 	<div class="ar-modal-wrapper" ng-show="FORM_ENABLED||new_event">
 		<div class="ar-modal-container">
@@ -31,7 +26,7 @@
 						<p>Dirigido a</p>
 						<select name="directed_to" id="directed_to">
 							<option value="Público en general">Público en general</option>
-							<option value="Comunidad BUAP">Comunidad Buap</option>
+							<option value="Comunidad BUAP">Comunidad BUAP</option>
 							<option value="Profesores/Investigadores">Profesores/Investigadores</option>
 							<option value="Estudiantes">Estudiantes</option>
 						</select>
@@ -184,11 +179,11 @@
 	</div>
 
 	<!-- Edit event -->
-	<div class="ar-modal-background" ng-show="currentEvent"></div>
-	<div class="ar-modal-wrapper" ng-show="currentEvent">
+	<div class="ar-modal-background" ng-show="FORM_ENABLED||currentEvent"></div>
+	<div class="ar-modal-wrapper" ng-show="FORM_ENABLED||currentEvent">
 		<div class="ar-modal-container">
 			<div class="ar-modal-title">Editar Evento/Solicitud</div>
-			<div class="ar-modal-closebtn" ng-click="currentEvent=null;"></div>
+			<div class="ar-modal-closebtn" ng-click="currentEvent=null;FORM_ENABLED=false;"></div>
 			<div class="ar-modal-content">
 
 				<div class="ar-form-container ar-vwrap">
@@ -212,7 +207,7 @@
 						<p>Dirigido a</p>
 						<select name="directed_to" id="directed_to">
 							<option value="Público en general" ng-selected="currentEvent.directed_to=='Público en general'">Público en general</option>
-							<option value="Comunidad BUAP" ng-selected="currentEvent.directed_to=='Comunidad Buap'">Comunidad Buap</option>
+							<option value="Comunidad BUAP" ng-selected="currentEvent.directed_to=='Comunidad BUAP'">Comunidad BUAP</option>
 							<option value="Profesores/Investigadores" ng-selected="currentEvent.directed_to=='Profesores/Investigadores'">Profesores/Investigadores</option>
 							<option value="Estudiantes" ng-selected="currentEvent.directed_to=='Estudiantes'">Estudiantes</option>
 						</select>

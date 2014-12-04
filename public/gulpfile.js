@@ -16,6 +16,7 @@ var devjs = 'dev/scripts/';
 gulp.task('combinecss', ['styles'], function(){
     return gulp.src(devcss+'*.css')
         .pipe(concat('everything.css'))
+        .pipe(minifycss())
         .pipe(gulp.dest('css/'))
         .pipe(notify({message:'CSS combined into one'}));
 });
@@ -24,7 +25,6 @@ gulp.task('styles', function() {
   return gulp.src(devcss+'style.styl')
     .pipe(stylus())
     .pipe(rename({suffix: '.min'}))
-    .pipe(minifycss())
     .pipe(gulp.dest(devcss))
     .pipe(notify({ message: 'Styles task complete' }));
 });

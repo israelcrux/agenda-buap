@@ -1,6 +1,7 @@
 @extends('admin_layout')
 
 @section('content')
+
     <div class="well ar-vwrap">
     	<div class="col-xs-12 col-sm-10">
     		<h3>Hola {{ Auth::user()->first_name }}</h3>
@@ -21,10 +22,6 @@
 	<script>
 
 		ROOT_PATH = "<?php echo URL::to('/'); ?>";
-		FORM_ENABLED = false;
-		<?php if( isset($FORM_ENABLED) ): ?>
-			FORM_ENABLED = true;
-		<?php endif; ?>
 
 		//JQ
 		
@@ -101,6 +98,14 @@
 			};
 		})
 		.controller('DashboardController',[ '$scope', 'DataService' ,function($scope,DataService){
+
+			$scope.FORM_ENABLED = false;
+			<?php 
+			$FORM_ENABLED = Session::get('FORM_ENABLED');
+			if( isset($FORM_ENABLED) ): 
+			?>
+				$scope.FORM_ENABLED = true;
+			<?php endif; ?>
 
 			$scope.costs = ['Entrada libre','Evento con Costo'];
 
