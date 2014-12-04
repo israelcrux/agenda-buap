@@ -218,13 +218,12 @@
 						</select>
 						
 						<textarea name="description" id="description" placeholder="Descripción">{{currentEvent.description}}</textarea>
-						
 						<div class="checkbox">
 							<label>
 								<input 	name="has_cost"
 										id="has_cost" 
 										type="checkbox" 
-										ng-checked="currentEvent.has_cost"
+										ng-checked="!currentEvent.has_cost"
 										> El evento es gratuito
 							</label>
 						</div>
