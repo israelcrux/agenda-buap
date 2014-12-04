@@ -11,6 +11,7 @@
                 $event['services']          = $event->services()->wherePivot('user_status', '=', 'Activo')->get();
                 $event['resources_sources'] = $event->resources_sources()->wherePivot('user_status', '=', 'Activo')->get();
                 $event['witnesses']         = $event->witnesses()->wherePivot('user_status', '=', 'Activo')->get();
+                $event['support_materials'] = $event->support_materials()->get();
             }
 
             return json_encode($events);
