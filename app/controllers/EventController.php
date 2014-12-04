@@ -8,9 +8,9 @@
                                 ->orderBy('time')->get();
 
             foreach ($events as $event) {
-                $event['services']          = $event->services()->get();
-                $event['resources_sources'] = $event->resources_sources()->get();
-                $event['witnesses']         = $event->witnesses()->get();
+                $event['services']          = $event->services()->wherePivot('user_status', '=', 'Activo')->get();
+                $event['resources_sources'] = $event->resources_sources()->wherePivot('user_status', '=', 'Activo')->get();
+                $event['witnesses']         = $event->witnesses()->wherePivot('user_status', '=', 'Activo')->get();
             }
 
             return json_encode($events);
@@ -138,9 +138,9 @@
         public function viewEvent($id) {
             $event = EventDCI::find($id);
             if($event->user_id == Auth::user()->id) {
-                $event['services']          = $event->services()->get();
-                $event['resources_sources'] = $event->resources_sources()->get();
-                $event['witnesses']         = $event->witnesses()->get();
+                $event['services']          = $event->services()->wherePivot('user_status', '=', 'Activo')->get();
+                $event['resources_sources'] = $event->resources_sources()->wherePivot('user_status', '=', 'Activo')->get();
+                $event['witnesses']         = $event->witnesses()->wherePivot('user_status', 'Activo')->get();
                 $event['support_materials'] = $event->support_materials()->get();
                 return json_encode($event);
             }
@@ -186,29 +186,36 @@
             $event->save();
 
             /* Getting information about diffusion */
-            // /*if(Input::has('services')) {
-            //     /* Storing services to the event */
-            //     $new_services = Input::get('services');
-            //     $old_services = $event->services()->get();
+            if(Input::has('services')) {
+                
+                /* Getting new and old services to the event */
+                $new_services = Input::get('services');
+                $old_services = $event->services()->get();
 
-            //     $old_services->user_status = 'Inactivo';
+                /* Deactivating old services */
+                foreach ($old_services as $old_service) {
+                    $event->services()->updateExistingPivot($old_service->id, array('user_status' => 'Inactivo'));
+                }
 
-            //     foreach ($new_services as $new_service) {
-            //         $service_exist = false;
-            //         foreach ($old_services as $old_service) {
-            //             if($old_service->service_id == $new_service) {
-            //                 $service_exist = true;
-            //                 $old_service->user_status = 'Activo';
-            //                 break;
-            //             }
-            //         }
-            //         if(!$service_exist) {
-            //             $event->services()->updateExistingPivot($);
-            //         }
-            //     }
+                /* Updating old services and adding new services */
+                foreach ($new_services as $new_service) {
+                    $service_exist = false;
+                    foreach ($old_services as $old_service) {
+                        if($old_service['original']['pivot_service_id'] == $new_service) {
+                            $service_exist = true;
+                            $event->services()->updateExistingPivot($old_service->id, array('user_status' => 'Activo'));
+                            break;
+                        }
+                    }
+                    if(!$service_exist) {
+                        $data_services = array(
+                            'start_service' => Input::get('start_day'),
+                            'end_service' => Input::get('end_day'),
+                        );
 
-            //     $event->services()->save();
-            //     return;
+                        $event->services()->attach($new_service, $data_services);
+                    }
+                }
 
             //     /* Storing support material to the event */
             //     if(Input::hasFile('files')) {
@@ -227,19 +234,63 @@
             //         }
             //     }
 
-            // }
+            }
 
-            // if(Input::has('resources_sources')) {
-            //     /* Storing resources sources to the event */
-            //     $resources_sources = Input::get('resources_sources');
-            //     $event->resources_sources()->attach($resources_sources);
-            // }
+            if(Input::has('resources_sources')) {
 
-            // if(Input::has('witnesses')) {
-            //     /* Storing witnesses to the event */
-            //     $witnesses = Input::get('witnesses');
-            //     $event->witnesses()->attach($witnesses);
-            // }*/
+                /* Getting old and new resources sources to the event */
+                $new_resources_sources = Input::get('resources_sources');
+                $old_resources_sources = $event->resources_sources()->get();
+
+                /* Deactivateing old resources sources */
+                foreach ($old_resources_sources as $old_resource_source) {
+                    $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('user_status' => 'Inactivo'));
+                }
+
+                /* Updating old resources sources and adding new resources sources */
+                foreach ($new_resources_sources as $new_resource_source) {
+                    $resource_source_exist = false;
+                    foreach ($old_resources_sources as $old_resource_source) {
+                        if($old_resource_source['original']['pivot_resource_source_id'] == $new_resource_source) {
+                            $resource_source_exist = true;
+                            $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('user_status' => 'Activo'));
+                            break;
+                        }
+                    }
+                    if(!$resource_source_exist) {
+                        $event->resources_sources()->attach($new_resource_source);
+                    }
+                }
+
+            }
+
+            if(Input::has('witnesses')) {
+
+                /* Getting old and new resources sources to the event */
+                $new_witnesses = Input::get('witnesses');
+                $old_witnesses = $event->witnesses()->get();
+
+                /* Deactivateing old resources sources */
+                foreach ($old_witnesses as $old_witness) {
+                    $event->witnesses()->updateExistingPivot($old_witness->id, array('user_status' => 'Inactivo'));
+                }
+
+                /* Updating old resources sources and adding new resources sources */
+                foreach ($new_witnesses as $new_witness) {
+                    $witnesses_exist = false;
+                    foreach ($old_witnesses as $old_witness) {
+                        if($old_witness['original']['pivot_witness_id'] == $new_witness) {
+                            $witnesses_exist = true;
+                            $event->witnesses()->updateExistingPivot($old_witness->id, array('user_status' => 'Activo'));
+                            break;
+                        }
+                    }
+                    if(!$witnesses_exist) {
+                        $event->witnesses()->attach($new_witness);
+                    }
+                }
+
+            }
 
             return Redirect::to('dashboard')->with('alert', 'Evento editado exitosamente ' . $event->id_dci);
 

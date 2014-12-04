@@ -22,7 +22,7 @@
 
 		ROOT_PATH = "<?php echo URL::to('/'); ?>";
 		FORM_ENABLED = false;
-		<?php if( isset($form) ): ?>
+		<?php if( isset($FORM_ENABLED) ): ?>
 			FORM_ENABLED = true;
 		<?php endif; ?>
 
@@ -71,15 +71,16 @@
 
 
 		function serewi(events){
+			console.log(events);
 			for (var i = events.length - 1; i >= 0; i--) {
 				for (var j = events[i].services.length - 1; j >= 0; j--) {
 					events[i]['service_'+events[i].services[j].id] = true;
 				}
 				for (var j = events[i].resources_sources.length - 1; j >= 0; j--) {
-					events[i]['resources_source_'+events[i].resources_sources[j].id] = true;					
+					events[i]['resource_source_'+events[i].resources_sources[j].id] = true;					
 				}
 				for (var j = events[i].witnesses.length - 1; j >= 0; j--) {
-					events[i]['witness_'+events[i].witnesses[j].id] = true;					
+					events[i]['witness_'+events[i].witnesses[j].id] = true;
 				}
 			};
 			return events;
