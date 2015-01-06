@@ -1,4 +1,34 @@
 <section  ng-controller="DashboardController">
+
+	<div class="ar-modal-background" ng-show="eventToCancel"></div>
+	<div class="ar-modal-wrapper" ng-show="eventToCancel">
+		<div class="ar-modal-container">
+			<div class="ar-modal-title">Cancelar Evento</div>
+			<div class="ar-modal-closebtn" ng-click="eventToCancel=false;"></div>
+			<div class="ar-modal-content">
+				
+				<div class="ar-vwrap ar-padder">
+
+					<h3>{{eventToCancel.name}}</h3>
+					<p>
+						El evento aparecerá cancelado en Agenda Universitaria en caso de estar publicado, y todas las solicitudes de difusión
+						se darán de baja, esta acción no se puede revertir, ¿Desea proceder a la cancelación del evento?
+					</p>
+
+					<div class="ar-btn-group" role="group" aria-label="...">
+						<?php echo Form::open(array('url' => 'event/delete', 'method' => 'post', 'role' => 'form', 'class' => 'noform')); ?>
+							<input type="hidden" ng-value="eventToCancel.id" name="id" id="id" style="display:none !important;">
+							<input type="submit" class="ar-flatbtn ar-cancelbtn" value="Cancelar Evento">
+						<?php echo Form::close(); ?>
+						<button ng-click="eventToCancel=false;" class="btn btn-primary">No hacer nada</button>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
 	<div class="ar-modal-background" ng-show="FORM_ENABLED||new_event"></div>
 	<div class="ar-modal-wrapper" ng-show="FORM_ENABLED||new_event">
 		<div class="ar-modal-container">
@@ -371,11 +401,8 @@
 							</div>
 							<div class="ar-row col-xs-12 col-sm-2">
 								<!-- <div class="ar-flatbtn" ng-hide="event.services.length">Solicitar Difusión</div> -->
-								<div class="ar-flatbtn" ng-click="showEditForm(event)" >Editar Evento/Solicitud</div>
-								<?php echo Form::open(array('url' => 'event/delete', 'method' => 'post', 'role' => 'form', 'class' => 'noform')); ?>
-									<input type="hidden" value="{{event.id}}" name="id" id="id" style="display:none !important;">
-									<input type="submit" class="ar-flatbtn ar-cancelbtn" value="Cancelar Evento" >
-								<?php echo Form::close(); ?>
+								<div class="ar-flatbtn" ng-click="showEditForm(event)" >Editar</div>
+								<button class="ar-flatbtn ar-cancelbtn" ng-click="showCancelForm(event)">Cancelar Evento</button>
 							</div>
 
 						</div>

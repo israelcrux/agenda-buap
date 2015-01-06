@@ -16,6 +16,8 @@ shadow = #e2e2e2
 standard-text-color = #3d3d3d
 subtile-text-color = #7d7d7d
 
+red_shadow = #c0392b
+
 modal_background = #6c6c6c
 
 footer_height = 140px
@@ -156,6 +158,35 @@ input[type="submit"]:hover
 input[type="submit"]:active
 	box-shadow: 0 0 #ab3c3c;
 	top: 6px;
+
+button.ar-cancelbtn:active,
+input[type="button"].ar-cancelbtn:active,
+input[type="submit"].ar-cancelbtn:active
+	box-shadow 0 0 red_shadow
+	top 6px
+
+button.ar-cancelbtn:hover,
+input[type="button"].ar-cancelbtn:hover,
+input[type="submit"].ar-cancelbtn:hover
+	box-shadow 0 4px red_shadow
+	background-color #e74c3c
+	top 2px	
+
+button.ar-cancelbtn,
+input[type="button"].ar-cancelbtn,
+input[type="submit"].ar-cancelbtn
+	background-color #e74c3c
+	color #fff
+	position relative
+	border-radius 0px
+	border 0px
+	padding 6px 12px
+	box-shadow 0 6px red_shadow
+	-webkit-transition none
+	-moz-transition none
+	-ms-transition none
+	-o-transition none
+	transition none
 
 .well
 	border-radius 0px
@@ -436,10 +467,6 @@ p.ar-ptitle
 		line-height normal
 	.ar-colgroup
 		font-size 1.2em
-.ar-cancelbtn
-	background-color rgba(220,190,180,0.6)
-.ar-cancelbtn:hover 
-	background-color #e74c3c
 .ar-title-row div
 	color deep_blue
 	font-weight 600
@@ -824,6 +851,12 @@ a.ar-moreinfo
 
 .ar-padder
 	padding 5px
+
+.ar-btn-group button,
+.ar-btn-group input[type="submit"],
+.ar-btn-group input[type="button"],
+form
+	display inline-block
 
 @media (min-width:768px) and (min-height:600px)
 	.ar-login-form.ar-form-wrapper

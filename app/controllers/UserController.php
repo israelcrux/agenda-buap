@@ -61,8 +61,10 @@
             if(!Input::has('last_name')) {
                 return Redirect::to('signup')->with('alert', 'Escriba su apellido')->withInput(Input::except('password'));
             }
-            if(!Input::has('academic_administrative_unit')) {
-                return Redirect::to('signup')->with('alert', 'Seleccione su unidad acádemica o administrativa')->withInput(Input::except('password'));
+            if( Input::get('academic_administrative_unit_type') != '3') {
+                if(!Input::has('academic_administrative_unit')) {
+                    return Redirect::to('signup')->with('alert', 'Seleccione su unidad acádemica o administrativa')->withInput(Input::except('password'));
+                }
             }
             if(!Input::has('email')) {
                 return Redirect::to('signup')->with('alert', 'Escriba su email')->withInput(Input::except('password'));

@@ -128,6 +128,11 @@
 				$scope.currentEvent = event;
 			};
 
+			$scope.showCancelForm = function(event){
+				console.log(event.id);
+				$scope.eventToCancel = event;
+			};			
+
 		}]);
 	</script>
 @stop

@@ -17,7 +17,7 @@
 					<option value="3">Otro</option>
 				</select>
 
-				<select name="academic_administrative_unit" id="acadun" value="" required>
+				<select name="academic_administrative_unit" id="acadun" value="">
 					<option value="">Ninguna</option>
 				</select>
 

@@ -25,7 +25,8 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '148.228.24.80',
+			// 'host'      => '148.228.24.75', Se madreó el server n_n
+			'host'      => 'localhost',
 			'database'  => 'buap-comunication',
 			'username'  => 'buapcomunication',
 			'password'  => 'buapcomunication',
