@@ -1,0 +1,62 @@
+Eventos en rango de tiempo tenues, y fuertes al inicio y al final del evento
+
+Calendar/  : los eventos del mes actual
+
+Administracion: Al crear usuarios estos deben pertenecer a un área, cada área puede estar ligada a uno o más  servicios, es decir las áreas son quienes van a atender esos servicios. Debe haber un "semáforo de estados" para cada uno de ellos.
+
+
+
+pendiente:  Nadie ha visto el evento
+En proceso: Los Jefes de cada sevricio han asignado tareas a este evento
+Atendido: Todos los empleados de los diferentes departamentos o áreas han COMPLETADO SUS TAREAS. y todos los jefes 
+			de las respectivas áreas han marcado el evento como atendido. 
+Completo: El administrador global ha marcado el evento como completo.
+
+
+En cada cambio de estado debe resgistrarse la fecha y un comentario que de feedback sobre el cambio.
+Deben llegar notificaciones ligadas a estos cambios.
+
+
+
+servicios			Areas			Empleados
+	resvitsa			Diseño			María
+	cartel								Juan
+										Lucy [jefe]
+
+
+
+Debe haber jefes capaces de asignar una tarea de un servicio a un empleado
+Cuando un jefe asigne una tarea a un empleado, que le llegue una notificación al empleado.
+
+
+Empleado
+	Efectuar tareas asignadas por el efe
+	(le llegan notificaciones cuando una tarea le es asignada)
+	(dar click en, tarea completada, y escribir un comentario de que fue lo que se hizo o algo asi)
+
+Jefe de área
+	Recibir notificaciones de los servicios solicitados a los que su área esta ligada
+	Y Ver estas notificaciones/solicitudes en el panel
+	Crea tareas para los empleados (el estado del servicio es "en proceso")
+	(Cuando las tareas han sido completadas) Marca la solicitud de ese servicio como atendida
+
+Administrador general
+	Edita eventos, y todas las tablas anteriores
+
+	Crea nuevas áreas, empleados, jefes, administradores generales
+
+Cliente 
+	
+
+
+
+Sudo
+
+Area
+	
+	Jefe
+
+		Empleado
+
+
+
