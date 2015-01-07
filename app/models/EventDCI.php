@@ -1,6 +1,10 @@
 <?php 
 
+    use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
     class EventDCI extends Eloquent {
+
+        use SoftDeletingTrait;
 
         /**
          * The database table used by the model.
@@ -11,6 +15,11 @@
          * Table fields guarded, need admin privileges to modify.
         */
         protected $guarded = array('status');
+
+        /*
+         * Table field to execute a soft deleting action
+        */
+        protected $dates = ['deleted_at'];
 
         /*
          * Many events belongs to an user
@@ -24,7 +33,8 @@
         */
         public function services() {
             return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id')
-                        ->withPivot('start_service', 'end_service', 'dci_status', 'user_status');
+                        ->withPivot('start_service', 'end_service', 'dci_status', 'deleted_at')
+                        ->withTimestamps();
         }
 
         /*
@@ -32,7 +42,8 @@
         */
         public function witnesses() {
             return $this->belongsToMany('Witness', 'event_witness', 'event_id', 'witness_id')
-                        ->withPivot('file', 'dci_status', 'user_status');
+                        ->withPivot('file', 'dci_status', 'deleted_at')
+                        ->withTimestamps();
         }
 
         /*
@@ -40,7 +51,8 @@
         */
         public function resources_sources() {
             return $this->belongsToMany('ResourceSource', 'event_resource_source', 'event_id', 'resource_source_id')
-                        ->withPivot('user_status');
+                        ->withPivot('deleted_at')
+                        ->withTimestamps();
         }
 
         /*
