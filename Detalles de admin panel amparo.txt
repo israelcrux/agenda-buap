@@ -1,16 +1,36 @@
 Eventos en rango de tiempo tenues, y fuertes al inicio y al final del evento
-
 Calendar/  : los eventos del mes actual
+
+
 
 Administracion: Al crear usuarios estos deben pertenecer a un área, cada área puede estar ligada a uno o más  servicios, es decir las áreas son quienes van a atender esos servicios. Debe haber un "semáforo de estados" para cada uno de ellos.
 
 
+servicios			Areas(SQL:departments)			Empleados
+	resvitsa			Diseño							María
+	cartel												Juan
+														Lucy [jefe]
 
-pendiente:  Nadie ha visto el evento
-En proceso: Los Jefes de cada sevricio han asignado tareas a este evento
-Atendido: Todos los empleados de los diferentes departamentos o áreas han COMPLETADO SUS TAREAS. y todos los jefes 
-			de las respectivas áreas han marcado el evento como atendido. 
-Completo: El administrador global ha marcado el evento como completo.
+
+(SQL: event) ESTADOS DEL EVENTO/SOLCITUD
+	pendiente:  Nadie ha visto el evento
+	En proceso: Por lo menos un Jefe de algun sevricio solicitado ha asignado tareas a sus empleados sobre este evento
+	Atendido: Todos los jefes de las respectivas áreas han marcado el su respectivo servicio como atendido. (Todos los empleados de los diferentes departamentos o áreas han COMPLETADO SUS TAREAS.)
+	//Completo: El administrador global ha marcado el evento como completo.
+
+(SQL: event_service) ESTADOS DE CADA SERVICIO SOLICITADO PARA EL EVENTO
+
+	pendiente:  El jefe área esta por asignar las tareas a sus empleados
+	En proceso: Se ha asignado por lo menos una tarea a algun empleado en este servicio
+	Atendido: El jefe ha marcado este servicio como atendido (Todos los empleados de el area que atiende este servicio, han completado sus tareas).
+
+(SQL: task) TAREAS
+	
+	pendiente: La tarea fue creada
+	completa: el empleado marca la tarea que se le asignó como completa
+
+
+
 
 
 En cada cambio de estado debe resgistrarse la fecha y un comentario que de feedback sobre el cambio.
@@ -18,10 +38,6 @@ Deben llegar notificaciones ligadas a estos cambios.
 
 
 
-servicios			Areas			Empleados
-	resvitsa			Diseño			María
-	cartel								Juan
-										Lucy [jefe]
 
 
 
@@ -57,6 +73,3 @@ Area
 	Jefe
 
 		Empleado
-
-
-
