@@ -283,10 +283,30 @@
                             <?php } ?>
 						</ul>
 						
+
+						<div class="ar-vwrap">
+							
+							<div class="ar-row" ng-repeat="file in currentEvent.support_materials">
+								<input type="hidden" name="{{file.file}}" value="{{file.file}}" id="{{file.file}}">
+								<p class="filename">
+									<a target="_blank" href="{{ROOT_PATH + file.file}}">{{file.original_name}}</a>
+									<br>
+									<p href="">Eliminar</p>
+								</p>
+								<div class="file-icon {{file.format}}"></div>
+							</div>
+
+						</div>
+
+
 						<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
 						<div id="filebtn" class="btn btn-sourcefiles">
-							Adjuntar material de apoyo ?
+							Adjuntar material
 						</div>
+
+
+
+
 
 						<p></p>
 						<p></p>

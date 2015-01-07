@@ -84,6 +84,10 @@
 				for (var j = events[i].witnesses.length - 1; j >= 0; j--) {
 					events[i]['witness_'+events[i].witnesses[j].id] = true;
 				}
+				for (var j = events[i].support_materials.length - 1; j >= 0; j--) {
+					var ext = events[i].support_materials[j].file.match(/\.[a-zA-Z]+$/);
+					events[i].support_materials[j].format = (ext != null && typeof ext[0] != 'null')? ext[0].substr(1,ext[0].length-1) : 'unknown';
+				};
 			};
 			return events;
 		}
@@ -129,7 +133,6 @@
 			};
 
 			$scope.showCancelForm = function(event){
-				console.log(event.id);
 				$scope.eventToCancel = event;
 			};			
 
