@@ -4,13 +4,12 @@
 
         public function eventsByUser($user_id) {
             $events = EventDCI::where('user_id', '=', $user_id)
-                                ->where('user_status', '=', 'Activo')
                                 ->orderBy('time')->get();
 
             foreach ($events as $event) {
-                $event['services']          = $event->services()->wherePivot('user_status', '=', 'Activo')->get();
-                $event['resources_sources'] = $event->resources_sources()->wherePivot('user_status', '=', 'Activo')->get();
-                $event['witnesses']         = $event->witnesses()->wherePivot('user_status', '=', 'Activo')->get();
+                $event['services']          = $event->services()->wherePivot('deleted_at', '=', NULL)->get();
+                $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
+                $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['support_materials'] = $event->support_materials()->get();
             }
 
@@ -37,8 +36,8 @@
                         array($start_date, $start_date, 'En Proceso', 'Aprobado', 'Activo'))
                         ->orderBy('time')->get();
                 */
-                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and user_status = ?', 
-                    array($start_date, $start_date, 'Activo'))
+                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ?', 
+                    array($start_date, $start_date))
                     ->orderBy('time')->get();
 
                 $activities['activities'] = $events->toArray();
@@ -112,6 +111,7 @@
                         $file->move('./support_materials', $new_name);
 
                         $support_material_data = array(
+                            'original_name' => $file->getClientOriginalName(),
                             'file' => 'support_materials/'.$new_name,
                         );
 
@@ -143,9 +143,9 @@
         public function viewEvent($id) {
             $event = EventDCI::find($id);
             if($event->user_id == Auth::user()->id) {
-                $event['services']          = $event->services()->wherePivot('user_status', '=', 'Activo')->get();
-                $event['resources_sources'] = $event->resources_sources()->wherePivot('user_status', '=', 'Activo')->get();
-                $event['witnesses']         = $event->witnesses()->wherePivot('user_status', 'Activo')->get();
+                $event['services']          = $event->services()->wherePivot('deleted_at', '=', NULL)->get();
+                $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
+                $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['support_materials'] = $event->support_materials()->get();
                 return json_encode($event);
             }
@@ -202,6 +202,8 @@
             $event->description = Input::get('description');
             $event->save();
 
+            $now = new DateTime();
+            
             /* Getting information about diffusion */
             if(Input::has('services')) {
                 
@@ -211,7 +213,7 @@
 
                 /* Deactivating old services */
                 foreach ($old_services as $old_service) {
-                    $event->services()->updateExistingPivot($old_service->id, array('user_status' => 'Inactivo'));
+                    $event->services()->updateExistingPivot($old_service->id, array('deleted_at' => $now));
                 }
 
                 /* Updating old services and adding new services */
@@ -220,7 +222,7 @@
                     foreach ($old_services as $old_service) {
                         if($old_service['original']['pivot_service_id'] == $new_service) {
                             $service_exist = true;
-                            $event->services()->updateExistingPivot($old_service->id, array('user_status' => 'Activo'));
+                            $event->services()->updateExistingPivot($old_service->id, array('deleted_at' => NULL));
                             break;
                         }
                     }
@@ -261,7 +263,7 @@
 
                 /* Deactivateing old resources sources */
                 foreach ($old_resources_sources as $old_resource_source) {
-                    $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('user_status' => 'Inactivo'));
+                    $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => $now));
                 }
 
                 /* Updating old resources sources and adding new resources sources */
@@ -270,7 +272,7 @@
                     foreach ($old_resources_sources as $old_resource_source) {
                         if($old_resource_source['original']['pivot_resource_source_id'] == $new_resource_source) {
                             $resource_source_exist = true;
-                            $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('user_status' => 'Activo'));
+                            $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => NULL));
                             break;
                         }
                     }
@@ -289,7 +291,7 @@
 
                 /* Deactivateing old resources sources */
                 foreach ($old_witnesses as $old_witness) {
-                    $event->witnesses()->updateExistingPivot($old_witness->id, array('user_status' => 'Inactivo'));
+                    $event->witnesses()->updateExistingPivot($old_witness->id, array('deleted_at' => $now));
                 }
 
                 /* Updating old resources sources and adding new resources sources */
@@ -298,7 +300,7 @@
                     foreach ($old_witnesses as $old_witness) {
                         if($old_witness['original']['pivot_witness_id'] == $new_witness) {
                             $witnesses_exist = true;
-                            $event->witnesses()->updateExistingPivot($old_witness->id, array('user_status' => 'Activo'));
+                            $event->witnesses()->updateExistingPivot($old_witness->id, array('deleted_at' => NULL));
                             break;
                         }
                     }
@@ -314,14 +316,13 @@
         }
 
         /*
-         * Deleting an event, in database user_status inactive
+         * Applying soft deleting an event
         */
         public function deleteEvent() {
             $id = Input::get('id');
             $event = EventDCI::find($id);
             if($event->user_id == Auth::user()->id) {
-                $event->user_status = 'Inactivo';
-                $event->save();
+                $event->delete();
                 return Redirect::to('dashboard')->with('alert', 'Evento eliminado exitosamente ' . $event->id_dci);
             }
             else {

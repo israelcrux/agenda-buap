@@ -17,7 +17,7 @@
         */
         public function events() {
             return $this->belongsToMany('EventDCI', 'event_resource_source', 'event_id', 'resource_source_id')
-                        ->withPivot('user_status');
+                        ->withPivot('created_at', 'updated_at', 'deleted_at');
         }
 
     }
