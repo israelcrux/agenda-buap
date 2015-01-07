@@ -204,17 +204,31 @@
 
             $now = new DateTime();
             
+            /* Getting old services, resources sources and witeness to the event */
+            $old_services = $event->services()->get();
+            $old_resources_sources = $event->resources_sources()->get();
+            $old_witnesses = $event->witnesses()->get();
+            
+            /* Deactivating old services */
+            foreach ($old_services as $old_service) {
+                $event->services()->updateExistingPivot($old_service->id, array('deleted_at' => $now));
+            }
+
+            /* Deactivateing old resources sources */
+            foreach ($old_resources_sources as $old_resource_source) {
+                $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => $now));
+            }
+
+            /* Deactivateing old resources sources */
+            foreach ($old_witnesses as $old_witness) {
+                $event->witnesses()->updateExistingPivot($old_witness->id, array('deleted_at' => $now));
+            }
+
             /* Getting information about diffusion */
             if(Input::has('services')) {
                 
-                /* Getting new and old services to the event */
+                /* Getting new services to the event */
                 $new_services = Input::get('services');
-                $old_services = $event->services()->get();
-
-                /* Deactivating old services */
-                foreach ($old_services as $old_service) {
-                    $event->services()->updateExistingPivot($old_service->id, array('deleted_at' => $now));
-                }
 
                 /* Updating old services and adding new services */
                 foreach ($new_services as $new_service) {
@@ -257,14 +271,8 @@
 
             if(Input::has('resources_sources')) {
 
-                /* Getting old and new resources sources to the event */
+                /* Getting new resources sources to the event */
                 $new_resources_sources = Input::get('resources_sources');
-                $old_resources_sources = $event->resources_sources()->get();
-
-                /* Deactivateing old resources sources */
-                foreach ($old_resources_sources as $old_resource_source) {
-                    $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => $now));
-                }
 
                 /* Updating old resources sources and adding new resources sources */
                 foreach ($new_resources_sources as $new_resource_source) {
@@ -285,14 +293,8 @@
 
             if(Input::has('witnesses')) {
 
-                /* Getting old and new resources sources to the event */
+                /* Getting new resources sources to the event */
                 $new_witnesses = Input::get('witnesses');
-                $old_witnesses = $event->witnesses()->get();
-
-                /* Deactivateing old resources sources */
-                foreach ($old_witnesses as $old_witness) {
-                    $event->witnesses()->updateExistingPivot($old_witness->id, array('deleted_at' => $now));
-                }
 
                 /* Updating old resources sources and adding new resources sources */
                 foreach ($new_witnesses as $new_witness) {
