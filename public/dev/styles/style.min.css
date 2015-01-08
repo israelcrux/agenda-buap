@@ -803,9 +803,16 @@ a.ar-moreinfo {
 }
 .ar-eventtitle {
   font-weight: 600;
-  color: #003a5c;
+  color: #005c7e;
   width: 100%;
   float: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strong .ar-eventtitle {
+  font-weight: bold;
+  color: #003a5c;
 }
 .ar-eventtime {
   font-size: 0.85em;

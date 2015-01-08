@@ -41,6 +41,10 @@
                     ->orderBy('time')->get();
 
                 $activities['activities'] = $events->toArray();
+                
+                //ola k ase
+                $activities['date'] = $start_date;
+
                 array_push($calendar, $activities);
                 $activities = [];
 

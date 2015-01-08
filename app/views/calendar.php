@@ -46,7 +46,7 @@
 				<span class="ar-number-tag">{{ day.ntag }}</span>
 			</div>
 			<div class="ar-daymonth-container">
-				<div class="ar-event" ng-show="day.activities[0]">
+				<div class="ar-event" ng-show="day.activities[0]" ng-class="{'strong':day.activities[0].start_day == day.date || day.activities[0].end_day == day.date}">
 					<div class="ar-eventtitle"> {{day.activities[0].name}} </div>
 					<div class="ar-eventtime"> {{day.activities[0].time}} </div>
 				</div>
@@ -144,7 +144,7 @@ $(document).ready(function(){
 				$scope.currentMonth = DataService.calendar(year,monthIndex);
 				$scope.currentMonth.then(function(data){
 					$scope.currentMonth = data;
-					$scope.allMonths[monthIndex+'-'+year] = data;
+					$scope.allMonths[ monthIndex + '-' + year ] = data;
 				});				
 			}
 		}
