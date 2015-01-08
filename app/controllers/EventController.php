@@ -19,11 +19,18 @@
         /*
          * Return a JSON that contains all events for a certain year and month
         */
-        public function calendar($year_month) {
+        public function calendar($year_month = null) {
 
-            /* Getting the data and creating the first and last day of a month */
-            $start_date = date('Y-m-d', strtotime($year_month.'-01'));
-            $end_date   = date('Y-m-t', strtotime($year_month.'-01'));
+            if(!isset($year_month)) {
+                /* Setting the data and creating the first and last day of a month */
+                $start_date = date('Y-m-01');
+                $end_date   = date('Y-m-t');
+            }
+            else {
+                /* Getting the data and creating the first and last day of a month */
+                $start_date = date('Y-m-d', strtotime($year_month.'-01'));
+                $end_date   = date('Y-m-t', strtotime($year_month.'-01'));
+            }
 
             /* Querying the database to get the events for all days of certain month of the year */
             $calendar   = [];

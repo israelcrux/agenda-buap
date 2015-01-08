@@ -22,7 +22,7 @@ Route::get('/', function(){
 });
 
 /* JSON for calendar */
-Route::get('/calendar/{year_month}', 'EventController@calendar');
+Route::get('/calendar/{year_month?}', 'EventController@calendar');
 
 /* Route to show the login form */
 Route::get('/login', function(){
