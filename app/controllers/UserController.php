@@ -61,7 +61,7 @@
             if(!Input::has('last_name')) {
                 return Redirect::to('signup')->with('alert', 'Escriba su apellido')->withInput(Input::except('password'));
             }
-            if( Input::get('academic_administrative_unit_type') != '3') {
+            if(Input::get('academic_administrative_unit_type') != '3') {
                 if(!Input::has('academic_administrative_unit')) {
                     return Redirect::to('signup')->with('alert', 'Seleccione su unidad acádemica o administrativa')->withInput(Input::except('password'));
                 }
@@ -94,7 +94,7 @@
                 'first_name'                      => Input::get('first_name'),
                 'phone'                           => Input::get('phone'),
                 'extension_phone'                 => Input::get('extension_phone'),
-                'academic_administrative_unit_id' => Input::get('academic_administrative_unit'),
+                'academic_administrative_unit_id' => Input::get('academic_administrative_unit_type') != '3' ? Input::get('academic_administrative_unit') : NULL,
                 'email'                           => $email,
                 'password'                        => $crypt_password
             );

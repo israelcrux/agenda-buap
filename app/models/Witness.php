@@ -1,6 +1,10 @@
 <?php 
+    
+    use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
     class Witness extends Eloquent {
+
+        use SoftDeletingTrait;
 
         /**
          * The database table used by the model.
@@ -8,9 +12,9 @@
         protected $table = 'witnesses';
 
         /*
-         * Unabled automatic updated_at, created_at
+         * Table field to execute a soft deleting action
         */
-        public $timestamps = false;
+        protected $dates = ['deleted_at'];
 
         /*
          * Many witness belongs to many events

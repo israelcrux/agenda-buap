@@ -2,8 +2,11 @@
 	
 	use Illuminate\Auth\UserInterface;
     use Illuminate\Auth\Reminders\RemindableInterface;
+    use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 	class User extends Eloquent implements UserInterface, RemindableInterface {
+
+        use SoftDeletingTrait;
 
 		/**
 		 * The database table used by the model.
@@ -21,9 +24,9 @@
         protected $guarded = array('user_type_id');
 
         /*
-         * Unabled automatic updated_at, created_at
+         * Table field to execute a soft deleting action
         */
-        public $timestamps = false;
+        protected $dates = ['deleted_at'];
 
         /*
          * User has many events

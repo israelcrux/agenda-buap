@@ -1,6 +1,10 @@
 <?php 
     
+    use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
     class ResourceSource extends Eloquent {
+
+        use SoftDeletingTrait;
 
         /**
          * The database table used by the model.
@@ -8,9 +12,9 @@
         protected $table = 'resources_sources';
 
         /*
-         * Unabled automatic updated_at, created_at
+         * Table field to execute a soft deleting action
         */
-        public $timestamps = false;
+        protected $dates = ['deleted_at'];
 
         /*
          * Many resources source belongs to many events

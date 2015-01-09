@@ -33,7 +33,7 @@
         */
         public function services() {
             return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id')
-                        ->withPivot('start_service', 'end_service', 'dci_status', 'deleted_at')
+                        ->withPivot('start_service', 'end_service', 'dci_status', 'in_process_at', 'attended_at', 'deleted_at')
                         ->withTimestamps();
         }
 
