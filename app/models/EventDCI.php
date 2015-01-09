@@ -22,6 +22,13 @@
         protected $dates = ['deleted_at'];
 
         /*
+         * One event belongst to one request
+         */
+        public function request(){
+            return $this->belongsTo('Request');
+        }
+
+        /*
          * Many events belongs to an user
         */
         public function user() {
