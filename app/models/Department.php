@@ -1,15 +1,15 @@
-<?php
+<?php 
 
     use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-    class UserAuthOperation extends Eloquent {
+    class Department extends Eloquent {
 
         use SoftDeletingTrait;
 
-        /*
+        /**
          * The database table used by the model.
          */
-        protected $table = 'users_auth_operations';
+        protected $table = 'departments';
 
         /*
          * Table field to execute a soft deleting action
@@ -17,10 +17,10 @@
         protected $dates = ['deleted_at'];
 
         /*
-         * Many users authentication operations belongs to an user
+         * Department has many users
          */
         public function users() {
-            return $this->belongsTo('User');
+            return $this->hasMany('User');
         }
 
     }

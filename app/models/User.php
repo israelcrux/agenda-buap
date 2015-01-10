@@ -8,48 +8,83 @@
 
         use SoftDeletingTrait;
 
-		/**
+		/*
 		 * The database table used by the model.
 		 */
 		protected $table = 'users';
 
-		/**
+		/*
 		 * The table fields with sensitive information.
 		 */
 		protected $hidden = array('password', 'remember_token');
 
         /*
          * Table fields guarded, need admin privileges to modify.
-        */
+         */
         protected $guarded = array('user_type_id');
 
         /*
          * Table field to execute a soft deleting action
-        */
+         */
         protected $dates = ['deleted_at'];
 
         /*
          * User has many events
-        */
+         */
         public function events() {
             return $this->hasMany('EventDCI');
         }
 
-		/**
+        /*
+         * User has many user authentication operations
+         */
+        public function user_auth_operations() {
+            return $this->hasMany('UserAuthOperation');
+        }
+
+        /*
+         * User has many tasks
+         */
+        public function tasks() {
+            return $this->hasMany('Task');
+        }
+
+        /*
+         * Many users belongs to an user type
+         */
+        public function user_types() {
+            return $this->belongsTo('UserType');
+        }
+
+        /*
+         * Many users belongs to a department
+         */
+        public function departments() {
+            return $this->belongsTo('Department');
+        }
+
+        /*
+         * Many users belongs to an academic or administrative unit
+         */
+        public function academic_administrative_units() {
+            return $this->belongsTo('AcademicAdministrativeUnit');
+        }
+
+		/*
          * Get the unique identifier for the user.
          */
         public function getAuthIdentifier() {
             return $this->getKey();
         }
 
-        /**
+        /*
          * Get the password for the user.
          */
         public function getAuthPassword() {
             return $this->password;
         }
 
-        /**
+        /*
          * Get the e-mail address where password reminders are sent.
          */
         public function getReminderEmail() {
@@ -67,6 +102,5 @@
         public function getRememberTokenName() {
 
         }
-
 
 	}

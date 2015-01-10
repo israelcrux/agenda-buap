@@ -21,7 +21,8 @@
         */
         public function events() {
             return $this->belongsToMany('EventDCI', 'event_witness', 'event_id', 'witness_id')
-                        ->withPivot('file', 'dci_status', 'created_at', 'updated_at', 'deleted_at');
+                        ->withPivot('file', 'dci_status', 'deleted_at')
+                        ->withTimestamps();
         }
 
     }
