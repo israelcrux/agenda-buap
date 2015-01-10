@@ -46,7 +46,7 @@ Cuando un jefe asigne una tarea a un empleado, que le llegue una notificación a
 
 
 Empleado
-	Efectuar tareas asignadas por el efe
+	Efectuar tareas asignadas por el jefe
 	(le llegan notificaciones cuando una tarea le es asignada)
 	(dar click en, tarea completada, y escribir un comentario de que fue lo que se hizo o algo asi)
 

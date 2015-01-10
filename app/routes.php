@@ -31,9 +31,20 @@ Route::get('/login', function(){
     }
     return View::make('login');
 });
-
-/* Route to make login */
 Route::post('/login', 'UserController@login');
+
+/* Show reminder form */
+Route::get('/password', function(){
+    if(Auth::check()){
+        return Redirect::to('dashboard');
+    }
+    return View::make('password');
+});
+/* Send reminder mail */
+Route::post('/password', 'UserController@password');
+/* back from reminder mail */
+Route::get('/password_reset/{hash}', 'UserController@passwordReset');
+
 
 /* Route to show the register form */
 Route::get('/signup', 'UserController@signup');

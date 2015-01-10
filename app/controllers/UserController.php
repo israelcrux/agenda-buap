@@ -3,6 +3,65 @@
     class UserController extends BaseController {
 
         /**
+        * Restableber pasguor
+        */
+        public function passwordReset($hash){
+            
+            $link = PasswordRecoveryLink::where('hash', '=', $hash)->first();
+
+
+            if($link->valid == 0){
+                return Redirect::to('password')->with('alert', 'El enlace de recuperación de contraseña ha sido utilizado.');
+            } 
+            var_dump($link->valid); exit();
+
+            $link->valid = 0;
+            $link->save();
+            
+
+            return Redirect::to('new_password');
+        }
+
+        public function password(){
+            if(Input::has('email') ) {
+                $email    = Input::get('email');
+            }
+            else {
+                return Redirect::to('password')->with('alert', 'Necesitamos su correo electrónico')->withInput(Input::except('email'));
+            }
+            if(!$this->validateEmail($email)){
+                return Redirect::to('password')->with('alert', 'Proporcione un e-mail válido');
+            }            
+
+            $existing_user = User::where('email', '=', $email)->first();
+
+            if(!$existing_user) {
+                return Redirect::to('password')->with('alert', 'El correo proporcionado no está registrado')->withInput(Input::except('email'));
+            }
+
+            //Crear hash para recuperación
+            $hash = str_random(20);
+
+            //almacenar hash
+            Eloquent::unguard();
+            PasswordRecoveryLink::create(
+                array(
+                    'usr'   => $existing_user->id,
+                    'hash'  => $hash,
+                    'valid' => '1'
+                )
+            )->save();
+
+            //Enviar wea de recuperación
+            Mail::send('emails.auth.reminder', array('token' => $hash), function($message) use($existing_user) {
+                $message->to($existing_user->email)->subject('Recuperación de contraseña Agenda Universitaria');
+            });
+
+            //Avisar
+            return Redirect::to('login')->with('alert', 'Un mensaje ha sido enviado a su correo electrónico, dentro están las instrucciones para restablecer su contraseña');
+        }
+
+        /**
          * Verify and make or deny the login for the given credentials.
          */
         public function login() {

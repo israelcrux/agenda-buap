@@ -14,7 +14,7 @@
 		    {{ Form::close(); }}
 		</div>
 		<div class="ar-padder">
-			<div class="col-xs-6"><a href="">Olvidé mi contraseña</a></div>
+			<div class="col-xs-6">{{ HTML::link('/password','Olvidé mi contraseña') }}</div>
 			<div class="col-xs-6 ar-right">{{ HTML::link('/signup','Registro') }}</div>
 		</div>
 	</div>
