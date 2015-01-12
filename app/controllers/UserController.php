@@ -6,21 +6,44 @@
         * Reset password
         */
         public function passwordReset(){
-            echo "En desarrollo";
+            if(!Input::has('password') || !Input::has('token')) {
+                return Redirect::to('signup')->with('alert', 'Escriba su contraseña');
+            }
+            $token = PasswordRecoveryLink::where('hash', '=', Input::get('token'))->first();
+            if( !$token ) {
+                return Redirect::to('login')->with('alert', 'Enlace corrupto');
+            } 
+            if( !$token->valid ) {
+                return Redirect::to('login')->with('alert', 'El enlace ha expirado');
+            }
+            $user = User::find($token->usr);
+            if(!$user){
+                return Redirect::to('login')->with('alert', 'Error desconocido');
+            }
+            
+            //save user pass
+            $user->password = Hash::make(Input::get('password'));
+            $user->save();
+
+            //invalidate link
+            $token->valid = 0;
+            $token->save();
+
+            Auth::login($user);
+            return Redirect::intended('dashboard')->with('alert','Su contraseña ha sido restablecida');
         }
         public function passwordResetForm($hash){
             
             $link = PasswordRecoveryLink::where('hash', '=', $hash)->first();
+            if(!$link){
+                return Redirect::to('login')->with('alert', 'Acceso no autorizado');
+            }
 
             if($link->valid == 0){
                 return Redirect::to('password')->with('alert', 'El enlace de recuperación de contraseña ha sido utilizado.');
             }
 
-            $link->valid = 0;
-            $link->save();
-            
-
-            return View::make('new-password');
+            return View::make('new-password', array( 'token' => $link->hash ));
         }
 
         public function password(){

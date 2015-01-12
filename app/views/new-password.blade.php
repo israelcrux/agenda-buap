@@ -10,6 +10,7 @@
 				Escriba la nueva contraseña
 			</p>
 		    {{ Form::open(array('url' => '/password_reset', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); }}
+		    	{{ Form::hidden('token', $token) }}
 				<input class="form-control" name="password" type="text" id="password" placeholder="Nueva contraseña" required="true">
 				<input class="form-control" type="submit" value="Restablecer contraseña">
 		    {{ Form::close(); }}
