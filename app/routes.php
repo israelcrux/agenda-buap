@@ -43,7 +43,9 @@ Route::get('/password', function(){
 /* Send reminder mail */
 Route::post('/password', 'UserController@password');
 /* back from reminder mail */
-Route::get('/password_reset/{hash}', 'UserController@passwordReset');
+Route::get('/password_reset/{hash}', 'UserController@passwordResetForm');
+Route::post('/password_reset', 'UserController@passwordReset');
+
 
 
 /* Route to show the register form */

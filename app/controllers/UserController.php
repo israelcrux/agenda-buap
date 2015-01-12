@@ -3,23 +3,24 @@
     class UserController extends BaseController {
 
         /**
-        * Restableber pasguor
+        * Reset password
         */
-        public function passwordReset($hash){
+        public function passwordReset(){
+            echo "En desarrollo";
+        }
+        public function passwordResetForm($hash){
             
             $link = PasswordRecoveryLink::where('hash', '=', $hash)->first();
 
-
             if($link->valid == 0){
                 return Redirect::to('password')->with('alert', 'El enlace de recuperación de contraseña ha sido utilizado.');
-            } 
-            var_dump($link->valid); exit();
+            }
 
             $link->valid = 0;
             $link->save();
             
 
-            return Redirect::to('new_password');
+            return View::make('new-password');
         }
 
         public function password(){

@@ -11,7 +11,7 @@
 			</p>
 		    {{ Form::open(array('url' => '/password', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); }}
 				<input class="form-control" name="email" type="text" id="username" placeholder="E-mail" required="true" value="{{ Input::old('email'); }}">
-				<input class="form-control" type="submit" value="Entrar">
+				<input class="form-control" type="submit" value="Enviar">
 		    {{ Form::close(); }}
 		</div>
 	</div>
