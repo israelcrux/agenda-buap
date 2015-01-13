@@ -2,7 +2,6 @@
 
 @section('content')
 	@include('alert')
-    <div class="ar-alert">Testing</div>
 
 	<div class="ar-form-wrapper ar-login-form">
 		<div class="ar-form-container">
