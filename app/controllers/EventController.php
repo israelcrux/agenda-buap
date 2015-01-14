@@ -347,17 +347,19 @@
          * Getting information about services requirements by area to panel of heads
          */
         public function serviceRequirementsByArea($area) {
-            return Service::with(
+            return EventDCI::with(
                 array(
-                    'events' => function($query) {
-                        $query->wherePivot('deleted_at', '=', NULL);
-                        $query->wherePivot('dci_status', '=', 'Pendiente');
-                        $query->orWherePivot('dci_status', '=', 'En Proceso');
-                        $query->orderBy('start_service');
+                    'services' => function($query) use ($area) {
+                        $query  ->whereRaw('event_service.deleted_at IS NULL and services.department_id = ? and (dci_status = ? OR dci_status = ?)', 
+                                    array($area, 'Pendiente', 'En Proceso')
+                                )
+                            ->orderBy('start_service');
                     }
                 )
             )
-            ->where('department_id', '=', $area)
+            ->whereRaw('(dci_status = ? OR dci_status = ?)',
+                array('Pendiente', 'En Proceso')
+            )
             ->get();
         }
 
