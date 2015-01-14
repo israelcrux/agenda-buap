@@ -20,7 +20,7 @@
          * Many resources source belongs to many events
         */
         public function events() {
-            return $this->belongsToMany('EventDCI', 'event_resource_source', 'event_id', 'resource_source_id')
+            return $this->belongsToMany('EventDCI', 'event_resource_source', 'resource_source_id', 'event_id')
                         ->withPivot('deleted_at')
                         ->withTimestamps();
         }

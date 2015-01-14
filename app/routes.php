@@ -92,4 +92,7 @@ Route::group(array('before' => 'auth'), function(){
 
     /* Route to get events of certain user */
     Route::get('/events/user/{id}', 'EventController@eventsByUser');
+
+    /* Route to get events to panel of heads */
+    Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
 });

@@ -151,7 +151,7 @@
         /*
          * Viewing an event information
          */
-        public function viewEvent($id) {
+        /*public function viewEvent($id) {
             $event = EventDCI::find($id);
             if($event->user_id == Auth::user()->id) {
                 $event['services']          = $event->services()->wherePivot('deleted_at', '=', NULL)->get();
@@ -163,7 +163,7 @@
             else {
                 return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para ver este evento');
             }
-        }
+        }*/
 
         /*
          * Editing an event
@@ -341,6 +341,24 @@
             else {
                 return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para eliminar este evento' . $event->id_dci);
             }
+        }
+
+        /*
+         * Getting information about services requirements by area to panel of heads
+         */
+        public function serviceRequirementsByArea($area) {
+            return Service::with(
+                array(
+                    'events' => function($query) {
+                        $query->wherePivot('deleted_at', '=', NULL);
+                        $query->wherePivot('dci_status', '=', 'Pendiente');
+                        $query->orWherePivot('dci_status', '=', 'En Proceso');
+                        $query->orderBy('start_service');
+                    }
+                )
+            )
+            ->where('department_id', '=', $area)
+            ->get();
         }
 
         /*

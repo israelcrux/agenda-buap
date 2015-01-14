@@ -20,7 +20,7 @@
          * Many services have many events
         */
         public function events() {
-            return $this->belongsToMany('EventDCI', 'event_service', 'event_id', 'service_id')
+            return $this->belongsToMany('EventDCI', 'event_service', 'service_id', 'event_id')
                         ->withPivot('start_service', 'end_service', 'dci_status', 'in_process_at', 'attended_at', 'deleted_at')
                         ->withTimestamps();
         }
