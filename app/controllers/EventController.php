@@ -382,58 +382,27 @@
          */
         public function validateEvent() {
 
-            /* Verifying that user write a name to the event */
-            if(!Input::has('name')) {
-                return array('isValid' => false, 'message' => 'Nombre del evento requerido');
-            }
+            /* Getting the actual date to validation */
+            $now = date('Y-m-d');
 
-            /* Verifying that the user select a start day to the event */
-            if(!Input::has('start_day')) {
-                return array('isValid' => false, 'message' => 'Fecha de inicio requerida');
-            }
+            /* Creating a event validator */
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'name' => 'required',
+                    'start_day' => 'required|date|before:'.Input::get('end_day'),
+                    'end_day' => 'required|date|after:'.Input::get('start_day').'|after:'.$now,
+                    'time' => 'required',
+                    'place' => 'required',
+                    'link' => 'url|active_url',
+                    'directed_to' => 'required',
+                )
+            );
 
-            /* Verifying that the user select a end day to the event */
-            if(!Input::has('end_day')) {
-                return array('isValid' => false, 'message' => 'Fecha de término requerida');
-            }
+            if($validator->fails()) {
+                return array('isValid' => false, 'message' => $validator->messages());
+            }    
 
-            /* Verifying that the user select a time to the event */
-            if(!Input::has('time')) {
-                return array('isValid' => false, 'message' => 'Hora de evento requerido');
-            }
-
-            /* Verifying that the user write a place to the event */
-            if(!Input::has('place')) {
-                return array('isValid' => false, 'message' => 'Lugar de evento requerido');
-            }
-
-            /* Verifying that the link to the event has a correct form */
-            if(Input::has('link')) {
-                if(!$this->validateUrl(Input::get('link'))) {
-                    return array('isValid' => false, 'message' => 'URL del evento no valido');
-                }
-            }
-
-            /* Verifying that the event has audience target */
-            if(!Input::has('directed_to')) {
-                return array('isValid' => false, 'message' => 'Seleccione a quién va dirigido el evento');
-            }
-
-            /* Creating a PHP date objects to manipulate dates */
-            $start_day = new DateTime(Input::get('start_day'));
-            $end_day   = new DateTime(Input::get('end_day'));
-            $now       = new DateTime();
-
-            /* Verifying that the event end day is after now */
-            if($end_day < $now) {
-                return array('isValid' => false, 'message' => 'Fecha de término de evento anterior al día actual');
-            }
-
-            /* Verifying that the event start day is before event end day */
-            if($start_day > $end_day) {
-                return array('isValid' => false, 'message' => 'Fecha de inicio de evento posterior a fecha de término');
-            }
-            
             return array('isValid' => true, 'message' => '');
         
         }
