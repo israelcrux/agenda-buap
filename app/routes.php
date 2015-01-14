@@ -31,6 +31,8 @@ Route::get('/login', function(){
     }
     return View::make('login');
 });
+
+/* Route to do login */
 Route::post('/login', 'UserController@login');
 
 /* Show reminder form */
@@ -40,13 +42,15 @@ Route::get('/password', function(){
     }
     return View::make('password');
 });
+
 /* Send reminder mail */
 Route::post('/password', 'UserController@password');
-/* back from reminder mail */
-Route::get('/password_reset/{hash}', 'UserController@passwordResetForm');
+
+/* Back from reminder mail */
+Route::get('/password_reset/{key}', 'UserController@passwordResetForm');
+
+/* Route to back from reminder mail */
 Route::post('/password_reset', 'UserController@passwordReset');
-
-
 
 /* Route to show the register form */
 Route::get('/signup', 'UserController@signup');

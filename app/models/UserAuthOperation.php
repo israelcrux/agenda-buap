@@ -12,6 +12,11 @@
         protected $table = 'users_auth_operations';
 
         /*
+         * Table fields guarded, need admin privileges to modify.
+         */
+        protected $guarded = array('user_id');
+
+        /*
          * Table field to execute a soft deleting action
          */
         protected $dates = ['deleted_at'];

@@ -96,6 +96,7 @@ return array(
 'custom' => array(
 	'email' => array(
 		'unique' => 'El :attribute ya se encuentra registrado.',
+		'exists' => 'El :attribute no se encuentra registrado.'
 	),
 	// 'attribute-name' => array(
 	//     'rule-name'  => 'custom-message',
