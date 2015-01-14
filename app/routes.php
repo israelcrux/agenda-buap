@@ -92,4 +92,11 @@ Route::group(array('before' => 'auth'), function(){
 
     /* Route to get events of certain user */
     Route::get('/events/user/{id}', 'EventController@eventsByUser');
+
+    /* Probando las vistas */
+    Route::get('/dashboard-boss/', function(){
+        return View::make('dashboard-boss');
+    });
 });
+
+

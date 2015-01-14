@@ -40,6 +40,13 @@ input[type="date"]:focus:before,
 input[type="date"]:valid:before {
   content: "";
 }
+.ar-spacer {
+  margin-bottom: 50px;
+  width: 100%;
+}
+.strong {
+  font-weight: bold;
+}
 footer {
   margin-top: -140px;
   min-height: 140px;
@@ -974,6 +981,59 @@ a.ar-moreinfo {
 .ar-btn-group input[type="button"],
 form {
   display: inline-block;
+}
+/**----------- BOSS PANEL -----------**/
+.ar-element-buttons {
+  text-align: right;
+}
+.ar-element-buttons button.btn,
+.ar-element-buttons .ar-button-info {
+  display: inline-block;
+}
+.ar-element-buttons .ar-button-info {
+  margin-right: 15px;
+}
+.ar-element-buttons .ar-button-info:last-child {
+  margin-right: 0px;
+}
+.ar-element {
+  border-bottom: 1px solid #f2f2f2;
+  border-top: 1px solid #f2f2f2;
+}
+.ar-switcher {
+  margin: 5px 2px;
+  background-color: #f2f2f2;
+}
+.ar-switcher input {
+  display: none;
+}
+.ar-switcher .icon {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  background-color: #e2e2e2;
+}
+.ar-switcher .icon.active {
+  background-color: #00b2e2;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("../img/check.svg");
+  background-size: 65%;
+}
+.ar-switcher label {
+  display: block;
+  min-height: 25px;
+  margin-left: 50px;
+  margin-top: -25px;
+  padding: 2px;
+  cursor: pointer;
+}
+.ar-contright>div {
+  float: right;
+}
+.strong span.pending {
+  color: #d35400;
 }
 @media (min-width: 768px) and (min-height: 600px) {
   .ar-login-form.ar-form-wrapper {

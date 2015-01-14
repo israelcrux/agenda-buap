@@ -26,6 +26,8 @@ nav-height = 80px
 nav-height-padding = 90px
 nav-height_2 = 50px
 
+red = #d35400
+
 standard-background()
 	background-size contain
 	background-position center center
@@ -73,6 +75,13 @@ input[type="date"]:before
 input[type="date"]:focus:before, input[type="date"]:valid:before
 	content: "";
 
+.ar-spacer
+	margin-bottom 50px
+	width 100%
+
+.strong{
+	font-weight bold
+}
 
 footer
 	margin-top -140px
@@ -893,11 +902,57 @@ a.ar-moreinfo
 	width 171px
 	overflow hidden
 
+
 .ar-btn-group button,
 .ar-btn-group input[type="submit"],
 .ar-btn-group input[type="button"],
 form
 	display inline-block
+
+/**----------- BOSS PANEL -----------**/
+
+.ar-element-buttons
+	text-align right
+	button.btn,
+	.ar-button-info	
+		display inline-block
+	.ar-button-info
+		margin-right 15px
+	.ar-button-info:last-child
+		margin-right 0px
+		
+
+.ar-element
+	border-bottom 1px solid gray
+	border-top 1px solid gray
+.ar-switcher
+	margin 5px 2px
+	background-color gray
+	input
+		display none
+	.icon
+		cursor pointer
+		width 25px
+		height 25px
+		background-color shadow
+	.icon.active
+		background-color light_blue
+		standard-background()		
+		background-image url(../img/check.svg)
+		background-size 65%
+	label
+		display block
+		min-height 25px
+		margin-left 50px
+		margin-top -25px
+		padding 2px
+		cursor pointer
+		
+.ar-contright>div
+	float right
+	
+.strong span.pending
+	color red
 
 @media (min-width:768px) and (min-height:600px)
 	.ar-login-form.ar-form-wrapper
