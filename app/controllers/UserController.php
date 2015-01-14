@@ -2,10 +2,10 @@
 
     class UserController extends BaseController {
 
-        /**
-        * Reset password
-        */
-        public function passwordReset(){
+        /*
+         * Reset password
+         */
+        public function passwordReset() {
             if(!Input::has('password') || !Input::has('token')) {
                 return Redirect::to('signup')->with('alert', 'Escriba su contraseña');
             }
@@ -32,6 +32,10 @@
             Auth::login($user);
             return Redirect::intended('dashboard')->with('alert','Su contraseña ha sido restablecida');
         }
+
+        /*
+         * Show the form to reset the password
+         */
         public function passwordResetForm($hash){
             
             $link = PasswordRecoveryLink::where('hash', '=', $hash)->first();
@@ -46,6 +50,9 @@
             return View::make('new-password', array( 'token' => $link->hash ));
         }
 
+        /*
+         * Processing the request to change the forgotten password
+         */
         public function password(){
             if(Input::has('email') ) {
                 $email    = Input::get('email');
@@ -85,26 +92,26 @@
             return Redirect::to('login')->with('alert', 'Un mensaje ha sido enviado a su correo electrónico, dentro están las instrucciones para restablecer su contraseña');
         }
 
-        /**
+        /*
          * Verify and make or deny the login for the given credentials.
          */
         public function login() {
-            /* Verifying that username and password was sended */
-            if(Input::has('email') && Input::has('password')) {
-                $email    = Input::get('email');
-                $password = Input::get('password');
-            }
-            else {
-                return Redirect::to('login')->with('alert', 'Escriba su usuario y contraseña')->withInput(Input::except('password'));
-            }
 
-            /* Verifying that email is an e-mail */
-            if(!$this->validateEmail($email)){
-                return Redirect::to('login')->with('alert', 'Proporcione un e-mail');
+            /* Creating a login validator */
+            $validator = Validator::make(
+                Input::all(), 
+                array(
+                    'email' => 'required|email',
+                    'password' => 'required'
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::to('login')->with('alert', $validator->messages())->withInput(Input::except('password'));
             }
 
             /* Verifying that the user exists and correct credentials */
-            if(Auth::attempt(array('email' => $email, 'password' => $password))) {
+            if(Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password')))) {
                 /* Verifying status user */
                 if(Auth::user()->status == '2') {
                     return Redirect::to('login')->with('alert', 'Usuario requiere activación')->withInput(Input::except('password'));
@@ -118,7 +125,7 @@
 
         /*
          * Finish the user login
-        */
+         */
         public function logout() {
             Auth::logout();
             return Redirect::to('/');
@@ -126,7 +133,7 @@
 
         /*
          * Show the form to register an user
-        */
+         */
         public function signup() {
             $units = AcademicAdministrativeUnit::all(array('id', 'name', 'type'))->toArray();
             return View::make('signup', array('aaunits' => $units));
@@ -134,42 +141,34 @@
 
         /*
          * Verify user and register the user
-        */
+         */
         public function register() {
 
-            /* Verifying required data */
-            if(!Input::has('first_name')) {
-                return Redirect::to('signup')->with('alert', 'Escriba su nombre')->withInput(Input::except('password'));
-            }
-            if(!Input::has('last_name')) {
-                return Redirect::to('signup')->with('alert', 'Escriba su apellido')->withInput(Input::except('password'));
-            }
-            if(Input::get('academic_administrative_unit_type') != '3') {
-                if(!Input::has('academic_administrative_unit')) {
-                    return Redirect::to('signup')->with('alert', 'Seleccione su unidad acádemica o administrativa')->withInput(Input::except('password'));
-                }
-            }
-            if(!Input::has('email')) {
-                return Redirect::to('signup')->with('alert', 'Escriba su email')->withInput(Input::except('password'));
-            }
-            if(!Input::has('password')) {
-                return Redirect::to('signup')->with('alert', 'Escriba su contraseña')->withInput(Input::except('password'));
+            /* Creating a register validator */
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'first_name' => 'required|alpha',
+                    'last_name' => 'required|alpha',
+                    'phone' => array('regex:/([0-9]+|-|\s)+/'),
+                    'extension_phone' => array('regex:/([0-9]+|-|\s)+/'),
+                    'email' => 'required|email|unique:users',
+                    'password' => 'required',
+                    'academic_administrative_unit_type' => 'between:1,3|integer',
+                    'academic_administrative_unit' => 
+                        'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer'
+                ),
+                array(
+                    'academic_administrative_unit_type.between' => 'Seleccione una procedencia de unidad acádemica o administrativa'
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::to('signup')->with('alert', $validator->messages())->withInput(Input::except('password'));
             }
 
-            /* Verifying the email format and generating encrypted password */
-            $email = Input::get('email');
-            if($this->validateEmail($email)) {
-                $crypt_password = Hash::make(Input::get('password'));
-            }
-            else {
-                return Redirect::to('signup')->with('alert', 'El e-mail proporcionado no es válido')->withInput(Input::except('password'));
-            }
-
-            /* Verifying if the user exists through email */
-            $existing_user = User::where('email', '=', $email)->first();
-            if($existing_user) {
-                return Redirect::to('signup')->with('alert', 'El email que proporcionó ya se encuentra registrado')->withInput(Input::except('password'));
-            }
+            /* Generating encrypted password */
+            $crypt_password = Hash::make(Input::get('password'));
 
             /* Getting data */
             $user_data = array(
@@ -177,7 +176,7 @@
                 'first_name'                      => Input::get('first_name'),
                 'phone'                           => Input::get('phone'),
                 'extension_phone'                 => Input::get('extension_phone'),
-                'email'                           => $email,
+                'email'                           => Input::get('email'),
                 'password'                        => $crypt_password
             );
             
@@ -189,7 +188,7 @@
             $user = User::create($user_data);
 
             /* Verifying if user needs email validation */
-            if(preg_match('/buap.mx/', $email)) {
+            if(preg_match('/buap.mx/', Input::get('email'))) {
                 $user->status = 1;
                 $user->save();
                 $message = 'Ahora puede hacer uso de su cuenta, inicie sesión';
@@ -217,7 +216,7 @@
 
         /*
          * Process that verify an user through e-mail validation
-        */
+         */
         public function activate($token) {
             // Checking on database if the token exists
             $user_auth_activation = UserAuthOperation::whereRaw('token = ? and type = ?', array($token, 1))->first();
@@ -254,7 +253,7 @@
 
         /*
          * Verifying that an email has the standard construction
-        */
+         */
         private function validateEmail($email) {
             return preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email);
         }

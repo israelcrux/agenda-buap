@@ -18,7 +18,7 @@
 
         /*
          * Return a JSON that contains all events for a certain year and month
-        */
+         */
         public function calendar($year_month = null) {
 
             if(!isset($year_month)) {
@@ -67,7 +67,7 @@
 
         /*
          * Adding an event to the database
-        */
+         */
         public function addEvent() {
 
             /* Verifying that event has a correct and valid data */
@@ -150,7 +150,7 @@
 
         /*
          * Viewing an event information
-        */
+         */
         public function viewEvent($id) {
             $event = EventDCI::find($id);
             if($event->user_id == Auth::user()->id) {
@@ -167,7 +167,7 @@
 
         /*
          * Editing an event
-        */
+         */
         public function editEvent() {
 
             /* Searching the event */
@@ -330,7 +330,7 @@
 
         /*
          * Applying soft deleting an event
-        */
+         */
         public function deleteEvent() {
             $id = Input::get('id');
             $event = EventDCI::find($id);
@@ -345,21 +345,21 @@
 
         /*
          * Verifying that an email has the standard construction
-        */
+         */
         private function validateEmail($email) {
             return preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email);
         }
 
         /*
          * Verifying that an url has a correct form
-        */
+         */
         private function validateUrl($url) {
             return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
         }
 
         /*
          *
-        */
+         */
         public function validateEvent() {
 
             /* Verifying that user write a name to the event */
