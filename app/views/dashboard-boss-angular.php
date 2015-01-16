@@ -1,13 +1,114 @@
+<div ng-controller="BDashboardController">
+<?php 
+	/*--------------------- Switchers---------------------------*/ 
+ ?>
+<div class="ar-fullscreen-panel">
+	<div class="ar-modal-title">Solicitud de Spot de radio</div>
+	<div class="ar-modal-closebtn" ></div>
+	<div class="ar-modal-content">
+		<ol class="breadcrumb">
+			<li>Estado de la solicitud: Pendiente</li>
+		</ol>
 
-<div class="ar-vwrap well" ng-controller="BDashboardController">
-	
+		<div class="max1000">
+
+			<?php /* Event details */ ?>
+			<div class="col-xs-12 col-md-7">
+				<h3>XIV Congreso Nacional de Nutrición</h3>
+				<div class="ar-row">
+					<div class="col-xs-6 col-sm-4">9:00am</div>
+					<div class="col-xs-6 col-sm-4">Inicia: 26/01/2015</div>
+					<div class="col-xs-6 col-sm-4">Termina: 28/01/2015</div>
+				</div>
+				<div class="ar-row">
+					<div class="col-xs-12 col-sm-6">Complejo Cultural Universitario</div>
+				</div>
+				<div class="ar-row col-xs-12">
+					<p>Dirigido a: Estudiantes y Maestros</p>
+					<p>www.congresonacionaldenutricion.org.mx</p>
+				</div>			
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, sequi ut. Illum consequatur accusamus facilis, natus iste id quas, quasi magnam consectetur repellendus explicabo dolores porro velit. Quae officiis sint adipisci amet facilis debitis sequi mollitia veritatis iure voluptatum totam incidunt cumque quibusdam sed nesciunt ut ratione quisquam tempore possimus eum inventore, quidem autem. Soluta nihil perferendis facilis ullam fugiat expedita officia dolore dignissimos repellendus iure, quam, vitae qui pariatur. Cum, deleniti quae omnis at commodi similique minus. Ipsum vitae aspernatur, quisquam, quo doloribus, sint expedita culpa deserunt facilis corrupti debitis quas blanditiis aliquid maiores. Necessitatibus?	
+				</p>
+			</div>
+			<div class="col-xs-12 col-md-5">
+			
+
+				<?php /* Tasks and their statuses */ ?>
+				<div class="ar-vwrap">
+					Tareas asignadas a esta solicitud:
+				</div>
+				<div class="ar-row">
+
+					<div class="ar-row breadcrumb">
+						<div class="col-xs12">Elaborar guión</div>
+						<div class="col-xs6">Estado: <b>Completa</b></div>
+						<div class="ar-row">
+							<div class="col-xs6">Asignada el 17/01/2015</div>
+							<div class="col-xs6">Terminada el 18/01/2015</div>
+						</div>
+						<div class="ar-row">
+							<div class="col-xs6">Asignada a: Ernesto Herrera</div>
+						</div>
+						<p>
+							El guión esta completo.
+						</p>
+					</div>
+
+					<div class="ar-row breadcrumb">
+						<div class="col-xs12">Grabar spot (Voz)</div>
+						<div class="col-xs6">Estado: <b>Pendiente</b></div>
+						<div class="ar-row">
+							<div class="col-xs6">Asignada el 17/01/2015</div>
+						</div>
+						<div class="ar-row">
+							<div class="col-xs6">Asignada a: Mariana Mendoza</div>
+						</div>
+					</div>
+
+					<div class="ar-row breadcrumb">
+						<div class="col-xs12">Grabar spot (Cabina)</div>
+						<div class="col-xs6">Estado: <b>Pendiente</b></div>
+						<div class="ar-row">
+							<div class="col-xs6">Asignada el 17/01/2015</div>
+						</div>
+						<div class="ar-row">
+							<div class="col-xs6">Asignada a: Julio Martorel</div>
+						</div>
+					</div>
+
+				</div>
+
+
+
+				<button class="btn">Asignar tarea</button>
+			</div>
+			
+		</div>
+		
+	</div>
+</div>
+
+<div class="ar-fullscreen-panel">
+	<div class="ar-modal-title">Solicitud de Spot de radio</div>
+	<div class="ar-modal-closebtn" ></div>
+	<div class="ar-modal-content">
+	</div>
+</div>
+
+
+<div class="ar-vwrap well">
+
+	<?php 
+	/*--------------------- Switchers---------------------------*/ 
+	?>	
 	<div class="ar-vwrap">
 		<div class="ar-row ar-contright">
 			<div class="col-xs-12 col-sm-3 col-md-2">
 				<div class="ar-switcher">
 					<input type="checkbox" name="pending" ng-model="pending" id="pending" aria-label="...">
 					<div class="icon" ng-class="{'active':pending}" ng-click="pending=!pending"></div>
-					<label for="pending" >En proceso</label>
+					<label for="pending" >Pendientes</label>
 				</div>
 			</div>		
 			<div class="col-xs-12 col-sm-3 col-md-2">
@@ -22,6 +123,9 @@
 	
 	<div class="ar-spacer"></div>
 
+	<?php 
+	/*--------------------- Service requests ---------------------------*/ 
+	 ?>
 	<div class="col-xs-12 col-sm-8">
 		
 		<div class="ar-list">
@@ -59,6 +163,7 @@
 </div>
 
 <a href="">Ver solicitudes atendidas</a>
+</div>
 
 <script>
 	ROOT_PATH = "<?php echo URL::to('/'); ?>";

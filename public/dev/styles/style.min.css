@@ -976,6 +976,19 @@ a.ar-moreinfo {
   width: 171px;
   overflow: hidden;
 }
+.ar-fullscreen-panel {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  background-color: #fff;
+}
+.max1000 {
+  max-width: 1000px;
+  margin: 0 auto;
+}
 .ar-btn-group button,
 .ar-btn-group input[type="submit"],
 .ar-btn-group input[type="button"],
