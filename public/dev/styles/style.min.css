@@ -937,8 +937,7 @@ a.ar-moreinfo {
   padding: 5px;
 }
 .file-icon {
-  width: 50px;
-  height: 60px;
+  height: 38px;
   background-image: url("../img/files/unknown.svg");
   display: block;
   background-size: contain;
@@ -969,11 +968,24 @@ a.ar-moreinfo {
 .file-icon.jpg {
   background-image: url("../img/files/jpg.svg");
 }
+.remove {
+  height: 38px;
+  cursor: pointer;
+  background-color: #ddd;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("../img/arrows_remove.svg");
+}
+.remove:hover {
+  background-color: #aaa;
+}
+.file-row {
+  margin: 5px auto;
+  background-color: #f2f2f2;
+}
 .filename {
-  margin-left: 60px;
-  margin-top: 17px;
-  float: left;
-  width: 171px;
+  margin-top: 10px;
   overflow: hidden;
 }
 .ar-fullscreen-panel {

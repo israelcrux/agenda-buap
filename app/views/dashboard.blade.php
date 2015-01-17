@@ -44,8 +44,14 @@
 			var n = e.target.files.length,
 				text = (n==1)? 'archivo seleccionado' : 'archivos seleccionados';
 
+			console.log( e.target.files );
+
+			for (var i = n - 1; i >= 0; i--) {
+				text += '<p>'+e.target.files[i].name+'</p>';
+			};
+
 			if(n == 0) fileButton.removeClass('loaded').text('Adjuntar material de apoyo');
-			else fileButton.addClass('loaded').text(n+' '+text);
+			else fileButton.addClass('loaded').html(n+' '+text);
 
 		});
 
