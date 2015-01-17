@@ -40,7 +40,7 @@
 				<?php echo Form::open(array('url' => 'event/add', 'method' => 'post', 'role' => 'form', 'enctype'=> 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 					
 					<div class="col-xs-12 col-sm-4">
-						<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required value="<?php echo Input::old('name'); ?>">
+						<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" value="<?php echo Input::old('name'); ?>">
 						
 						<?php /* type date */?>
 						<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required value="<?php echo Input::old('start_day'); ?>">
@@ -283,8 +283,9 @@
                             <?php } ?>
 						</ul>
 						
-
 						<div class="ar-vwrap">
+
+
 							
 							<div class="ar-row file-row" ng-repeat="file in currentEvent.support_materials">
 								<input type="hidden" name="{{file.file}}" value="{{file.file}}" id="{{file.file}}">
@@ -292,13 +293,16 @@
 								<div class="filename col-xs-8">
 									<a target="_blank" href="{{ROOT_PATH + file.file}}">{{file.original_name}}</a>									
 								</div>
-								<div class="col-xs-2 remove">
-									
-								</div>
+								<div class="col-xs-2 remove" ng-click="deleteFile(file)"></div>
+							</div>
+
+							<div id="deleted-files">
+								
 							</div>
 
 						</div>
 
+						
 
 						<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
 						<div id="filebtn" class="btn btn-sourcefiles">

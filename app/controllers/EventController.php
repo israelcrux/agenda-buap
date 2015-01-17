@@ -432,14 +432,6 @@
         }
 
         /*
-         * Verifying that an url has a correct form
-        private function validateUrl($url) {
-            //return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url); 
-            return preg_match('/^(http(s)?:\/\/)?[a-z0-9]+(\.[a-z0-9]+)*(:[0-9]+)?(\/.*)?$/', $url);
-        }
-         */
-
-        /*
          *
          * Validator for adding and editing an event
          */

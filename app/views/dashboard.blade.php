@@ -136,11 +136,17 @@
 
 			$scope.showEditForm = function(event){
 				$scope.currentEvent = event;
+				$('#deleted-files').html('');
 			};
 
 			$scope.showCancelForm = function(event){
 				$scope.eventToCancel = event;
 			};			
+
+			$scope.deleteFile = function(file){
+				$scope.currentEvent.support_materials.splice(  $scope.currentEvent.support_materials.indexOf(file) ,1 );
+				$('#deleted-files').append('<input type="hidden" name="deleted_files['+file.id+']" value="true">');
+			};
 
 		}]);
 	</script>
