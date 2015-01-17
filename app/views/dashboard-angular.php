@@ -286,14 +286,15 @@
 
 						<div class="ar-vwrap">
 							
-							<div class="ar-row" ng-repeat="file in currentEvent.support_materials">
+							<div class="ar-row file-row" ng-repeat="file in currentEvent.support_materials">
 								<input type="hidden" name="{{file.file}}" value="{{file.file}}" id="{{file.file}}">
-								<p class="filename">
-									<a target="_blank" href="{{ROOT_PATH + file.file}}">{{file.original_name}}</a>
-									<br>
-									<p href="">Eliminar</p>
-								</p>
-								<div class="file-icon {{file.format}}"></div>
+								<div class="file-icon {{file.format}} col-xs-2"></div>
+								<div class="filename col-xs-8">
+									<a target="_blank" href="{{ROOT_PATH + file.file}}">{{file.original_name}}</a>									
+								</div>
+								<div class="col-xs-2 remove">
+									
+								</div>
 							</div>
 
 						</div>

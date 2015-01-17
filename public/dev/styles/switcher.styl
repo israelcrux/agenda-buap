@@ -1,0 +1,29 @@
+/*
+<div class="ar-switcher">
+	<input type="checkbox" name="pending" ng-model="pending" id="pending" aria-label="...">
+	<div class="icon" ng-class="{'active':pending}" ng-click="pending=!pending"></div>
+	<label for="pending" >En proceso</label>
+</div>
+*/
+.ar-switcher
+	margin 5px 2px
+	background-color gray
+	input
+		display none
+	.icon
+		cursor pointer
+		width 25px
+		height 25px
+		background-color shadow
+	.icon.active
+		background-color light_blue
+		standard-background()		
+		background-image url(../img/check.svg)
+		background-size 65%
+	label
+		display block
+		min-height 25px
+		margin-left 50px
+		margin-top -25px
+		padding 2px
+		cursor pointer
