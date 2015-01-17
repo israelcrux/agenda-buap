@@ -40,7 +40,7 @@
 				<?php echo Form::open(array('url' => 'event/add', 'method' => 'post', 'role' => 'form', 'enctype'=> 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 					
 					<div class="col-xs-12 col-sm-4">
-						<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" value="<?php echo Input::old('name'); ?>">
+						<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required value="<?php echo Input::old('name'); ?>">
 						
 						<?php /* type date */?>
 						<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required value="<?php echo Input::old('start_day'); ?>">

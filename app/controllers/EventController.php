@@ -110,7 +110,16 @@
                 );
 
                 foreach ($services as $service) {
-                    $event->services()->attach($service, $data_services);
+                    if($this->validateArrayElement($service, 'string')) {
+                        $event->services()->attach($service, $data_services);
+                    }
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Los servicios recibidos no son válidos')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
+                    }
                 }
 
                 /* Storing support material to the event */
@@ -136,13 +145,37 @@
             if(Input::has('resources_sources')) {
                 /* Storing resources sources to the event */
                 $resources_sources = Input::get('resources_sources');
-                $event->resources_sources()->attach($resources_sources);
+
+                foreach ($resources_sources as $resource_source) {
+                    if($this->validateArrayElement($resource_source, 'string')) {
+                        $event->resources_sources()->attach($resource_source);
+                    }
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Las fuentes de recursos recibidas no son válidas')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
+                    }
+                }
             }
 
             if(Input::has('witnesses')) {
                 /* Storing witnesses to the event */
                 $witnesses = Input::get('witnesses');
-                $event->witnesses()->attach($witnesses);
+
+                foreach ($witnesses as $witness) {
+                    if($this->validateArrayElement($witness, 'string')) {
+                        $event->witnesses()->attach($witness);
+                    }
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Los testigos recibidos no son válidos')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
+                    }
+                }
             }
 
             return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente ' . $event->id_dci);
@@ -226,7 +259,7 @@
             }
 
             /* Deactivateing old resources sources */
-            foreach ($old_resources_sources as $old_resource_source) {
+            foreach ($old_resources_sources as $old_resource_source) { 
                 $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => $now));
             }
 
@@ -243,21 +276,30 @@
 
                 /* Updating old services and adding new services */
                 foreach ($new_services as $new_service) {
-                    $service_exist = false;
-                    foreach ($old_services as $old_service) {
-                        if($old_service['original']['pivot_service_id'] == $new_service) {
-                            $service_exist = true;
-                            $event->services()->updateExistingPivot($old_service->id, array('deleted_at' => NULL));
-                            break;
+                    if($this->validateArrayElement($new_service, 'string')) {
+                        $service_exist = false;
+                        foreach ($old_services as $old_service) {
+                            if($old_service['original']['pivot_service_id'] == $new_service) {
+                                $service_exist = true;
+                                $event->services()->updateExistingPivot($old_service->id, array('deleted_at' => NULL));
+                                break;
+                            }
+                        }
+                        if(!$service_exist) {
+                            $data_services = array(
+                                'start_service' => Input::get('start_day'),
+                                'end_service' => Input::get('end_day'),
+                            );
+
+                            $event->services()->attach($new_service, $data_services);
                         }
                     }
-                    if(!$service_exist) {
-                        $data_services = array(
-                            'start_service' => Input::get('start_day'),
-                            'end_service' => Input::get('end_day'),
-                        );
-
-                        $event->services()->attach($new_service, $data_services);
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Los servicios actualizados no son válidos')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','edit')
+                            ->withInput();
                     }
                 }
 
@@ -287,16 +329,25 @@
 
                 /* Updating old resources sources and adding new resources sources */
                 foreach ($new_resources_sources as $new_resource_source) {
-                    $resource_source_exist = false;
-                    foreach ($old_resources_sources as $old_resource_source) {
-                        if($old_resource_source['original']['pivot_resource_source_id'] == $new_resource_source) {
-                            $resource_source_exist = true;
-                            $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => NULL));
-                            break;
+                    if($this->validateArrayElement($new_resource_source, 'string')) {
+                        $resource_source_exist = false;
+                        foreach ($old_resources_sources as $old_resource_source) {
+                            if($old_resource_source['original']['pivot_resource_source_id'] == $new_resource_source) {
+                                $resource_source_exist = true;
+                                $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => NULL));
+                                break;
+                            }
+                        }
+                        if(!$resource_source_exist) {
+                            $event->resources_sources()->attach($new_resource_source);
                         }
                     }
-                    if(!$resource_source_exist) {
-                        $event->resources_sources()->attach($new_resource_source);
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Las fuentes de recursos actualizadas no son válidas')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
                     }
                 }
 
@@ -309,16 +360,25 @@
 
                 /* Updating old resources sources and adding new resources sources */
                 foreach ($new_witnesses as $new_witness) {
-                    $witnesses_exist = false;
-                    foreach ($old_witnesses as $old_witness) {
-                        if($old_witness['original']['pivot_witness_id'] == $new_witness) {
-                            $witnesses_exist = true;
-                            $event->witnesses()->updateExistingPivot($old_witness->id, array('deleted_at' => NULL));
-                            break;
+                    if($this->validateArrayElement($new_witness, 'string')) {
+                        $witnesses_exist = false;
+                        foreach ($old_witnesses as $old_witness) {
+                            if($old_witness['original']['pivot_witness_id'] == $new_witness) {
+                                $witnesses_exist = true;
+                                $event->witnesses()->updateExistingPivot($old_witness->id, array('deleted_at' => NULL));
+                                break;
+                            }
+                        }
+                        if(!$witnesses_exist) {
+                            $event->witnesses()->attach($new_witness);
                         }
                     }
-                    if(!$witnesses_exist) {
-                        $event->witnesses()->attach($new_witness);
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Los testigos actualizados no son válidos')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
                     }
                 }
 
@@ -350,12 +410,20 @@
             return EventDCI::with(
                 array(
                     'services' => function($query) use ($area) {
-                        $query  ->whereRaw('event_service.deleted_at IS NULL and services.department_id = ? and (dci_status = ? OR dci_status = ?)', 
+                        $query->whereRaw('event_service.deleted_at IS NULL and services.department_id = ? and (dci_status = ? OR dci_status = ?)', 
                                     array($area, 'Pendiente', 'En Proceso')
                                 )
                             ->orderBy('start_service');
                     }
                 )
+            )
+            ->whereHas('services', 
+                function($query) use ($area) {
+                    $query  ->whereRaw('event_service.deleted_at IS NULL and services.department_id = ? and (dci_status = ? OR dci_status = ?)', 
+                                array($area, 'Pendiente', 'En Proceso')
+                            )
+                            ->orderBy('start_service');
+                }
             )
             ->whereRaw('(dci_status = ? OR dci_status = ?)',
                 array('Pendiente', 'En Proceso')
@@ -364,47 +432,44 @@
         }
 
         /*
-         * Verifying that an email has the standard construction
-         */
-        private function validateEmail($email) {
-            return preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $email);
-        }
-
-        /*
-         * Verifying that an url has a correct form
-         */
-        private function validateUrl($url) {
-            return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
-        }
-
-        /*
-         *
+         * Validator for adding and editing an event
          */
         public function validateEvent() {
 
             /* Getting the actual date to validation */
-            $now = date('Y-m-d');
+            $now = date('Y-m-d', strtotime("-1 days"));
 
             /* Creating a event validator */
             $validator = Validator::make(
                 Input::all(),
                 array(
-                    'name' => 'required',
-                    'start_day' => 'required|date|before:'.Input::get('end_day'),
-                    'end_day' => 'required|date|after:'.Input::get('start_day').'|after:'.$now,
-                    'time' => 'required',
-                    'place' => 'required',
-                    'link' => 'url|active_url',
-                    'directed_to' => 'required',
+                    'name'              => 'required',
+                    'start_day'         => 'required|date|before:'.Input::get('end_day'),
+                    'end_day'           => 'required|date|after:'.Input::get('start_day').'|after:'.$now,
+                    'time'              => 'required',
+                    'place'             => 'required',
+                    'link'              => 'url',
+                    'directed_to'       => 'required',
+                    'services'          => 'array',
+                    'resources_sources' => 'array',
+                    'witnesses'         => 'array',
+                    // 'files'             => 'max:2000|mimes:jpeg,bmp,png,bm,doc,dot,jfif,,jfif-tbnl,jpe,jpg,jps,ppt,xls,x-png,zip,tar,gtar,gzip',
                 )
             );
 
             if($validator->fails()) {
                 return array('isValid' => false, 'message' => $validator->messages());
-            }    
+            }
 
             return array('isValid' => true, 'message' => '');
-        
         }
+
+        /*
+         * Validator of array types
+         */
+        public function validateArrayElement($element, $type) {
+            return gettype($element) == $type ? true : false;
+        }
+
 
     }

@@ -12,7 +12,10 @@
                 Input::all(),
                 array(
                     'password' => 'required|min:6',
-                    'token' => 'required'
+                    'token' => 'required|exists:users_auth_operations,token,type,2,used,0,deleted_at,NULL'
+                ),
+                array(
+                    'token.exists' => 'El enlace proporcionado es corrupto, inválido o ha sido utilizado'
                 )
             );
 
@@ -22,16 +25,6 @@
 
             /* Getting the user auth operation reminder to change the password */
             $user_auth_reminder = UserAuthOperation::where('token', '=', Input::get('token'))->first();
-
-            /* Verifying that the user auth operation exists */
-            if(!$user_auth_reminder) {
-                return Redirect::to('login')->with('alert', 'Enlace corrupto');
-            } 
-
-            /* Verifying that the user auth reminder operation has not been used */
-            if($user_auth_reminder->used) {
-                return Redirect::to('login')->with('alert', 'El enlace ha sido utilizado');
-            }
 
             /*Getting the user that forgot its password*/
             $user = User::find($user_auth_reminder->user_id);
@@ -177,7 +170,7 @@
                     'extension_phone' => array('regex:/([0-9]+|-|\s)+/'),
                     'email' => 'required|email|unique:users',
                     'password' => 'required|min:6',
-                    'academic_administrative_unit_type' => 'between:1,3|integer',
+                    'academic_administrative_unit_type' => 'min:1|integer',
                     'academic_administrative_unit' => 
                         'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer'
                 ),
