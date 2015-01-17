@@ -3,96 +3,53 @@
 	/*--------------------- Switchers---------------------------*/ 
  ?>
 <div class="ar-fullscreen-panel">
-	<div class="ar-modal-title">Solicitud de Spot de radio</div>
+	<div class="ar-modal-title">Solicitud de {{crequest.service}}</div>
 	<div class="ar-modal-closebtn" ></div>
 	<div class="ar-modal-content">
 		<ol class="breadcrumb">
-			<li>Estado de la solicitud: Pendiente</li>
+			<li>{{crequest}}</li>
 		</ol>
+		<?php /* Event details */ ?>
+		<h3>{{cevent.name}}</h3>
+		<div class="ar-row">
+			<div class="col-xs-6 col-sm-4">{{cevent.time}}</div>
+			<div class="col-xs-6 col-sm-4">Inicia: {{cevent.start_day}}</div>
+			<div class="col-xs-6 col-sm-4">Termina: {{cevent.end_day}}</div>
+		</div>
+		<div class="ar-row">
+			<div class="col-xs-12 col-sm-6">{{cevent.place}}</div>
+			<div class="col-xs-12 col-sm-6" ng-show="cevent.has_cost">Evento gratuito</div>
+		</div>
+		<div class="ar-row">
+			<p>{{cevent.directed_to}}</p>
+			<p>{{cevent.link}}</p>
+		</div>			
+		<p>
+			{{cevent.description}}
+		</p>
+		
 
-		<div class="max1000">
+		<?php /* Tasks and their statuses */ ?>
+		<div class="ar-row">
 
-			<?php /* Event details */ ?>
-			<div class="col-xs-12 col-md-7">
-				<h3>XIV Congreso Nacional de Nutrición</h3>
+			<div class="ar-row breadcrumb" ng-repeat="task in crequest.tasks">
+				<div class="col-xs12">{{task.description}}</div>
+				<div class="col-xs6"><b>{{task.status}}</b></div>
 				<div class="ar-row">
-					<div class="col-xs-6 col-sm-4">9:00am</div>
-					<div class="col-xs-6 col-sm-4">Inicia: 26/01/2015</div>
-					<div class="col-xs-6 col-sm-4">Termina: 28/01/2015</div>
+					<div class="col-xs6">{{task.created_at}}</div>
+					<div class="col-xs6">{{task.deleted_at}}</div>
 				</div>
-				<div class="ar-row">
-					<div class="col-xs-12 col-sm-6">Complejo Cultural Universitario</div>
-				</div>
-				<div class="ar-row col-xs-12">
-					<p>Dirigido a: Estudiantes y Maestros</p>
-					<p>www.congresonacionaldenutricion.org.mx</p>
-				</div>			
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, sequi ut. Illum consequatur accusamus facilis, natus iste id quas, quasi magnam consectetur repellendus explicabo dolores porro velit. Quae officiis sint adipisci amet facilis debitis sequi mollitia veritatis iure voluptatum totam incidunt cumque quibusdam sed nesciunt ut ratione quisquam tempore possimus eum inventore, quidem autem. Soluta nihil perferendis facilis ullam fugiat expedita officia dolore dignissimos repellendus iure, quam, vitae qui pariatur. Cum, deleniti quae omnis at commodi similique minus. Ipsum vitae aspernatur, quisquam, quo doloribus, sint expedita culpa deserunt facilis corrupti debitis quas blanditiis aliquid maiores. Necessitatibus?	
+					{{task.comment}}
 				</p>
 			</div>
-			<div class="col-xs-12 col-md-5">
-			
-
-				<?php /* Tasks and their statuses */ ?>
-				<div class="ar-vwrap">
-					Tareas asignadas a esta solicitud:
-				</div>
-				<div class="ar-row">
-
-					<div class="ar-row breadcrumb">
-						<div class="col-xs12">Elaborar guión</div>
-						<div class="col-xs6">Estado: <b>Completa</b></div>
-						<div class="ar-row">
-							<div class="col-xs6">Asignada el 17/01/2015</div>
-							<div class="col-xs6">Terminada el 18/01/2015</div>
-						</div>
-						<div class="ar-row">
-							<div class="col-xs6">Asignada a: Ernesto Herrera</div>
-						</div>
-						<p>
-							El guión esta completo.
-						</p>
-					</div>
-
-					<div class="ar-row breadcrumb">
-						<div class="col-xs12">Grabar spot (Voz)</div>
-						<div class="col-xs6">Estado: <b>Pendiente</b></div>
-						<div class="ar-row">
-							<div class="col-xs6">Asignada el 17/01/2015</div>
-						</div>
-						<div class="ar-row">
-							<div class="col-xs6">Asignada a: Mariana Mendoza</div>
-						</div>
-					</div>
-
-					<div class="ar-row breadcrumb">
-						<div class="col-xs12">Grabar spot (Cabina)</div>
-						<div class="col-xs6">Estado: <b>Pendiente</b></div>
-						<div class="ar-row">
-							<div class="col-xs6">Asignada el 17/01/2015</div>
-						</div>
-						<div class="ar-row">
-							<div class="col-xs6">Asignada a: Julio Martorel</div>
-						</div>
-					</div>
-
-				</div>
 
 
-
-				<button class="btn">Asignar tarea</button>
-			</div>
-			
 		</div>
-		
-	</div>
-</div>
 
-<div class="ar-fullscreen-panel">
-	<div class="ar-modal-title">Solicitud de Spot de radio</div>
-	<div class="ar-modal-closebtn" ></div>
-	<div class="ar-modal-content">
+
+
+		<button class="btn">Asignar tarea</button>
 	</div>
 </div>
 
@@ -163,8 +120,8 @@
 </div>
 
 <a href="">Ver solicitudes atendidas</a>
-</div>
 
+</div>
 <script>
 	ROOT_PATH = "<?php echo URL::to('/'); ?>";
 	FORM_ENABLED = false;
