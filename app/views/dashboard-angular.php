@@ -40,7 +40,7 @@
 				<?php echo Form::open(array('url' => 'event/add', 'method' => 'post', 'role' => 'form', 'enctype'=> 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 					
 					<div class="col-xs-12 col-sm-4">
-						<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" value="<?php echo Input::old('name'); ?>">
+						<input type="text" class="form-horizontal" name="name" id="name" placeholder="Nombre del evento" autocomplete="off" required value="<?php echo Input::old('name'); ?>">
 						
 						<?php /* type date */?>
 						<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="start_day" id="start_day" placeholder="Fecha de inicio" autocomplete="off" required value="<?php echo Input::old('start_day'); ?>">
@@ -288,7 +288,8 @@
 
 							
 							<div class="ar-row file-row" ng-repeat="file in currentEvent.support_materials">
-								<input type="hidden" name="{{file.file}}" value="{{file.file}}" id="{{file.file}}">
+								<!-- <input type="hidden" name="{{file.file}}" value="{{file.file}}" id="{{file.file}}"> -->
+								<input type="hidden" name="support_materials[]" value="{{file.file}}" id="{{file.file}}">
 								<div class="file-icon {{file.format}} col-xs-2"></div>
 								<div class="filename col-xs-8">
 									<a target="_blank" href="{{ROOT_PATH + file.file}}">{{file.original_name}}</a>									

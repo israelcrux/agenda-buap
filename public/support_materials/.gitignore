@@ -1,4 +1,5 @@
 *.jpg
+*.jpeg
 *.png
 *.bmp
 *.pdf
@@ -6,3 +7,5 @@
 *.docx
 *.ppt
 *.pptx
+*.zip
+*.rar
