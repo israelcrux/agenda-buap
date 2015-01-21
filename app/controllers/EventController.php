@@ -1,5 +1,7 @@
 <?php 
 
+    use Illuminate\Support\MessageBag;
+
     class EventController extends BaseController {
 
         public function eventsByUser($user_id) {
@@ -102,7 +104,7 @@
 
             /* Getting information about diffusion */
             if(Input::has('services')) {
-                /* Storing services to the event */
+                /* Getting, validating and storing services to the event */
                 $services = Input::get('services');
                 $data_services = array(
                     'start_service' => Input::get('start_day'),
@@ -122,7 +124,7 @@
                     }
                 }
 
-                /* Storing support material to the event */
+                /* Getting, validating and storing support material to the event */
                 if(Input::hasFile('files')) {
                     $files = Input::file('files');
 
@@ -143,7 +145,7 @@
             }
 
             if(Input::has('resources_sources')) {
-                /* Storing resources sources to the event */
+                /* Getting, validating and storing resources sources to the event */
                 $resources_sources = Input::get('resources_sources');
 
                 foreach ($resources_sources as $resource_source) {
@@ -161,7 +163,7 @@
             }
 
             if(Input::has('witnesses')) {
-                /* Storing witnesses to the event */
+                /* Getting, validating and storing witnesses to the event */
                 $witnesses = Input::get('witnesses');
 
                 foreach ($witnesses as $witness) {
@@ -180,23 +182,6 @@
 
             return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente ' . $event->id_dci);
         }
-
-        /*
-         * Viewing an event information
-         */
-        /*public function viewEvent($id) {
-            $event = EventDCI::find($id);
-            if($event->user_id == Auth::user()->id) {
-                $event['services']          = $event->services()->wherePivot('deleted_at', '=', NULL)->get();
-                $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
-                $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
-                $event['support_materials'] = $event->support_materials()->get();
-                return json_encode($event);
-            }
-            else {
-                return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para ver este evento');
-            }
-        }*/
 
         /*
          * Editing an event
@@ -303,22 +288,33 @@
                     }
                 }
 
-            //     /* Storing support material to the event */
-            //     if(Input::hasFile('files')) {
-            //         $files = Input::file('files');
+                /* Updating support material to the event */
+                $new_support_materials = empty(Input::get('support_materials')) ? array() : Input::get('support_materials');
+                $old_support_materials = $event->support_materials()->get();
 
-            //         foreach ($files as $file) {
-            //             $new_name = str_random(20).'.'.$file->getClientOriginalExtension();
-            //             $file->move('./support_materials', $new_name);
+                /* Soft deleting to files deleted by user */
+                foreach ($old_support_materials as $old_support_material) {
+                    if(!in_array($old_support_material->file, $new_support_materials)) {
+                        $old_support_material->delete();
+                    }
+                }
 
-            //             $support_material_data = array(
-            //                 'file' => 'support_materials/'.$new_name,
-            //             );
+                /* Inserting new files added by user */
+                if(Input::hasFile('files')) {
+                    $files = Input::file('files');
 
-            //             $support_material = new SupportMaterial($support_material_data);
-            //             $event->support_materials()->save($support_material);
-            //         }
-            //     }
+                    foreach ($files as $file) {
+                        $new_name = str_random(20).'.'.$file->getClientOriginalExtension();
+                        $file->move('./support_materials', $new_name);
+
+                        $support_material_data = array(
+                            'file' => 'support_materials/'.$new_name,
+                        );
+
+                        $support_material = new SupportMaterial($support_material_data);
+                        $event->support_materials()->save($support_material);
+                    }
+                }
 
             }
 
@@ -346,7 +342,7 @@
                         return Redirect::to('dashboard')
                             ->with('alert', 'Las fuentes de recursos actualizadas no son válidas')
                             ->with('FORM_ENABLED','true')
-                            ->with('action','add')
+                            ->with('action','edit')
                             ->withInput();
                     }
                 }
@@ -377,7 +373,7 @@
                         return Redirect::to('dashboard')
                             ->with('alert', 'Los testigos actualizados no son válidos')
                             ->with('FORM_ENABLED','true')
-                            ->with('action','add')
+                            ->with('action','edit')
                             ->withInput();
                     }
                 }
@@ -440,6 +436,7 @@
             /* Getting the actual date to validation */
             $now = date('Y-m-d', strtotime("-1 days"));
 
+
             /* Creating a event validator */
             $validator = Validator::make(
                 Input::all(),
@@ -454,14 +451,52 @@
                     'services'          => 'array',
                     'resources_sources' => 'array',
                     'witnesses'         => 'array',
-                    // 'files'             => 'max:2000|mimes:jpeg,bmp,png,bm,doc,dot,jfif,,jfif-tbnl,jpe,jpg,jps,ppt,xls,x-png,zip,tar,gtar,gzip',
+                    'files'             => 'array',
                 )
             );
 
+            /* Check if validation is correct */
             if($validator->fails()) {
                 return array('isValid' => false, 'message' => $validator->messages());
             }
 
+            /* Validating uploaded files */
+            if(Input::hasFile('files')) {
+
+                $error_files = new MessageBag();
+                $error = false;
+
+                foreach (Input::file('files') as $file) {
+
+                    $validator_file = Validator::make(
+                        array(
+                            'file' => $file
+                        ),
+                        array(
+                            'file' => 'mimes:jpg,jpeg,png,bmp,pdf,doc,docx,ppt,pptx,zip,rar|max:2024',
+                        ),
+                        array(
+                            'file.mimes' => 'Archivo '.$file->getClientOriginalName().' con formato inválido',
+                            'file.max'   => 'Archivo '.$file->getClientOriginalName().' con peso superior a :max kilobytes',
+                        )
+                    );
+
+                    if($validator_file->fails()) {
+                        $error = true;
+
+                        foreach ($validator_file->messages()->all() as $message) {
+                            $error_files->add(str_random(5), $message);
+                        }
+                    }
+                
+                }
+
+                if($error) {
+                    return array('isValid' => false, 'message' => $error_files);
+                }
+
+            }
+                
             return array('isValid' => true, 'message' => '');
         }
 
