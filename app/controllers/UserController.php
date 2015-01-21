@@ -164,8 +164,8 @@
             $validator = Validator::make(
                 Input::all(),
                 array(
-                    'first_name' => 'required|alpha',
-                    'last_name' => 'required|alpha',
+                    'first_name' => 'required',
+                    'last_name' => 'required',
                     'phone' => array('regex:/([0-9]+|-|\s)+/'),
                     'extension_phone' => array('regex:/([0-9]+|-|\s)+/'),
                     'email' => 'required|email|unique:users',
