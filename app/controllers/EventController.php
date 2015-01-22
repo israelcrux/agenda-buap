@@ -102,6 +102,14 @@
             $event = new EventDCI($event_data);
             $event = $user->events()->save($event);
 
+            if(is_null($event)) {
+                return Redirect::to('dashboard')
+                        ->with('alert', 'Error al crear evento, intente nuevamente')
+                        ->with('FORM_ENABLED','true')
+                        ->with('action','add')
+                        ->withInput();
+            }
+
             /* Getting information about diffusion */
             if(Input::has('services')) {
                 /* Getting, validating and storing services to the event */
@@ -138,7 +146,15 @@
                         );
 
                         $support_material = new SupportMaterial($support_material_data);
-                        $event->support_materials()->save($support_material);
+                        $support_material = $event->support_materials()->save($support_material);
+
+                        if(is_null($support_material)) {
+                            return Redirect::to('dashboard')
+                            ->with('alert', 'Error al subir material de soporte, vuelva a intentarlo')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
+                        }
                     }
                 }
 

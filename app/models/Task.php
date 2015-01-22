@@ -17,6 +17,11 @@
         protected $dates = ['deleted_at'];
 
         /*
+         * Table fields guarded, attributes do not mass-assignable
+         */
+        protected $guarded = array('user_id');
+
+        /*
          * Many tasks belongs to an user
          */
         public function users() {

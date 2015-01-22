@@ -19,7 +19,7 @@
 		protected $hidden = array('password', 'remember_token');
 
         /*
-         * Table fields guarded, need admin privileges to modify.
+         * Table fields guarded, attributes do not mass-assignable
          */
         protected $guarded = array('user_type_id');
 
