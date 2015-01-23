@@ -47,6 +47,14 @@ input[type="date"]:valid:before {
 .strong {
   font-weight: bold;
 }
+.it {
+  font-style: italic;
+}
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 footer {
   margin-top: -140px;
   min-height: 140px;
@@ -1053,6 +1061,21 @@ form {
   margin-top: -25px;
   padding: 2px;
   cursor: pointer;
+}
+span.dci_status {
+  font-weight: bold;
+}
+span.dci_status.pen {
+  color: #d35400;
+}
+span.dci_status.pro {
+  color: #ffa500;
+}
+span.dci_status.ate {
+  color: #008000;
+}
+span.dci_status.apr {
+  color: #0ff;
 }
 .ar-contright>div {
   float: right;
