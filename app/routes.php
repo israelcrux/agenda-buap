@@ -94,18 +94,25 @@ Route::group(array('before' => 'auth'), function(){
         
     });
 
-    Route::group(array('prefix' => 'tasks'), function(){
-        
-        /* Route to get events to panel of heads */
-        Route::get('/{id}', 'TaskController@tasksByRequest');
+    Route::group(array('before' => 'boss'), function(){
+        Route::group(array('prefix' => 'tasks'), function(){
+            
+            /* Route to get events to panel of heads */
+            Route::get('/{id}', 'TaskController@tasksByRequest');
 
-        /* Route to view elements required to build form to assign a task to an event */
-        Route::get('/assign/', 'TaskController@toAssignTask');
+            /* Route to view elements required to build form to assign a task to an event */
+            Route::get('/assign/', 'TaskController@toAssignTask');
 
-        /* Route to assign a task to an user */
-        Route::post('/assign/', 'TaskController@assignTask');
+            /* Route to assign a task to an user */
+            Route::post('/assign/', 'TaskController@assignTask');
+
+            /* Route to check a task like Completed */
+            Route::get('/completed/{id}', 'TaskController@taskCompleted');
+
+            /* Route to view all tasks (pending and completed tasks) by user */
+            Route::get('/view/', 'TaskController@tasksByUser');
+        });
     });
-    
 
     /* Route to get events of certain user */
     Route::get('/events/user/{id}', 'EventController@eventsByUser');

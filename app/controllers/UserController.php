@@ -219,9 +219,11 @@
                 $user_auth_activation->user_id    = $user->id;
                 $user_auth_activation->save();
 
-                Mail::send('emails.auth.activate', array('token' => $user_auth_activation->token), function($message) use($user) {
-                    $message->to($user->email)->subject('Bienvenido a la DCI!');
-                });
+                Mail::send('emails.auth.activate', array('token' => $user_auth_activation->token), 
+                    function($message) use($user) {
+                        $message->to($user->email)->subject('Bienvenido a la DCI!');
+                    }
+                );
 
                 $message = 'Gracias por registrarse, en breve recibirá un correo de confirmación';
             }

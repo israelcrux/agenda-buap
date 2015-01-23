@@ -36,6 +36,11 @@
                     'user_id'     => 'required',
                     'event_id'    => 'required',
                     'service_id'  => 'required',
+                ),
+                array(
+                    'user_id'     => 'Error al procesar petición',
+                    'event_id'    => 'Error al procesar petición',
+                    'service_id'  => 'Error al procesar petición',
                 )
             );
 
@@ -58,9 +63,45 @@
 
             /* Checking if the task was storing successful */
             if(!is_null($task)) {
+                /* If the task has been succesful saved, send an email to the user with a new task */
+                Mail::send('emails.notification.newtask', array(), 
+                    function($message) use($user) {
+                        $message->to($user->email)->subject('Nueva tarea asignada - DCI - BUAP');
+                    }
+                );
                 return Redirect::to('dashboard-boss')->with('alert', 'Tarea asignada correctamente');
             }
 
             return Redirect::to('dashboard-boss')->with('alert', 'Error al asignar la tarea, vuelva a intentarlo');
+        }
+
+        /*
+         * Return all task (pending and/or completed)
+         */
+        public function tasksByUser() {
+            return 'Tareas';
+        }
+
+        /*
+         * Change the task status to completed and update the information required
+         */
+        public function taskCompleted($id) {
+
+            $task = Task::find($id);
+
+            if(is_null($task)) {
+                return Redirect::to('dashboard-employee')->with('alert', 'Error al procesar la petición');
+            }
+
+            if($task->status == 'Completa') {
+                return Redirect::to('dashboard-employee')->with('alert', 'Tarea marcada previamente como completa');
+            }
+
+            $task->status = 'Completa';
+            $task->comment .= ' ¡Tarea finalizada! ';
+            $task->completed_at = new DateTime();
+            $task->save();
+
+            return Redirect::to('dashboard-employee')->with('alert', 'La tarea ha sido marcada como completada. ¡Felicitaciones!');
         }
     }
