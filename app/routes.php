@@ -120,9 +120,13 @@ Route::group(array('before' => 'auth'), function(){
     /* Route to get events to panel of heads */
     Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
 
+    /* Probando las vistas */
+
+    Route::get('/dashboard-boss/', 'UserController@dashboardBoss');
+    /*
+    Route::get('/dashboard-boss/', function(){
+        return View::make('dashboard-boss');
+    });
+    */
 });
 
-/* Probando las vistas */
-Route::get('/dashboard-boss/', function(){
-    return View::make('dashboard-boss');
-});

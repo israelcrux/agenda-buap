@@ -1,8 +1,8 @@
 <div ng-controller="BDashboardController">
 <?php 
-	/*--------------------- Switchers---------------------------*/ 
- ?>
-<div class="ar-fullscreen-panel">
+	/*--------------------- Panel de "detalles" de solicitud---------------------------*/ 
+?>
+<div class="ar-fullscreen-panel" style="display:none">
 	<div class="ar-modal-title">Solicitud de {{crequest.service}}</div>
 	<div class="ar-modal-closebtn" ></div>
 	<div class="ar-modal-content">
@@ -53,7 +53,9 @@
 	</div>
 </div>
 
-
+<?php 
+/*--------------------- PANEL PRINCIPAL ---------------------------*/ 
+?>
 <div class="ar-vwrap well">
 
 	<?php 
@@ -128,27 +130,36 @@
 </script>
 <script>
 	var app = angular.module('dashboard',[]);
-	// app.factory('DataService',['$http',function($http){
-	// 	return {
-	// 		calendar : function(year,month){
-	// 			return $http.get(window['ROOT_PATH']+'/service_requirements/'+year+'-'+twoDigits(month))
-	// 				.then(function(response){					
-	// 					return calendarize(year,month,response.data);
-	// 				},
-	// 				function(){
-	// 					console.log('Could not load calendar!');
-	// 				})
-	// 		}
-	// 	};
-	// }]);
-	// app.controller('BDashboardController', [ '$scope', 'DataService' ,function($scope,DataService){ 
-	app.controller('BDashboardController', [ '$scope', function($scope){ 
-
-		//http://www.thaigoodview.com/library/contest2553/type2/foreign04/03/images/white-check-mark-box-ok-all-right-correct-women_design.png
+	
+	app.factory('DataService',['$http',function($http){
+		return {
+			solicitudes : function(area_id){
+				return $http.get(window['ROOT_PATH']+'/service_requirements/'+area_id)
+					.then(function(response){
+						return response.data;
+					},
+					function(){
+						console.log('Could not load service requirements!');
+					})
+			}
+		};
+	}]);
+	
+	app.controller('BDashboardController', [ '$scope', 'DataService' ,function($scope,DataService){ 
+	//app.controller('BDashboardController', [ '$scope', function($scope){ 
 
 		$scope.pending = true;
 		$scope.in_process = true;
 
+		$scope.solicitudes = DataService.solicitudes(<?php echo $area; ?>);
+		$scope.solicitudes.then(function(data){
+			console.log( 'culiao!' );
+			console.log( data );
+			$scope.solicitudes = data;
+		});
+
+
+		/*
 		$scope.solicitudes = [
 				{ 
 					name : 'Spot de radio', //Nombre del servicio relacionado a esta colicitud
@@ -173,5 +184,6 @@
 					}
 				}
 			];
+		*/	
 	}]);
 </script>
