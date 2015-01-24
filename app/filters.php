@@ -54,10 +54,17 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
-/* Filter to check the role that have the logged user */
+/* Filter to check if the role that have the logged user is boss */
 Route::filter('boss', function(){
-	if(Auth::user()->user_type_id != 3){
-		return Response::view('errors.Unauthorized', array(), 401);
+	if(Auth::user()->user_type_id < 3){
+		return Redirect::to('login');
+	}
+});
+
+/* Filter to check if the role that have the logged user is administrator */
+Route::filter('admin', function(){
+	if(Auth::user()->user_type_id != 4){
+		return Redirect::to('login');
 	}
 });
 

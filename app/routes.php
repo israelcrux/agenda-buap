@@ -14,7 +14,7 @@
 /* Global patterns */
 Route::pattern('key', '[a-zA-Z0-9]*'); /* Pattern for a key generated automatically */
 Route::pattern('year_month', '[0-9]{4}-[0-9]{2}'); /* Pattern for a year and month */
-Route::pattern('id', '[0-9]+');
+Route::pattern('id', '[0-9]+'); /* Pattern for an unique identificator */
 
 /* Route to home */
 Route::get('/', function(){
@@ -26,8 +26,24 @@ Route::get('/calendar/{year_month?}', 'EventController@calendar');
 
 /* Route to show the login form */
 Route::get('/login', function(){
-    if(Auth::check()){
-        return Redirect::to('dashboard');
+    if(Auth::check()) {
+        switch (Auth::user()->user_type_id) {
+            case 1:
+                return Redirect::to('dashboard');
+                break;
+            case 2:
+                return Redirect::to('dashboard-employee');
+                break;
+            case 3:
+                return Redirect::to('dashboard-boss');
+                break;
+            case 4:
+                return Redirect::to('dashboard-admin');
+                break;
+            default:
+                return Redirect::to('/');
+                break;
+        }
     }
     return View::make('login');
 });
@@ -38,7 +54,23 @@ Route::post('/login', 'UserController@login');
 /* Show reminder form */
 Route::get('/password', function(){
     if(Auth::check()){
-        return Redirect::to('dashboard');
+        switch (Auth::user()->user_type_id) {
+            case 1:
+                return Redirect::to('dashboard');
+                break;
+            case 2:
+                return Redirect::to('dashboard-employee');
+                break;
+            case 3:
+                return Redirect::to('dashboard-boss');
+                break;
+            case 4:
+                return Redirect::to('dashboard-admin');
+                break;
+            default:
+                return Redirect::to('/');
+                break;
+        }
     }
     return View::make('password');
 });
@@ -78,6 +110,7 @@ Route::group(array('before' => 'auth'), function(){
         );
     });
 
+    /* Route that have the prefix event/ */
     Route::group(array('prefix' => 'event'), function(){
 
         /* Route to store a new event */
@@ -94,7 +127,21 @@ Route::group(array('before' => 'auth'), function(){
         
     });
 
+    /* Route to get events of certain user */
+    Route::get('/events/user/{id}', 'EventController@eventsByUser');
+
+    /* Routes that need a minimum boss role authentication to access */
     Route::group(array('before' => 'boss'), function(){
+
+        /* Route to view the dashboard to the boss */
+        Route::get('/dashboard-boss/', function(){
+            return View::make('dashboard-boss', array('area' => Auth::user()->department_id)); 
+        });
+
+        /* Route to get events to panel of heads */
+        Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
+
+        /* Route that have the prefix tasks/ */
         Route::group(array('prefix' => 'tasks'), function(){
             
             /* Route to get events to panel of heads */
@@ -112,21 +159,13 @@ Route::group(array('before' => 'auth'), function(){
             /* Route to view all tasks (pending and completed tasks) by user */
             Route::get('/view/', 'TaskController@tasksByUser');
         });
+        
     });
 
-    /* Route to get events of certain user */
-    Route::get('/events/user/{id}', 'EventController@eventsByUser');
+    /* Routes that need a minimum admin role authentication to access */
+    Route::group(array('before' => 'admin'), function(){
 
-    /* Route to get events to panel of heads */
-    Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
-
-    /* Probando las vistas */
-
-    Route::get('/dashboard-boss/', 'UserController@dashboardBoss');
-    /*
-    Route::get('/dashboard-boss/', function(){
-        return View::make('dashboard-boss');
     });
-    */
+
+    
 });
-

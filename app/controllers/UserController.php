@@ -133,11 +133,24 @@
                     return Redirect::to('login')->with('alert', 'Usuario requiere activación')->withInput(Input::except('password'));
                 }
 
-                //Boss or not boss
-                if(Auth::user()->user_type_id == 3){
-                    return Redirect::to('dashboard-boss');
+                /* Verifying if the user role */
+                switch (Auth::user()->user_type_id) {
+                    case 1:
+                        return Redirect::to('dashboard');
+                        break;
+                    case 2:
+                        return Redirect::to('dashboard-employee');
+                        break;
+                    case 3:
+                        return Redirect::to('dashboard-boss');
+                        break;
+                    case 4:
+                        return Redirect::to('dashboard-admin');
+                        break;
+                    default:
+                        return Redirect::to('/');
+                        break;
                 }
-                else return Redirect::to('dashboard');
             }
             else {
                 return Redirect::to('login')->with('alert', 'Usuario y/o contraseña incorrectos')->withInput(Input::except('password'));
@@ -272,18 +285,6 @@
 
             return Redirect::to('login')->with('alert', 'Su cuenta ha sido activada, ahora puede iniciar sesión');
 
-        }
-
-
-        /**
-        * Dashboard boss!
-        * No estoy seguro de que deba ir en este controller xd
-        */
-
-        public function dashboardBoss(){
-            if(Auth::user()->user_type_id != 3)
-                return Redirect::to('/')->with('alert','Acceso denegado');
-            return View::make('dashboard-boss', array('area' => Auth::user()->department_id)); 
         }
 
     }
