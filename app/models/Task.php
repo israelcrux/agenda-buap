@@ -28,4 +28,11 @@
             return $this->belongsTo('User');
         }
 
+        /*
+         * Many tasks belongs to an EventDCIService
+         */
+        public function eventdciservice() {
+            return $this->belongsTo('EventDCIService');
+        }
+
     }

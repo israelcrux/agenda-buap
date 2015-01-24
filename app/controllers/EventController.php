@@ -419,28 +419,38 @@
          * Getting information about services requirements by area to panel of heads
          */
         public function serviceRequirementsByArea($area) {
-            return EventDCI::with(
+            
+            $events = EventDCI::with(
                 array(
-                    'services' => function($query) use ($area) {
-                        $query->whereRaw('event_service.deleted_at IS NULL and services.department_id = ? and (dci_status = ? OR dci_status = ?)', 
-                                    array($area, 'Pendiente', 'En Proceso')
-                                )
-                            ->orderBy('start_service');
-                    }
+                    'services' => 
+                        function($query) use ($area) {
+                            $query->whereRaw('event_service.deleted_at IS NULL and services.department_id = ?', 
+                                        array($area)
+                                    )
+                                ->orderBy('start_service');
+                        }
                 )
             )
             ->whereHas('services', 
                 function($query) use ($area) {
-                    $query  ->whereRaw('event_service.deleted_at IS NULL and services.department_id = ? and (dci_status = ? OR dci_status = ?)', 
+                    $query  ->whereRaw('`event_service`.`deleted_at` IS NULL and `services`.`department_id` = ? and (`dci_status` = ? OR `dci_status` = ?)', 
                                 array($area, 'Pendiente', 'En Proceso')
-                            )
-                            ->orderBy('start_service');
+                            );
                 }
             )
-            ->whereRaw('(dci_status = ? OR dci_status = ?)',
+            ->whereRaw('(`events`.`dci_status` = ? OR `events`.`dci_status` = ?)',
                 array('Pendiente', 'En Proceso')
             )
             ->get();
+
+            foreach ($events as $event) {
+                foreach ($event['services'] as $service) {
+                    $service['tasks'] = $service->pivot->tasks()->get();
+                }
+            }
+
+            return $events;
+
         }
 
         /*

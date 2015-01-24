@@ -78,8 +78,22 @@
         /*
          * Return all task (pending and/or completed)
          */
-        public function tasksByUser() {
-            return 'Tareas';
+        public function tasksByUser($task_type = 'pending') {
+            $pending = $completed = null;
+
+            if($task_type == 'pending' or $task_type == 'all') {
+                $pending = Task::where('user_id', '=', Auth::user()->id)
+                            ->where('status', '=', 'Pendiente')
+                            ->get();
+            }
+            
+            if($task_type == 'completed' or $task_type == 'all') {
+                $completed = Task::where('user_id', '=', Auth::user()->id)
+                            ->where('status', '=', 'Completa')
+                            ->get();
+            }
+
+            return array('pending' => $pending, 'completed' => $completed);
         }
 
         /*

@@ -15,6 +15,7 @@
 Route::pattern('key', '[a-zA-Z0-9]*'); /* Pattern for a key generated automatically */
 Route::pattern('year_month', '[0-9]{4}-[0-9]{2}'); /* Pattern for a year and month */
 Route::pattern('id', '[0-9]+'); /* Pattern for an unique identificator */
+Route::pattern('task_type', '(completed|pending|all)'); /* Pattern for a type of task */
 
 /* Route to home */
 Route::get('/', function(){
@@ -130,6 +131,11 @@ Route::group(array('before' => 'auth'), function(){
     /* Route to get events of certain user */
     Route::get('/events/user/{id}', 'EventController@eventsByUser');
 
+    /* Routes that need a minimum employee role authentication to access */
+    Route::group(array('before' => 'employee'), function(){
+
+    });
+
     /* Routes that need a minimum boss role authentication to access */
     Route::group(array('before' => 'boss'), function(){
 
@@ -153,11 +159,16 @@ Route::group(array('before' => 'auth'), function(){
             /* Route to assign a task to an user */
             Route::post('/assign/', 'TaskController@assignTask');
 
+            /*******************************************
+             * Usadas por el role de employee, mover cuando dashboard-employee esté listo
+             *******************************************/
+
             /* Route to check a task like Completed */
             Route::get('/completed/{id}', 'TaskController@taskCompleted');
 
             /* Route to view all tasks (pending and completed tasks) by user */
-            Route::get('/view/', 'TaskController@tasksByUser');
+            Route::get('/view/{task_type?}', 'TaskController@tasksByUser');
+            
         });
         
     });

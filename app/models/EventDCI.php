@@ -40,7 +40,7 @@
         */
         public function services() {
             return $this->belongsToMany('Service', 'event_service', 'event_id', 'service_id')
-                        ->withPivot('start_service', 'end_service', 'dci_status', 'in_process_at', 'attended_at', 'deleted_at')
+                        ->withPivot('id', 'start_service', 'end_service', 'dci_status', 'in_process_at', 'attended_at', 'deleted_at')
                         ->withTimestamps();
         }
 
@@ -67,6 +67,16 @@
         */
         public function support_materials() {
             return $this->hasMany('SupportMaterial', 'event_id', 'id');
+        }
+
+        /*
+         * Defining a custom pivot model for relationship many to many between EventDCI and Service
+         */
+        public function newPivot(Eloquent $parent, array $attributes, $table, $exists) {
+            if($parent instanceof Service) {
+                return new EventDCIService($parent, $attributes, $table, $exists);
+            }
+            return parent::newPivot($parent, $attributes, $table, $exists);
         }
 
     }

@@ -54,6 +54,13 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+/* Filter to check if the role that have the logged user is employee */
+Route::filter('employee', function(){
+	if(Auth::user()->user_type_id < 2){
+		return Redirect::to('login');
+	}
+});
+
 /* Filter to check if the role that have the logged user is boss */
 Route::filter('boss', function(){
 	if(Auth::user()->user_type_id < 3){
