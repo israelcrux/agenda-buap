@@ -45,7 +45,6 @@
             );
 
             if($validator->fails()) {
-                // return Redirect::to('dashboard-boss')->with('alert', $validator->messages());
                 return '{"status":"error","message":'.$validator->messages().'}';
             }
 
@@ -58,8 +57,7 @@
 
             /* Creating and storing new task object */
             $task = new Task($task_data);
-            $user = User::find(3);
-            // $user = User::find(Input::get('user_id'));
+            $user = User::find(Input::get('user_id'));
             $task = $user->tasks()->save($task);
 
             /* Checking if the task was storing successful */
@@ -70,11 +68,9 @@
                         $message->to($user->email)->subject('Nueva tarea asignada - DCI - BUAP');
                     }
                 );
-                // return Redirect::to('dashboard-boss')->with('alert', 'Tarea asignada correctamente');
                 return '{"status":"success","message":"Tarea asignada correctamente"}';
             }
 
-            // return Redirect::to('dashboard-boss')->with('alert', 'Error al asignar la tarea, vuelva a intentarlo');
             return '{"status":"error","message":"Error al asignar la tarea, vuelva a intentarlo"}';
         }
 
