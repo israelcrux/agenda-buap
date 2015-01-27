@@ -53,7 +53,7 @@
             $task_data = array(
                 'description'      => Input::get('description'),
                 'comment'          => Input::get('comment'),
-                'event_service_id' => Input::get('event_id'),
+                'event_service_id' => Input::get('event_service_id'),
             );
 
             /* Creating and storing new task object */
