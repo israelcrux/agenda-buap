@@ -5,9 +5,11 @@
         /*
          * Return the tasks assigned to an service 
          */
-        public function tasksByRequest($event_service_id) {
-            // return Task::where('event_service_event_id', '=', $event_service_id);
-            return EventDCIService::where('event_id', '=', $event_service_id);
+        public function tasksByEvent($event, $task) {
+            // return Task::where('event_service_event_id', '=', $event_service_id)->get();
+            
+            // if($event == s)
+
         }
 
         /*
@@ -51,10 +53,11 @@
                 'comment'          => Input::get('comment'),
                 'event_service_id' => Input::get('event_id'),
             );
-            
+
             /* Creating and storing new task object */
             $task = new Task($task_data);
-            $user = User::find(Input::get('user_id'));
+            $user = User::find(3);
+            // $user = User::find(Input::get('user_id'));
             $task = $user->tasks()->save($task);
 
             /* Checking if the task was storing successful */
