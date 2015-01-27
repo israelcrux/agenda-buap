@@ -1088,6 +1088,12 @@ span.dci_status.apr {
 .strong span.pending {
   color: #d35400;
 }
+.ar-empty-message {
+  padding: 50px 5%;
+  font-size: 1.5em;
+  color: #7d7d7d;
+  text-align: center;
+}
 @media (min-width: 768px) and (min-height: 600px) {
   .ar-login-form.ar-form-wrapper {
     padding-top: 1px;
