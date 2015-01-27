@@ -179,6 +179,5 @@ Route::group(array('before' => 'auth'), function(){
     Route::group(array('before' => 'admin'), function(){
 
     });
-
     
 });

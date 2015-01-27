@@ -3,7 +3,7 @@
     class TaskController extends BaseController {
 
         /*
-         * Return the tasks assigned to an service 
+         * Return the tasks assigned to a service 
          */
         public function tasksByEvent($event, $task) {
             // return Task::where('event_service_event_id', '=', $event_service_id)->get();
@@ -26,6 +26,7 @@
 
         /*
          * Assign a service task of event to an user of certain department
+         * Ajax JSON response
          */
         public function assignTask() {
 
@@ -44,7 +45,8 @@
             );
 
             if($validator->fails()) {
-                return Redirect::to('dashboard-boss')->with('alert', $validator->messages());
+                // return Redirect::to('dashboard-boss')->with('alert', $validator->messages());
+                return '{"status":"error","message":'.$validator->messages().'}';
             }
 
             /* Getting all data to the new task */
@@ -68,10 +70,12 @@
                         $message->to($user->email)->subject('Nueva tarea asignada - DCI - BUAP');
                     }
                 );
-                return Redirect::to('dashboard-boss')->with('alert', 'Tarea asignada correctamente');
+                // return Redirect::to('dashboard-boss')->with('alert', 'Tarea asignada correctamente');
+                return '{"status":"success","message":"Tarea asignada correctamente"}';
             }
 
-            return Redirect::to('dashboard-boss')->with('alert', 'Error al asignar la tarea, vuelva a intentarlo');
+            // return Redirect::to('dashboard-boss')->with('alert', 'Error al asignar la tarea, vuelva a intentarlo');
+            return '{"status":"error","message":"Error al asignar la tarea, vuelva a intentarlo"}';
         }
 
         /*

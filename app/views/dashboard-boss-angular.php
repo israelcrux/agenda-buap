@@ -1,55 +1,57 @@
 <div ng-controller="BDashboardController">
+
 <?php 
 	/*--------------------- Panel de "detalles" de solicitud---------------------------*/ 
 ?>
-<div class="ar-fullscreen-panel" style="display:none">
-	<div class="ar-modal-title">Solicitud de {{crequest.service}}</div>
-	<div class="ar-modal-closebtn" ></div>
-	<div class="ar-modal-content">
-		<ol class="breadcrumb">
-			<li>{{crequest}}</li>
-		</ol>
-		<?php /* Event details */ ?>
-		<h3>{{cevent.name}}</h3>
-		<div class="ar-row">
-			<div class="col-xs-6 col-sm-4">{{cevent.time}}</div>
-			<div class="col-xs-6 col-sm-4">Inicia: {{cevent.start_day}}</div>
-			<div class="col-xs-6 col-sm-4">Termina: {{cevent.end_day}}</div>
-		</div>
-		<div class="ar-row">
-			<div class="col-xs-12 col-sm-6">{{cevent.place}}</div>
-			<div class="col-xs-12 col-sm-6" ng-show="cevent.has_cost">Evento gratuito</div>
-		</div>
-		<div class="ar-row">
-			<p>{{cevent.directed_to}}</p>
-			<p>{{cevent.link}}</p>
-		</div>			
-		<p>
-			{{cevent.description}}
-		</p>
-		
-
-		<?php /* Tasks and their statuses */ ?>
-		<div class="ar-row">
-
-			<div class="ar-row breadcrumb" ng-repeat="task in crequest.tasks">
-				<div class="col-xs12">{{task.description}}</div>
-				<div class="col-xs6"><b>{{task.status}}</b></div>
+<div ng-hide="taskpanel_hidden" class="ar-fullscreen-panel-container">
+	<div class="ar-fullscreen-panel">
+		<div class="ar-modal-title">Tareas asignadas para solicitud de {{current_sol.name}}</div>
+		<div class="ar-modal-closebtn" ng-click="closeTaskPanel()"></div>
+		<div class="ar-modal-content">
+			<div class="col-xs-12 col-md-8">
+				<ol>
+					<h4>Evento: {{current_event.name}}</h4>
+				</ol>
+				<?php /* Tasks and their statuses */ ?>
 				<div class="ar-row">
-					<div class="col-xs6">{{task.created_at}}</div>
-					<div class="col-xs6">{{task.deleted_at}}</div>
+				
+					<div class="ar-empty-message" ng-show="!crequest.tasks.length">Aún no hay tareas asignadas a esta solicitud, ¡Es importante asignar tareas!</div>
+
+					<div class="ar-row breadcrumb" ng-repeat="task in crequest.tasks">
+						<div class="col-xs12">{{task.description}}</div>
+						<div class="col-xs6"><b>{{task.status}}</b></div>
+						<div class="ar-row">
+							<div class="col-xs6">{{task.created_at}}</div>
+							<div class="col-xs6">{{task.deleted_at}}</div>
+						</div>
+						<p>
+							{{task.comment}}
+						</p>
+					</div>
+
+
 				</div>
-				<p>
-					{{task.comment}}
-				</p>
 			</div>
+			<div class="col-xs-12 col-md-4">
+				
+				<div class="ar-form-container">
+					
+					<h4>Nueva tarea</h4>
+					<p>{{newtask_description}}</p>
+					<p>Para:</p>
 
+					<select ng-model="current_employee" class="form-control">
+						<option ng-repeat="employee in employees" ng-value="employee.id"> {{employee.first_name}} {{employee.last_name}}</option>
+					</select>
 
+					<input class="form-control" type="text" ng-model="newtask_description" placeholder="Descripción de la tarea">
+
+					<button class="btn form-control" ng-click="createTask()">Asignar tarea</button>
+
+				</div>
+				
+			</div>
 		</div>
-
-
-
-		<button class="btn">Asignar tarea</button>
 	</div>
 </div>
 
@@ -60,6 +62,7 @@
 
 	<?php 
 	/*--------------------- Switchers---------------------------*/ 
+	/*
 	?>	
 	<div class="ar-vwrap">
 		<div class="ar-row ar-contright">
@@ -79,46 +82,68 @@
 			</div>
 		</div>
 	</div>
-	
 	<div class="ar-spacer"></div>
+	<?php 
+	*/
+	?>
+	
 
 	<?php 
 	/*--------------------- Service requests ---------------------------*/ 
 	 ?>
-	<div class="col-xs-12 col-sm-8">
-		
-		<div class="ar-list">
-			<div class="ar-element" ng-repeat="sol in solicitudes">
+	<!-- <div class="col-xs-12 col-sm-8"> -->
+	
+	<div class="ar-empty-message" ng-show="!event.length">Aún no hay solicitudes de los servicios de ésta área.</div>
+
+	<div class="ar-list" ng-repeat="event in events">
+
+
+		<div class="ar-vwrap">
+			<h4 class="it">{{event.name}}</h4>
+		</div>
+
+		<div class="col-xs-12 col-sm-4">
+			<div class="ar-row">
+				<div class="col-xs-12 col-md-6">Inicia: {{event.start_day}}</div> 
+				<div class="col-xs-12 col-md-6">Termina: {{event.end_day}}</div> 
+			</div>
+			<p class="col-xs-12">Lugar: {{event.place}}</p>
+			<p class="col-xs-12">Hora de inicio: {{event.time}} hrs.</p>
+			<p class="col-xs-12 col-md-6" ng-show="event.has_cost">Evento con costo</p>
+			<p class="col-xs-12 col-md-6" ng-show="!event.has_cost">Evento gratuito</p>
+			<p class="col-xs-12 col-md-6">Dirigido a: {{event.directed_to}}</p>
+			<p class="col-xs-12" ng-show="event.link">{{event.link}}</p>
+			<p  class="col-xs-12">{{event.description}}</p>
+
+		</div>
+			
+		<div class="col-xs-12 col-sm-8">
+			<div class="ar-element" ng-repeat="sol in event.services">
 				<div class="ar-row">
-					<div class="col-sm-12 col-md-9">
-						<h4 class="strong">{{sol.name}} <span class="pending">[Pendiente]</span></h4>
+					<div class="col-sm-12 col-md-8">
+						<h4>{{sol.name}} <span class="dci_status {{pendingclasses[sol.pivot.dci_status]}}">[{{sol.pivot.dci_status}}]</span></h4>
 					</div>
-					<div class="col-sm-12 col-md-3">
-						<h5>{{sol.start_service}}</h5>
+					<div class="col-sm-12 col-md-4">
+						<h5>Soliciitado en: {{sol.pivot.start_service}}</h5>
 					</div>
 				</div>
 
-				<div class="ar-row">
-					<div class="col-xs-12">
-						<h4>{{sol.event.name}}</h4>
-						<h5>({{sol.event.start_day}})</h5>
-					</div>
-				</div>
 				<div class="ar-element-buttons ar-row">
 					<div class="ar-button-info ">
-						<b>7</b> tareas asignadas
+						<b>xxx</b> tareas asignadas
 					</div>
 					<div class="ar-button-info">
-						<b>3</b> tareas pendientes
+						<b>xxx</b> tareas pendientes
 					</div>
-					<button class="btn">
-						Revisar Detalles
+					<button class="btn" ng-click="openTaskPanel(event,sol)">
+						Asignar/Revisar Tareas
 					</button>
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
+		
 </div>
 
 <a href="">Ver solicitudes atendidas</a>
@@ -133,57 +158,97 @@
 	
 	app.factory('DataService',['$http',function($http){
 		return {
-			solicitudes : function(area_id){
-				return $http.get(window['ROOT_PATH']+'/service_requirements/'+area_id)
+			//GET
+			events : function(area_id){
+				return $http.get(window['ROOT_PATH']+'/service-requirements/'+area_id)
 					.then(function(response){
 						return response.data;
 					},
 					function(){
 						console.log('Could not load service requirements!');
 					})
+			},
+			employees : function(){
+				return $http.get(window['ROOT_PATH']+'/tasks/assign')
+					.then(function(response){
+						return response.data;
+					},
+					function(){
+						console.log('Could not load employees');
+					});
+			},
+
+			//POST
+			createTask : function(data){
+				console.log('creating task: '+data);
+				console.log(data);
+				return $http.post(window['ROOT_PATH']+'/tasks/assign',data)
+					.then(function(response){
+						return response.data;
+					},
+					function(response){
+						console.log('Could not create task');
+						return false;
+					});	
 			}
 		};
 	}]);
 	
 	app.controller('BDashboardController', [ '$scope', 'DataService' ,function($scope,DataService){ 
-	//app.controller('BDashboardController', [ '$scope', function($scope){ 
 
-		$scope.pending = true;
-		$scope.in_process = true;
+		//static shit
+		$scope.pendingclasses = {
+			'Pendiente' : 'pen',
+			'En Proceso' : 'pro',
+			'Atendido' : 'ate',
+			'Aprobado' : 'apr'
+		};
 
-		$scope.solicitudes = DataService.solicitudes(<?php echo $area; ?>);
-		$scope.solicitudes.then(function(data){
-			console.log( 'culiao!' );
-			console.log( data );
-			$scope.solicitudes = data;
+
+		//----------- Services --------------
+
+		$scope.events = DataService.events(<?php echo $area; ?>);
+		$scope.events.then(function(data){
+			$scope.events = data;
+		});
+		$scope.employees = DataService.employees();
+		$scope.employees.then(function(data){
+			$scope.employees = data;
 		});
 
+		//----------- Event listeners -------
 
-		/*
-		$scope.solicitudes = [
-				{ 
-					name : 'Spot de radio', //Nombre del servicio relacionado a esta colicitud
-					start_service: '2015-01-01',
-
-					//Datos del evento relacionado
-					event : {
-				        "id_dci": "150107",
-				        "name": "Kylie Coffey Ipsum dolor sit amet, consectetur adipisicing elit. Odio, tenetur!",
-				        "start_day": "2015-01-16",
-				        "end_day": "2015-01-27",
-				        "place": "Magna qui doloribus eum voluptatem Eveniet porro e",
-				        "time": "06:00:00",
-				        "has_cost": 0,
-				        "directed_to": "Comunidad BUAP",
-				        "link": "http://www.kuvu.biz",
-				        "description": "Similique tenetur consectetur, maiores quis sapiente ad quia aut non.",
-				        "dci_status": "Pendiente",
-				        "created_at": "2015-01-07 23:28:20",
-				        "updated_at": "2015-01-07 23:28:20",
-				        "deleted_at": null,
-					}
+		//Actions
+		$scope.createTask = function(){
+			var res = DataService.createTask({
+                description : $scope.newtask_description,
+				user_id     : $scope.current_employee,
+				event_service_id  : $scope.current_sol.pivot.id
+			});
+			res.then(function(resp){
+				console.log(resp);
+				if(resp && resp.status == 'success'){
+					//append shit!
+					alert('fuck yea');
+				} else {
+					alert('Ocurrió un problema al intentar crear la tarea, por favor intente de nuevo');
 				}
-			];
-		*/	
+			});
+		};
+
+		//UI
+		$scope.taskpanel_hidden = true;
+		$scope.closeTaskPanel = function(){
+			$scope.taskpanel_hidden = true;
+			$scope.current_sol = null;
+			$scope.current_event = null;			
+		};
+		$scope.openTaskPanel = function(evt,sol){
+			$scope.taskpanel_hidden = false;
+			$scope.current_sol = sol;
+			$scope.current_event = evt;
+		};
+
+
 	}]);
 </script>
