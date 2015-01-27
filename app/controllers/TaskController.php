@@ -6,9 +6,8 @@
          * Return the tasks assigned to an service 
          */
         public function tasksByRequest($event_service_id) {
-            return json_encode(
-            		Task::where('event_service_event_id', '=', $event_service_id)
-            	);
+            // return Task::where('event_service_event_id', '=', $event_service_id);
+            return EventDCIService::where('event_id', '=', $event_service_id);
         }
 
         /*
@@ -32,15 +31,13 @@
             $validator = Validator::make(
                 Input::all(),
                 array(
-                    'description' => 'required',
-                    'user_id'     => 'required',
-                    'event_id'    => 'required',
-                    'service_id'  => 'required',
+                    'description'      => 'required',
+                    'user_id'          => 'required',
+                    'event_service_id' => 'required',
                 ),
                 array(
-                    'user_id'     => 'Error al procesar petición',
-                    'event_id'    => 'Error al procesar petición',
-                    'service_id'  => 'Error al procesar petición',
+                    'user_id'          => 'Error al procesar petición',
+                    'event_service_id' => 'Error al procesar petición',
                 )
             );
 
@@ -50,12 +47,11 @@
 
             /* Getting all data to the new task */
             $task_data = array(
-                'description'              => Input::get('description'),
-                'comment'                  => Input::get('comment'),
-                'event_service_event_id'   => Input::get('event_id'),
-                'event_service_service_id' => Input::get('service_id'),
+                'description'      => Input::get('description'),
+                'comment'          => Input::get('comment'),
+                'event_service_id' => Input::get('event_id'),
             );
-
+            
             /* Creating and storing new task object */
             $task = new Task($task_data);
             $user = User::find(Input::get('user_id'));
