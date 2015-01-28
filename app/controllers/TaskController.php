@@ -3,16 +3,6 @@
     class TaskController extends BaseController {
 
         /*
-         * Return the tasks assigned to a service 
-         */
-        public function tasksByEvent($event, $task) {
-            // return Task::where('event_service_event_id', '=', $event_service_id)->get();
-            
-            // if($event == s)
-
-        }
-
-        /*
          * Return the users of certain department based on loged user with level of head
          */
         public function toAssignTask() {
@@ -75,10 +65,16 @@
         }
 
         /*
-         * Return all task (pending and/or completed)
+         * Return all task (pending and/or completed) of the user logged
          */
-        public function tasksByUser($task_type = 'pending') {
+        public function tasksByUserLogged($task_type = 'pending') {
             $pending = $completed = null;
+
+            if(is_numeric($task_type)) {
+                return Task::where('user_id', '=', Auth::user()->id)
+                        ->where('id', '=', $task_type)
+                        ->get();
+            }
 
             if($task_type == 'pending' or $task_type == 'all') {
                 $pending = Task::where('user_id', '=', Auth::user()->id)
