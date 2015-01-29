@@ -148,7 +148,19 @@
 
 <a href="">Ver solicitudes atendidas</a>
 
+<div class="ar-modal-loader" ng-class="{active:modalLoaderActive}">
+	<div class="spinner">
+	  <div class="bounce1"></div>
+	  <div class="bounce2"></div>
+	  <div class="bounce3"></div>
+	</div>
 </div>
+
+<div class="ar-alert" ng-class="{in:alert}">{{alert}}</div>
+
+</div>
+
+
 <script>
 	ROOT_PATH = "<?php echo URL::to('/'); ?>";
 	FORM_ENABLED = false;
@@ -220,6 +232,10 @@
 
 		//Actions
 		$scope.createTask = function(){
+
+			//cover shit
+			$scope.modalLoaderActive = true;
+
 			var res = DataService.createTask({
                 description : $scope.newtask_description,
 				user_id     : $scope.current_employee,
@@ -230,6 +246,19 @@
 				if(resp && resp.status == 'success'){
 					//append shit!					
 					$scope.current_sol.tasks.push(resp.newtask);
+					//clean shit
+					$scope.newtask_description = null;
+					$scope.current_employee = null;
+					//show shit
+					$scope.modalLoaderActive = false;
+
+					//tell shit was done
+					$scope.alert = 'Tarea creada exitosamente';
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);					
 				} else {
 					alert('Ocurrió un problema al intentar crear la tarea, por favor intente de nuevo');
 				}
