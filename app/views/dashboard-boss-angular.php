@@ -15,9 +15,9 @@
 				<?php /* Tasks and their statuses */ ?>
 				<div class="ar-row">
 				
-					<div class="ar-empty-message" ng-show="!crequest.tasks.length">Aún no hay tareas asignadas a esta solicitud, ¡Es importante asignar tareas!</div>
+					<div class="ar-empty-message" ng-show="!current_sol.tasks.length">Aún no hay tareas asignadas a esta solicitud, ¡Es importante asignar tareas!</div>
 
-					<div class="ar-row breadcrumb" ng-repeat="task in crequest.tasks">
+					<div class="ar-row breadcrumb" ng-repeat="task in current_sol.tasks">
 						<div class="col-xs12">{{task.description}}</div>
 						<div class="col-xs6"><b>{{task.status}}</b></div>
 						<div class="ar-row">
@@ -199,7 +199,7 @@
 		//static shit
 		$scope.pendingclasses = {
 			'Pendiente' : 'pen',
-			'En Proceso' : 'pro',
+			'En Proceso': 'pro',
 			'Atendido' : 'ate',
 			'Aprobado' : 'apr'
 		};
@@ -228,8 +228,8 @@
 			res.then(function(resp){
 				console.log(resp);
 				if(resp && resp.status == 'success'){
-					//append shit!
-					alert('fuck yea');
+					//append shit!					
+					$scope.current_sol.tasks.push(resp.newtask);
 				} else {
 					alert('Ocurrió un problema al intentar crear la tarea, por favor intente de nuevo');
 				}
