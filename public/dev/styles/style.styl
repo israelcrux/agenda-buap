@@ -26,7 +26,8 @@ nav-height = 80px
 nav-height-padding = 90px
 nav-height_2 = 50px
 
-red = #d35400
+red = #f6aa3e
+green = #0ec494
 
 standard-background()
 	background-size contain
@@ -1012,6 +1013,10 @@ span.dci_status.apr
 	opacity 1
 	
 
+.ar-over-title
+	color subtile-text-color
+	margin-bottom 0px
+
 .ar-contright>div
 	float right
 	
@@ -1023,6 +1028,24 @@ span.dci_status.apr
 	font-size 1.5em
 	color subtile-text-color
 	text-align center
+	
+.task-status
+	color white
+	position absolute
+	top 0px
+	left 0px
+	padding 5px 0px
+	width 100%
+	text-indent 20px
+.task-status.pending
+	background-color red
+.task-status.complete
+	background-color green
+
+.breadcrumb.task
+	position relative
+	overflow hidden
+	padding-top 30px
 
 
 @media (min-width:768px) and (min-height:600px)

@@ -1071,13 +1071,13 @@ span.dci_status {
   font-weight: bold;
 }
 span.dci_status.pen {
-  color: #d35400;
+  color: #f6aa3e;
 }
 span.dci_status.pro {
   color: #ffa500;
 }
 span.dci_status.ate {
-  color: #008000;
+  color: #0ec494;
 }
 span.dci_status.apr {
   color: #0ff;
@@ -1101,17 +1101,41 @@ span.dci_status.apr {
   z-index: 15;
   opacity: 1;
 }
+.ar-over-title {
+  color: #7d7d7d;
+  margin-bottom: 0px;
+}
 .ar-contright>div {
   float: right;
 }
 .strong span.pending {
-  color: #d35400;
+  color: #f6aa3e;
 }
 .ar-empty-message {
   padding: 50px 5%;
   font-size: 1.5em;
   color: #7d7d7d;
   text-align: center;
+}
+.task-status {
+  color: #fff;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 5px 0px;
+  width: 100%;
+  text-indent: 20px;
+}
+.task-status.pending {
+  background-color: #f6aa3e;
+}
+.task-status.complete {
+  background-color: #0ec494;
+}
+.breadcrumb.task {
+  position: relative;
+  overflow: hidden;
+  padding-top: 30px;
 }
 @media (min-width: 768px) and (min-height: 600px) {
   .ar-login-form.ar-form-wrapper {
