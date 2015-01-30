@@ -428,7 +428,7 @@
 							<div class="ar-row col-xs-12 col-sm-2">
 								<!-- <div class="ar-flatbtn" ng-hide="event.services.length">Solicitar Difusión</div> -->
 								<div class="ar-flatbtn" ng-click="showEditForm(event)" >Editar</div>
-								<button class="ar-flatbtn ar-cancelbtn" ng-click="showCancelForm(event)">Cancelar Evento</button>
+								<a class="cancel-link" ng-click="showCancelForm(event)">Cancelar Evento</a>
 							</div>
 
 						</div>

@@ -27,6 +27,7 @@ nav-height-padding = 90px
 nav-height_2 = 50px
 
 red = #f6aa3e
+realred = #e74c3c
 green = #0ec494
 
 standard-background()
@@ -141,6 +142,17 @@ a.ar-footer-logo
 	font-weight 300
 *:-ms-input-placeholder
 	font-weight 300
+
+.ar-fr
+	float right
+
+a.cancel-link
+	color realred
+	cursor pointer
+a.cancel-link.btn
+	padding 2px 5px
+	border 1px solid realred
+	border-radius 2px
 
 input 
 	border 0px
@@ -1046,6 +1058,21 @@ span.dci_status.apr
 	position relative
 	overflow hidden
 	padding-top 30px
+
+.edit-btn:hover
+	background-color subtile-text-color
+.edit-btn
+	width 50px
+	height 50px
+	background-color shadow
+	background-image url(../img/edit.svg)
+	background-size 70%
+	background-repeat no-repeat
+	background-position center center
+	position absolute
+	right 0px
+	top 30px
+	cursor pointer
 
 
 @media (min-width:768px) and (min-height:600px)

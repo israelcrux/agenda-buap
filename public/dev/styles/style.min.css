@@ -120,6 +120,18 @@ a.ar-footer-logo {
 *:-ms-input-placeholder {
   font-weight: 300;
 }
+.ar-fr {
+  float: right;
+}
+a.cancel-link {
+  color: #e74c3c;
+  cursor: pointer;
+}
+a.cancel-link.btn {
+  padding: 2px 5px;
+  border: 1px solid #e74c3c;
+  border-radius: 2px;
+}
 input {
   border: 0px;
 }
@@ -1136,6 +1148,22 @@ span.dci_status.apr {
   position: relative;
   overflow: hidden;
   padding-top: 30px;
+}
+.edit-btn:hover {
+  background-color: #7d7d7d;
+}
+.edit-btn {
+  width: 50px;
+  height: 50px;
+  background-color: #e2e2e2;
+  background-image: url("../img/edit.svg");
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  cursor: pointer;
 }
 @media (min-width: 768px) and (min-height: 600px) {
   .ar-login-form.ar-form-wrapper {

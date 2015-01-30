@@ -32,9 +32,7 @@
 								{{task.comment}}
 							</p>
 							
-							<div class="edit-btn">
-								
-							</div>
+							<div class="edit-btn" title="Editar tarea" ng-click="editTask(task)"></div>
 
 						</div>
 
@@ -45,7 +43,7 @@
 			</div>
 			<div class="col-xs-12 col-md-4">
 				
-				<div class="ar-form-container">
+				<div class="ar-form-container" ng-hide="currenttask">
 					
 					<h4>Nueva tarea</h4>
 					<p>{{newtask_description}}</p>
@@ -57,10 +55,26 @@
 
 					<input class="form-control" type="text" ng-model="newtask_description" placeholder="Descripción de la tarea">
 
-					<button class="btn form-control" ng-click="createTask()">Asignar tarea</button>
+					<button class="btn ar-flatbtn form-control" ng-click="createTask()">Asignar tarea</button>
 
 				</div>
-				
+
+				<div class="ar-form-container" ng-show="currenttask">
+					
+					<h4>Editar tarea</h4>
+					<a class="ar-fr cancel-link btn" ng-click="cancelTask()">Eliminar tarea</a>
+					<p>Asignada a {{employees[currenttask.user_id].first_name}} {{employees[currenttask.user_id].last_name}}</p>
+
+					<select ng-model="currenttask.user_id" class="form-control">
+						<option ng-repeat="employee in employees" ng-value="employee.id"> {{employee.first_name}} {{employee.last_name}}</option>
+					</select>
+
+					<textarea ng-model="currenttask.description"></textarea>
+					
+					<button class="btn ar-flatbtn form-control" ng-click="updateTask()">Editar tarea</button>
+
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -234,21 +248,34 @@
 
 			//POST
 			createTask : function(data){
-				console.log('creating task: '+data);
-				console.log(data);
 				return $http.post(window['ROOT_PATH']+'/tasks/assign',data)
 					.then(function(response){
 						return response.data;
 					},
 					function(response){
 						console.log('Could not create task');
+						alert('No fue posible crear tarea');
 						return false;
 					});	
+			},
+			updateTask : function(data){
+				return $http.post(window['ROOT_PATH']+'/tasks/edit',data)
+					.then(function(response){
+						return response.data;
+					},
+					function(response){
+						console.log('Could not update task');
+						alert('No fue posible actualizar la tarea');
+						return false;
+					});
 			}
 		};
 	}]);
 	
 	app.controller('BDashboardController', [ '$scope', 'DataService' ,function($scope,DataService){ 
+
+		//store shit
+		$scope.currenttask = null;
 
 		//static shit
 		$scope.pendingclasses = {
@@ -285,6 +312,9 @@
 
 		//Actions
 		$scope.createTask = function(){
+			//validate shit
+			if( $scope.newtask_description || $scope.current_employee || $scope.current_sol.pivot.id)
+				return false;
 
 			//cover shit
 			$scope.modalLoaderActive = true;
@@ -329,6 +359,25 @@
 			$scope.taskpanel_hidden = false;
 			$scope.current_sol = sol;
 			$scope.current_event = evt;
+		};
+
+		$scope.editTask = function(task){
+			$scope.currenttask = task;
+		};
+		$scope.updateTask = function(){
+			DataService.updateTask($scope.currenttask)
+				.then(function(resp){
+					if(resp && resp.status == 'success'){
+						//tell shit was done
+						$scope.alert = 'Tarea modificada exitosamente';
+						setTimeout(function(){
+							$scope.$apply(function(){
+								$scope.alert = null;
+							});
+						},3000);
+						$scope.currenttask = null;
+					}
+				});
 		};
 
 		//Utilities
