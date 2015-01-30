@@ -180,6 +180,12 @@ Route::group(array('before' => 'auth'), function(){
 
             /* Route to assign a task to an user */
             Route::post('/assign/', 'TaskController@assignTask');
+
+            /* Route to edit a task assigned to an user */
+            Route::post('/edit/', 'TaskController@editTask');
+
+            /* Route to delete a task */
+            Route::post('delete', 'TaskController@deleteTask');
             
         });
         

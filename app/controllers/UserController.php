@@ -44,6 +44,7 @@
 
             Auth::login($user);
             return Redirect::intended('dashboard')->with('alert','Su contraseña ha sido restablecida');
+  
         }
 
         /*
@@ -64,6 +65,7 @@
             }
 
             return View::make('new-password', array('token' => $user_auth_reminder->token));
+   
         }
 
         /*
@@ -106,6 +108,7 @@
             });
 
             return Redirect::to('login')->with('alert', 'Un mensaje ha sido enviado a su correo electrónico, dentro están las instrucciones para restablecer su contraseña');
+
         }
 
         /*
@@ -155,6 +158,7 @@
             else {
                 return Redirect::to('login')->with('alert', 'Usuario y/o contraseña incorrectos')->withInput(Input::except('password'));
             }
+     
         }
 
         /*
@@ -163,6 +167,7 @@
         public function logout() {
             Auth::logout();
             return Redirect::to('/');
+      
         }
 
         /*
@@ -267,26 +272,33 @@
          * Verify and edit user
          */
         public function editUser() {
-
-            $user = User::find(Input::get('id'));
+            $response = Input::get('response');
+            $user     = User::find(Input::get('id'));
 
             if(is_null($user)) {
-                return Redirect::to('user/edit')->with('alert', 'Usuario inválido')->withInput(Input::except('password'));
+                if($response == 'JSON')
+                    return '{"status":"error","message":"Usuario inválivo","data":'.Input::except('password').'}';
+                else
+                    return Redirect::to('user/edit')->with('alert', 'Usuario inválido')->withInput(Input::except('password'));
             }
 
             if($user->id != Auth::user()->id and Auth::user()->user_type_id != 4) {
-                return Redirect::to('user/edit')->with('alert', 'Usted no tiene permisos para modificar este usuario')->withInput(Input::except('password'));
+                if($response == 'JSON')
+                    return '{"status":"error","message":"Usted no tiene permisos para modificar este usuario","data":'.Input::except('password').'}';
+                else
+                    return Redirect::to('user/edit')->with('alert', 'Usted no tiene permisos para modificar este usuario')->withInput(Input::except('password'));
             }
 
             /* Verifying that user has a correct and valid data */
             $validation = $this->validateUser('edit');
 
             if(!$validation['isValid']) {
-                return Redirect::to('user/edit')->with('alert', $validation['message'])->withInput(Input::except('password'));
+                if($response == 'JSON')
+                    return '{"status":"error","message":'.$validation['message'].',"data":'.Input::except('password').'}';
+                else
+                    return Redirect::to('user/edit')->with('alert', $validation['message'])->withInput(Input::except('password'));
             }
 
-            /* Generating encrypted password */
-            $crypt_password = Hash::make(Input::get('password'));
 
             /* Updating data */
             $user->last_name = Input::get('last_name');
@@ -294,7 +306,12 @@
             $user->phone = Input::get('phone');
             $user->extension_phone = Input::get('extension_phone');
             $user->email = Input::get('email');
-            $user->password = $crypt_password;
+            
+            /* Generating and saving encrypted password */
+            if(Input::get('password') != '') {
+                $crypt_password = Hash::make(Input::get('password'));
+                $user->password = $crypt_password;
+            }
 
             if(Input::get('academic_administrative_unit_type') == '3') {
                 $user->academic_administrative_unit_id = NULL;
@@ -305,14 +322,17 @@
 
             $user->save();
 
-            return Redirect::to('dashboard')->with('alert', 'Información editada correctamente');
+            if($response == 'JSON')
+                return '{"status":"success","message":"Información editada correctamente","user":'.$user.'}';
+            else
+                return Redirect::to('dashboard')->with('alert', 'Información editada correctamente');
 
         }
 
         /*
          * Validator for adding and editing an user
          */
-        public function validateUser($type) {
+        private function validateUser($type) {
 
             if($type == 'register') {
                 /* Creating a register/edition user validator */

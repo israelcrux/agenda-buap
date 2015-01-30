@@ -16,6 +16,7 @@
             }
 
             return json_encode($events);
+
         }
 
         /*
@@ -197,6 +198,7 @@
             }
 
             return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente ' . $event->id_dci);
+
         }
 
         /*
@@ -404,8 +406,7 @@
          * Applying soft deleting an event
          */
         public function deleteEvent() {
-            $id = Input::get('id');
-            $event = EventDCI::find($id);
+            $event = EventDCI::find(Input::get('id'));
             if($event->user_id == Auth::user()->id) {
                 $event->delete();
                 return Redirect::to('dashboard')->with('alert', 'Evento eliminado exitosamente ' . $event->id_dci);
@@ -413,6 +414,7 @@
             else {
                 return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para eliminar este evento' . $event->id_dci);
             }
+    
         }
 
         /*
@@ -456,7 +458,7 @@
         /*
          * Validator for adding and editing an event
          */
-        public function validateEvent() {
+        private function validateEvent() {
 
             /* Getting the actual date to validation */
             $now = date('Y-m-d', strtotime("-1 days"));
@@ -523,13 +525,16 @@
             }
                 
             return array('isValid' => true, 'message' => '');
+        
         }
 
         /*
          * Validator of array types
          */
-        public function validateArrayElement($element, $type) {
+        private function validateArrayElement($element, $type) {
+        
             return gettype($element) == $type ? true : false;
+        
         }
 
 

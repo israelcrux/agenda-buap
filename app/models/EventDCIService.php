@@ -10,6 +10,9 @@
          */
         protected $table = 'event_service';
 
+        /*
+         * The primary key on the table on the database
+         */
         protected $primaryKey = 'id';
 
         /*
