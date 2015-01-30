@@ -26,7 +26,8 @@ nav-height = 80px
 nav-height-padding = 90px
 nav-height_2 = 50px
 
-red = #d35400
+red = #f6aa3e
+green = #0ec494
 
 standard-background()
 	background-size contain
@@ -992,8 +993,29 @@ span.dci_status.ate
 span.dci_status.apr
 	color cyan
 
+.ar-modal-loader
+	width 100%
+	height 100%
+	position absolute
+	top 0
+	left 0
+	background-color rgba(55,55,55,0.75)
+	z-index -1
+	opacity 0.0
+	-webkit-transition opacity .25s ease
+	-moz-transition opacity .25s ease
+	-ms-transition opacity .25s ease
+	-o-transition opacity .25s ease
+	transition opacity .25s ease
 
+.ar-modal-loader.active
+	z-index 15
+	opacity 1
+	
 
+.ar-over-title
+	color subtile-text-color
+	margin-bottom 0px
 
 .ar-contright>div
 	float right
@@ -1006,6 +1028,24 @@ span.dci_status.apr
 	font-size 1.5em
 	color subtile-text-color
 	text-align center
+	
+.task-status
+	color white
+	position absolute
+	top 0px
+	left 0px
+	padding 5px 0px
+	width 100%
+	text-indent 20px
+.task-status.pending
+	background-color red
+.task-status.complete
+	background-color green
+
+.breadcrumb.task
+	position relative
+	overflow hidden
+	padding-top 30px
 
 
 @media (min-width:768px) and (min-height:600px)
