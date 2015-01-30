@@ -58,7 +58,7 @@
                         $message->to($user->email)->subject('Nueva tarea asignada - DCI - BUAP');
                     }
                 );
-                return '{"status":"success","newtask": '.$task.' }';
+                return '{"status":"success","newtask": '.Task::find($task->id).' }';
             }
 
             return '{"status":"error","message":"Error al asignar la tarea, vuelva a intentarlo"}';

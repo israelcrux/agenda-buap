@@ -207,7 +207,7 @@
             /* Searching the event */
             $event = EventDCI::find(Input::get('id'));
 
-            if(!isset($event)) {
+            if(is_null($event)) {
                 return Redirect::to('dashboard')
                             ->with('alert', 'No existe el evento especificado')
                             ->with('FORM_ENABLED','true')
@@ -454,7 +454,6 @@
         }
 
         /*
-         *
          * Validator for adding and editing an event
          */
         public function validateEvent() {

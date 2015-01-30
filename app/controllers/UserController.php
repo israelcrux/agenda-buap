@@ -166,39 +166,38 @@
         }
 
         /*
-         * Show the form to register an user
-         */
-        public function signup() {
-            $units = AcademicAdministrativeUnit::all(array('id', 'name', 'type'))->toArray();
-            return View::make('signup', array('aaunits' => $units));
-        }
-
-        /*
          * Verify user and register the user
          */
         public function register() {
 
-            /* Creating a register validator */
-            $validator = Validator::make(
-                Input::all(),
-                array(
-                    'first_name' => 'required',
-                    'last_name' => 'required',
-                    'phone' => array('regex:/([0-9]+|-|\s)+/'),
-                    'extension_phone' => array('regex:/([0-9]+|-|\s)+/'),
-                    'email' => 'required|email|unique:users',
-                    'password' => 'required|min:6',
-                    'academic_administrative_unit_type' => 'min:1|integer',
-                    'academic_administrative_unit' => 
-                        'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer'
-                ),
-                array(
-                    'academic_administrative_unit_type.between' => 'Seleccione una procedencia de unidad acádemica o administrativa'
-                )
-            );
+            // /* Creating a register validator */
+            // $validator = Validator::make(
+            //     Input::all(),
+            //     array(
+            //         'first_name' => 'required',
+            //         'last_name' => 'required',
+            //         'phone' => array('regex:/([0-9]+|-|\s)+/'),
+            //         'extension_phone' => array('regex:/([0-9]+|-|\s)+/'),
+            //         'email' => 'required|email|unique:users',
+            //         'password' => 'required|min:6',
+            //         'academic_administrative_unit_type' => 'min:1|integer',
+            //         'academic_administrative_unit' => 
+            //             'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer'
+            //     ),
+            //     array(
+            //         'academic_administrative_unit_type.between' => 'Seleccione una procedencia de unidad acádemica o administrativa'
+            //     )
+            // );
 
-            if($validator->fails()) {
-                return Redirect::to('signup')->with('alert', $validator->messages())->withInput(Input::except('password'));
+            // if($validator->fails()) {
+            //     return Redirect::to('signup')->with('alert', $validator->messages())->withInput(Input::except('password'));
+            // }
+
+            /* Verifying that user has a correct and valid data */
+            $validation = $this->validateUser();
+
+            if(!$validation['isValid']) {
+                return Redirect::to('signup')->with('alert', $validation['message'])->withInput(Input::except('password'));
             }
 
             /* Generating encrypted password */
@@ -206,12 +205,12 @@
 
             /* Getting data */
             $user_data = array(
-                'last_name'                       => Input::get('last_name'),
-                'first_name'                      => Input::get('first_name'),
-                'phone'                           => Input::get('phone'),
-                'extension_phone'                 => Input::get('extension_phone'),
-                'email'                           => Input::get('email'),
-                'password'                        => $crypt_password
+                'last_name'       => Input::get('last_name'),
+                'first_name'      => Input::get('first_name'),
+                'phone'           => Input::get('phone'),
+                'extension_phone' => Input::get('extension_phone'),
+                'email'           => Input::get('email'),
+                'password'        => $crypt_password
             );
             
             if(Input::get('academic_administrative_unit_type') != '3') {
@@ -284,6 +283,83 @@
             $user->save();
 
             return Redirect::to('login')->with('alert', 'Su cuenta ha sido activada, ahora puede iniciar sesión');
+
+        }
+
+        /*
+         * Verify and edit user
+         */
+        public function editUser() {
+
+            $user = User::find(Input::get('id'));
+
+            if(is_null($user)) {
+                return Redirect::to('dashboard')->with('alert', 'Usuario inválido')->withInput(Input::except('password'));
+            }
+
+            if($user->id != Auth::user()->id and Auth::user()->user_type_id != 4) {
+                return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para modificar este usuario')->withInput(Input::except('password'));
+            }
+
+            /* Verifying that user has a correct and valid data */
+            $validation = $this->validateUser();
+
+            if(!$validation['isValid']) {
+                return Redirect::to('dashboard')->with('alert', $validation['message'])->withInput(Input::except('password'));
+            }
+
+            /* Generating encrypted password */
+            $crypt_password = Hash::make(Input::get('password'));
+
+            /* Updating data */
+            $user->last_name = Input::get('last_name');
+            $user->first_name = Input::get('first_name');
+            $user->phone = Input::get('phone');
+            $user->extension_phone = Input::get('extension_phone');
+            $user->email = Input::get('email');
+            $user->password = $crypt_password;
+
+            if(Input::get('academic_administrative_unit_type') != '3') {
+                $user->academic_administrative_unit_id = Input::get('academic_administrative_unit');
+            }
+
+            $user->save();
+
+            return Redirect::to('dashboard')->with('alert', 'Información editada correctamente');
+
+        }
+
+        /*
+         * Validator for adding and editing an user
+         */
+        public function validateUser() {
+
+            /* Creating a register/edition user validator */
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'first_name'                        => 'required',
+                    'last_name'                         => 'required',
+                    'phone'                             => array('regex:/([0-9]+|-|\s)+/'),
+                    'extension_phone'                   => array('regex:/([0-9]+|-|\s)+/'),
+                    'email'                             => 'required|email|unique:users',
+                    'password'                          => 'required|min:6',
+                    'academic_administrative_unit_type' => 'min:1|integer',
+                    'academic_administrative_unit'      => 
+                        'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
+                    'password_confirmation'             => 'confirmed'
+                ),
+                array(
+                    'academic_administrative_unit_type.between' => 'Seleccione una procedencia de unidad acádemica o administrativa'
+                )
+            );
+
+            /* Check if validation is correct */
+            if($validator->fails()) {
+                return array('isValid' => false, 'message' => $validator->messages());
+            }
+
+            return array('isValid' => true, 'message' => '');
 
         }
 

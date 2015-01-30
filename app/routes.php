@@ -86,7 +86,9 @@ Route::get('/password_reset/{key}', 'UserController@passwordResetForm');
 Route::post('/password_reset', 'UserController@passwordReset');
 
 /* Route to show the register form */
-Route::get('/signup', 'UserController@signup');
+Route::get('/signup', function(){
+    return View::make('signup', array('aaunits' => AcademicAdministrativeUnit::all()));
+});
 
 /* Route to register an user */
 Route::post('/register', 'UserController@register');
@@ -111,14 +113,29 @@ Route::group(array('before' => 'auth'), function(){
         );
     });
 
+    /* Route that have the prefix user */
+    Route::group(array('prefix' => 'user'), function(){
+
+        /* Route to show the form to edit the user information */
+        Route::get('/edit', function(){
+            return View::make('edituser', 
+                array(
+                    'aaunits' => AcademicAdministrativeUnit::all(),
+                    'aautype' => Auth::user()->academic_administrative_unit()->first()->type,
+                )
+            );
+        });
+
+        /* Route to update the user information */
+        Route::post('/edit', 'UserController@editUser');
+
+    });
+
     /* Route that have the prefix event/ */
     Route::group(array('prefix' => 'event'), function(){
 
         /* Route to store a new event */
         Route::post('/add', 'EventController@addEvent');
-
-        /* Route to view an existing event */
-        Route::get('/view/{id}', 'EventController@viewEvent');
 
         /* Route to edit an existing event */
         Route::post('/edit', 'EventController@editEvent');
