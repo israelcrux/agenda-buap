@@ -52,21 +52,21 @@
         /*
          * Many users belongs to an user type
          */
-        public function user_types() {
+        public function user_type() {
             return $this->belongsTo('UserType');
         }
 
         /*
          * Many users belongs to a department
          */
-        public function departments() {
+        public function department() {
             return $this->belongsTo('Department');
         }
 
         /*
          * Many users belongs to an academic or administrative unit
          */
-        public function academic_administrative_units() {
+        public function academic_administrative_unit() {
             return $this->belongsTo('AcademicAdministrativeUnit');
         }
 

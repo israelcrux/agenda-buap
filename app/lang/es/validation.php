@@ -54,11 +54,12 @@ return array(
 		"array"   => "El campo :attribute debe tener al menos :min elementos.",
 	),
 "mimes"         => "El campo :attribute debe ser un archivo de tipo :values.",
-"mins"           => 
+"min"           => 
 	array(
 		"numeric" => "El campo :attribute debe tener al menos :min.",
 		"file"    => "El campo :attribute debe tener al menos :min kilobytes.",
 		"string"  => "El campo :attribute debe tener al menos :min caracteres.",
+		"array"   => "El campo :attribute debe tener al menos :min artículos.",
 	),
 "not_in"                => "El campo :attribute seleccionado es invalido.",
 "numeric"               => "El campo :attribute debe ser un numero.",
@@ -123,6 +124,7 @@ return array(
 'attributes' => array(
 		'username'                          => 'Usuario',
 		'password'                          => 'Contraseña',
+		'password_confirmation'             => 'Confirmación de Contraseña',
 		'token'                             => 'Enlace',
 		'email'                             => 'Correo electrónico',
 		'first_name'                        => 'Nombre(s)',
