@@ -62,7 +62,7 @@
 				<div class="ar-form-container" ng-show="currenttask">
 					
 					<h4>Editar tarea</h4>
-					<a class="ar-fr cancel-link btn" ng-click="cancelTask()">Eliminar tarea</a>
+					<a class="ar-fr cancel-link btn" ng-click="deleteTask()">Eliminar tarea</a>
 					<p>Asignada a {{employees[currenttask.user_id].first_name}} {{employees[currenttask.user_id].last_name}}</p>
 
 					<select ng-model="currenttask.user_id" class="form-control">

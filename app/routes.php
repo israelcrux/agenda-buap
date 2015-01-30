@@ -185,7 +185,7 @@ Route::group(array('before' => 'auth'), function(){
             Route::post('/edit/', 'TaskController@editTask');
 
             /* Route to delete a task */
-            Route::post('delete', 'TaskController@deleteTask');
+            Route::post('/delete/', 'TaskController@deleteTask');
             
         });
         
