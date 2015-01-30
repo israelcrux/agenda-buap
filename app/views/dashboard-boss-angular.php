@@ -268,7 +268,18 @@
 						alert('No fue posible actualizar la tarea');
 						return false;
 					});
-			}
+			},
+			deleteTask : function(data){
+				return $http.post(window['ROOT_PATH']+'/tasks/delete',data)
+					.then(function(response){
+						return response.data;
+					},
+					function(response){
+						console.log('Could not update task');
+						alert('No fue posible eliminar la tarea');
+						return false;
+					});
+			}			
 		};
 	}]);
 	
@@ -361,6 +372,9 @@
 			$scope.current_event = evt;
 		};
 
+		$scope.editTask = function(task){
+			$scope.currenttask = task;
+		};
 		$scope.editTask = function(task){
 			$scope.currenttask = task;
 		};
