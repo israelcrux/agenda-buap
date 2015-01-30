@@ -45,6 +45,8 @@
 
 
 				<input class="form-control" name="email" type="email" id="username" placeholder="E-mail" autocomplete="off" value="{{ Auth::user()->email }}" required>
+				<input class="form-control" name="password" type="password" value="" id="password" placeholder="Contraseña">
+				<input class="form-control" name="password_confirmation" type="password" value="" id="password_confirmation" placeholder="Confirme contraseña">
 				<input class="form-control" type="submit" value="Actualizar">
 		    {{ Form::close(); }}
 		</div>

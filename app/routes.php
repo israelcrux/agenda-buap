@@ -121,7 +121,7 @@ Route::group(array('before' => 'auth'), function(){
             return View::make('edituser', 
                 array(
                     'aaunits' => AcademicAdministrativeUnit::all(),
-                    'aautype' => Auth::user()->academic_administrative_unit()->first()->type,
+                    'aautype' => is_null(Auth::user()->academic_administrative_unit()->first()) ? 'otro' : Auth::user()->academic_administrative_unit()->first()->type,
                 )
             );
         });

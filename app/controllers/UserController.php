@@ -170,31 +170,8 @@
          */
         public function register() {
 
-            // /* Creating a register validator */
-            // $validator = Validator::make(
-            //     Input::all(),
-            //     array(
-            //         'first_name' => 'required',
-            //         'last_name' => 'required',
-            //         'phone' => array('regex:/([0-9]+|-|\s)+/'),
-            //         'extension_phone' => array('regex:/([0-9]+|-|\s)+/'),
-            //         'email' => 'required|email|unique:users',
-            //         'password' => 'required|min:6',
-            //         'academic_administrative_unit_type' => 'min:1|integer',
-            //         'academic_administrative_unit' => 
-            //             'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer'
-            //     ),
-            //     array(
-            //         'academic_administrative_unit_type.between' => 'Seleccione una procedencia de unidad acádemica o administrativa'
-            //     )
-            // );
-
-            // if($validator->fails()) {
-            //     return Redirect::to('signup')->with('alert', $validator->messages())->withInput(Input::except('password'));
-            // }
-
             /* Verifying that user has a correct and valid data */
-            $validation = $this->validateUser();
+            $validation = $this->validateUser('register');
 
             if(!$validation['isValid']) {
                 return Redirect::to('signup')->with('alert', $validation['message'])->withInput(Input::except('password'));
@@ -294,18 +271,18 @@
             $user = User::find(Input::get('id'));
 
             if(is_null($user)) {
-                return Redirect::to('dashboard')->with('alert', 'Usuario inválido')->withInput(Input::except('password'));
+                return Redirect::to('user/edit')->with('alert', 'Usuario inválido')->withInput(Input::except('password'));
             }
 
             if($user->id != Auth::user()->id and Auth::user()->user_type_id != 4) {
-                return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para modificar este usuario')->withInput(Input::except('password'));
+                return Redirect::to('user/edit')->with('alert', 'Usted no tiene permisos para modificar este usuario')->withInput(Input::except('password'));
             }
 
             /* Verifying that user has a correct and valid data */
-            $validation = $this->validateUser();
+            $validation = $this->validateUser('edit');
 
             if(!$validation['isValid']) {
-                return Redirect::to('dashboard')->with('alert', $validation['message'])->withInput(Input::except('password'));
+                return Redirect::to('user/edit')->with('alert', $validation['message'])->withInput(Input::except('password'));
             }
 
             /* Generating encrypted password */
@@ -319,7 +296,10 @@
             $user->email = Input::get('email');
             $user->password = $crypt_password;
 
-            if(Input::get('academic_administrative_unit_type') != '3') {
+            if(Input::get('academic_administrative_unit_type') == '3') {
+                $user->academic_administrative_unit_id = NULL;
+            }
+            else {
                 $user->academic_administrative_unit_id = Input::get('academic_administrative_unit');
             }
 
@@ -332,27 +312,48 @@
         /*
          * Validator for adding and editing an user
          */
-        public function validateUser() {
+        public function validateUser($type) {
 
-            /* Creating a register/edition user validator */
-            $validator = Validator::make(
-                Input::all(),
-                array(
-                    'first_name'                        => 'required',
-                    'last_name'                         => 'required',
-                    'phone'                             => array('regex:/([0-9]+|-|\s)+/'),
-                    'extension_phone'                   => array('regex:/([0-9]+|-|\s)+/'),
-                    'email'                             => 'required|email|unique:users',
-                    'password'                          => 'required|min:6',
-                    'academic_administrative_unit_type' => 'min:1|integer',
-                    'academic_administrative_unit'      => 
-                        'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
-                    'password_confirmation'             => 'confirmed'
-                ),
-                array(
-                    'academic_administrative_unit_type.between' => 'Seleccione una procedencia de unidad acádemica o administrativa'
-                )
-            );
+            if($type == 'register') {
+                /* Creating a register/edition user validator */
+                $validator = Validator::make(
+                    Input::all(),
+                    array(
+                        'first_name'                        => 'required',
+                        'last_name'                         => 'required',
+                        'phone'                             => array('regex:/([0-9]+|-|\s)+/'),
+                        'extension_phone'                   => array('regex:/([0-9]+|-|\s)+/'),
+                        'email'                             => 'required|email|unique:users',
+                        'password'                          => 'required|min:6',
+                        'academic_administrative_unit_type' => 'min:1|integer',
+                        'academic_administrative_unit'      => 
+                            'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
+                    ),
+                    array(
+                        'academic_administrative_unit_type.min' => 'Seleccione una procedencia de unidad acádemica o administrativa'
+                    )
+                );
+            }
+            else if($type == 'edit') {
+                /* Creating a register/edition user validator */
+                $validator = Validator::make(
+                    Input::all(),
+                    array(
+                        'first_name'                        => 'required',
+                        'last_name'                         => 'required',
+                        'phone'                             => array('regex:/([0-9]+|-|\s)+/'),
+                        'extension_phone'                   => array('regex:/([0-9]+|-|\s)+/'),
+                        'email'                             => 'required|email|unique:users,email,'.Auth::user()->id,
+                        'password'                          => 'min:6|confirmed',
+                        'academic_administrative_unit_type' => 'min:1|integer',
+                        'academic_administrative_unit'      => 
+                            'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
+                    ),
+                    array(
+                        'academic_administrative_unit_type.min' => 'Seleccione una procedencia de unidad acádemica o administrativa'
+                    )
+                );
+            }
 
             /* Check if validation is correct */
             if($validator->fails()) {
