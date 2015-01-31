@@ -56,21 +56,15 @@
 
         /*
          * Edit a task assigned
-         * JSON and normal response
+         * JSON response
          */
         public function editTask() {
-
-            /* Getting response type */
-            $response = Input::get('response');
 
             /* Searching the task */
             $task = Task::find(Input::get('id'));
 
             if(is_null($task)) {
-                if($response == 'JSON')
-                    return '{"status":"error","message":"No existe la tarea especificada"}';
-                else 
-                    return Redirect::to('dashboard-boss')->with('alert', 'No existe la tarea especificada');
+                return '{"status":"error","message":"No existe la tarea especificada"}';
             }
 
             /* TODO: Verifying that the task to edit belongs to the same department of the boss */
@@ -79,10 +73,7 @@
             $validation = $this->validateTask();
 
             if(!$validation['isValid']) {
-                if($response == 'JSON')
-                    return '{"status":"error","message":'.$validator->messages().'}';
-                else
-                    return Redirect::to('dashboard-boss')->with('alert', $validator->messages());
+                return '{"status":"error","message":'.$validator->messages().'}';
             }
 
             /* Updating the task information */
@@ -91,28 +82,22 @@
             $task->user_id     = Input::get('user_id');
             $task->save();
 
-            if($response == 'JSON')
-                return '{"status":"success","message":"Tarea editada correctamente","task"'.$task.'}';
-            else
-                return Redirect::to('dashboard-boss')->with('alert', 'Tarea editada correctamente');
+            return '{"status":"success","message":"Tarea editada correctamente","task"'.$task.'}';
 
         }
 
         /*
          * Applying soft deleting to a task
-         * JSON and normal response
+         * JSON response
          */
         public function deleteTask() {
-            $resposne = Input::get('response');
-            $task     = Task::find(Input::get('id'));
+
+            $task = Task::find(Input::get('id'));
 
             /* TODO: Verifying the boss can delete that task */
             $task->delete();
 
-            if($response == 'JSON')
-                return '{"status":"success","message":"Tarea eliminada correctamente"}';
-            else
-                return Redirect::to('dashboard-boss')->with('alert', 'Tarea eliminada correctamente');
+            return '{"status":"success","message":"Tarea eliminada correctamente"}';
 
         }
 
