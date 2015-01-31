@@ -276,6 +276,7 @@
 					},
 					function(response){
 						console.log('Could not update task');
+						console.log(response);
 						alert('No fue posible eliminar la tarea');
 						return false;
 					});
@@ -375,8 +376,22 @@
 		$scope.editTask = function(task){
 			$scope.currenttask = task;
 		};
-		$scope.editTask = function(task){
-			$scope.currenttask = task;
+		$scope.deleteTask = function(task){
+			DataService.deleteTask($scope.currenttask)
+				.then(function(resp){
+					if(resp && resp.status == 'success'){
+						//remove shit
+						$scope.current_sol.tasks.splice($scope.current_sol.tasks.indexOf($scope.currenttask),1);
+						//tell shit was done
+						$scope.alert = 'Tarea eliminada';
+						setTimeout(function(){
+							$scope.$apply(function(){
+								$scope.alert = null;
+							});
+						},3000);
+						$scope.currenttask = null;
+					}
+				});
 		};
 		$scope.updateTask = function(){
 			DataService.updateTask($scope.currenttask)
