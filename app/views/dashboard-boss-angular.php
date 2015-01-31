@@ -325,7 +325,7 @@
 		//Actions
 		$scope.createTask = function(){
 			//validate shit
-			if( $scope.newtask_description || $scope.current_employee || $scope.current_sol.pivot.id)
+			if( !$scope.newtask_description || !$scope.current_employee || !$scope.current_sol.pivot.id)
 				return false;
 
 			//cover shit
