@@ -67,7 +67,10 @@
                 return '{"status":"error","message":"No existe la tarea especificada"}';
             }
 
-            /* TODO: Verifying that the task to edit belongs to the same department of the boss */
+            /* Verifying that the task to edit belongs to the same department of the boss */
+            if(Auth::user()->department()->first()->id != $task->user->department()->first()->id) {
+                return '{"status":"error","message":"Usted no tiene permisos para editar esta tarea"}';
+            }
 
             /* Verifying that tasks has a correcte and valid data */
             $validation = $this->validateTask();
@@ -94,7 +97,11 @@
 
             $task = Task::find(Input::get('id'));
 
-            /* TODO: Verifying the boss can delete that task */
+            /* Verifying the boss can delete that task */
+            if(Auth::user()->department()->first()->id != $task->user->department()->first()->id) {
+                return '{"status":"error","message":"Usted no tiene permisos para eliminar esta tarea"}';
+            }
+
             $task->delete();
 
             return '{"status":"success","message":"Tarea eliminada correctamente"}';
