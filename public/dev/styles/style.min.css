@@ -23,6 +23,7 @@ section {
 }
 a {
   color: #00b2e2;
+  cursor: pointer;
 }
 ul {
   list-style: none;

@@ -35,7 +35,7 @@
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Configuración</a></li>
+							<li>{{HTML::link('/user/edit','Cuenta')}}</li>
 							<li class="divider"></li>
 							<li>{{ HTML::link('/logout','Salir') }}</li>
 						</ul>

@@ -33,7 +33,7 @@
 							</p>
 							
 							<div class="edit-btn" title="Editar tarea" ng-click="editTask(task)"></div>
-
+							
 						</div>
 
 					</div>
@@ -72,6 +72,7 @@
 					<textarea ng-model="currenttask.description"></textarea>
 					
 					<button class="btn ar-flatbtn form-control" ng-click="updateTask()">Editar tarea</button>
+					<a ng-click="currenttask = null"><- Regresar</a>
 
 				</div>
 
@@ -261,9 +262,11 @@
 			updateTask : function(data){
 				return $http.post(window['ROOT_PATH']+'/tasks/edit',data)
 					.then(function(response){
+						console.log(response);
 						return response.data;
 					},
 					function(response){
+						console.log(response);
 						console.log('Could not update task');
 						alert('No fue posible actualizar la tarea');
 						return false;
@@ -377,6 +380,8 @@
 			$scope.currenttask = task;
 		};
 		$scope.deleteTask = function(task){
+
+			$scope.modalLoaderActive = true;
 			DataService.deleteTask($scope.currenttask)
 				.then(function(resp){
 					if(resp && resp.status == 'success'){
@@ -390,10 +395,13 @@
 							});
 						},3000);
 						$scope.currenttask = null;
+						$scope.modalLoaderActive = false;
 					}
 				});
 		};
 		$scope.updateTask = function(){
+
+			$scope.modalLoaderActive = true;
 			DataService.updateTask($scope.currenttask)
 				.then(function(resp){
 					if(resp && resp.status == 'success'){
@@ -405,6 +413,7 @@
 							});
 						},3000);
 						$scope.currenttask = null;
+						$scope.modalLoaderActive = false;
 					}
 				});
 		};
