@@ -44,7 +44,7 @@
                 /* If the task has been succesful saved, send an email to the user with a new task */
                 Mail::send('emails.notification.newtask', array(), 
                     function($message) use($user) {
-                        $message->to($user->email)->subject('Nueva tarea asignada - DCI - BUAP');
+                        $message->to($user->email)->subject('Nueva tarea asignada - DCI');
                     }
                 );
                 return '{"status":"success","newtask": '.Task::find($task->id).' }';
@@ -85,6 +85,18 @@
             $task->user_id     = Input::get('user_id');
             $task->save();
 
+            /* Sending an email to employee */
+            $user = User::find($task->user_id);
+            Mail::send('emails.notification.edittask', 
+                array(
+                    'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
+                    'task' => $task->description
+                ), 
+                function($message) use($user) {
+                    $message->to($user->email)->subject('Tara asignada editada - DCI');
+                }
+            );
+
             return '{"status":"success","message":"Tarea editada correctamente","task"'.$task.'}';
 
         }
@@ -101,6 +113,17 @@
             if(Auth::user()->department()->first()->id != $task->user->department()->first()->id) {
                 return '{"status":"error","message":"Usted no tiene permisos para eliminar esta tarea"}';
             }
+
+            /* Sending an email to employee */
+            $user = User::find($task->user_id);
+            Mail::send('emails.notification.deletetask',
+                array(
+                    'task' => $task->description
+                ), 
+                function($message) use($user) {
+                    $message->to($user->email)->subject('Tara asignada eliminada - DCI');
+                }
+            );
 
             $task->delete();
 

@@ -202,30 +202,8 @@
             /* Storing the new user */
             $user = User::create($user_data);
 
-            /* Verifying if user needs email validation */
-            if(preg_match('/buap.mx/', Input::get('email'))) {
-                $user->status = 1;
-                $user->save();
-                $message = 'Ahora puede hacer uso de su cuenta, inicie sesión';
-            }
-            else {
-                $now = new DateTime();
-                $user_auth_activation             = new UserAuthOperation();
-                $user_auth_activation->token      = str_random(40);
-                $user_auth_activation->expiration = $now->add(new DateInterval('P1D'));
-                $user_auth_activation->type       = 1;
-                $user_auth_activation->used       = 0;
-                $user_auth_activation->user_id    = $user->id;
-                $user_auth_activation->save();
-
-                Mail::send('emails.auth.activate', array('token' => $user_auth_activation->token), 
-                    function($message) use($user) {
-                        $message->to($user->email)->subject('Bienvenido a la DCI!');
-                    }
-                );
-
-                $message = 'Gracias por registrarse, en breve recibirá un correo de confirmación';
-            }
+            /* Validatying if the user needs confirm email and sending email if it is necessary */
+            $message = $this->mailToValidateMail($user, 'register');
 
             return Redirect::to('login')->with('alert', $message);
 
@@ -301,11 +279,11 @@
 
 
             /* Updating data */
-            $user->last_name = Input::get('last_name');
-            $user->first_name = Input::get('first_name');
-            $user->phone = Input::get('phone');
+            $user->last_name       = Input::get('last_name');
+            $user->first_name      = Input::get('first_name');
+            $user->phone           = Input::get('phone');
             $user->extension_phone = Input::get('extension_phone');
-            $user->email = Input::get('email');
+            $user->email           = Input::get('email');
             
             /* Generating and saving encrypted password */
             if(Input::get('password') != '') {
@@ -322,10 +300,50 @@
 
             $user->save();
 
+            /* Validatying if the user needs confirm email and sending email if it is necessary */
+            $message = $this->mailToValidateMail($user, 'edit');
+            Auth::logout();
+
             if($response == 'JSON')
-                return '{"status":"success","message":"Información editada correctamente","user":'.$user.'}';
+                return '{"status":"success","message":'.$message.',"user":'.$user.'}';
             else
-                return Redirect::to('dashboard')->with('alert', 'Información editada correctamente');
+                return Redirect::to('login')->with('alert', $message);
+
+        }
+
+        /*
+         * Send an mail to validate the user mail
+         */
+        private function mailToValidateMail($user, $operation) {
+
+            /* Verifying if user needs email validation */
+            if(preg_match('/buap.mx/', $user->email)) {
+                $user->status = 1;
+                $user->save();
+                return $operation == 'register' ? 'Ahora puede hacer uso de su cuenta, inicie sesión' : 'Su cuenta ha sido actualizada, gracias';
+            }
+            else {
+                $now = new DateTime();
+                $user_auth_activation             = new UserAuthOperation();
+                $user_auth_activation->token      = str_random(40);
+                $user_auth_activation->expiration = $now->add(new DateInterval('P1D'));
+                $user_auth_activation->type       = 1;
+                $user_auth_activation->used       = 0;
+                $user_auth_activation->user_id    = $user->id;
+                $user_auth_activation->save();
+
+                Mail::send('emails.auth.activate', 
+                    array(
+                        'token' => $user_auth_activation->token
+                    ), 
+                    function($message) use($user, $operation) {
+                        $subject = $operation == 'register' ? 'Bienvenido a la DCI!' : 'Perfil DCI actualizado';
+                        $message->to($user->email)->subject($subject);
+                    }
+                );
+
+                return $operation == 'register' ? 'Gracias por registrarse, en breve recibirá un correo de confirmación' : 'Gracias por actualizar su información, en breve recibirá un correo de activación';
+            }
 
         }
 
