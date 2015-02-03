@@ -79,6 +79,10 @@
                 return '{"status":"error","message":'.$validator->messages().'}';
             }
 
+            if($task->user_id != Input::get('user_id')) {
+                
+            }
+
             /* Updating the task information */
             $task->description = Input::get('description');
             $task->comment     = Input::get('comment');
