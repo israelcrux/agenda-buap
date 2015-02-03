@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('admin_layout')
 
 @section('content')
 	@include('alert')
@@ -41,6 +41,14 @@
 
 				<select name="academic_administrative_unit" id="acadun" value="">
 					<option value="">Ninguna</option>
+					<?php foreach($aaunits as $aaunit): ?>
+						<?php if($aaunit['id'] == Auth::user()->academic_administrative_unit_id): ?>
+							<option selected value="<?php echo $aaunit['id'] ?>"><?php echo $aaunit['name'] ?></option>
+						<?php elseif (Auth::user()->academic_administrative_unit_id == $aaunit["id"]): ?>
+							<option selected value="<?php echo $aaunit['id'] ?>"><?php echo $aaunit['name'] ?></option>
+						<?php endif; ?>
+						<option value="<?php echo $aaunit['id'] ?>"><?php echo $aaunit['name'] ?></option>
+					<?php endforeach; ?>
 				</select>
 
 
@@ -57,8 +65,8 @@
 			var unidades_administrativas = 
 				<?php 
 				foreach($aaunits as $aaunit){
-					if($aaunit['type'] == 'unidades_administrativas') 
-						echo '\'<option value="'.$aaunit["id"].'" '.(Auth::user()->academic_administrative_unit_id == $aaunit["id"] ? "selected" : "").' > '.$aaunit["name"].'</option>\'+';
+					if($aaunit['type'] == 'unidades_administrativas')
+						echo '\'<option value="'.$aaunit["id"].'" > '.$aaunit["name"].'</option>\'+';
 				}
 				?> '';
 			
@@ -66,7 +74,8 @@
 				<?php 
 				foreach($aaunits as $aaunit){
 					if($aaunit['type'] == 'unidades_academicas')
-						echo '\'<option value="'.$aaunit["id"].'" '.(Auth::user()->academic_administrative_unit_id == $aaunit["id"] ? "selected" : "").' > '.$aaunit["name"].'</option>\'+';
+						echo '\'<option value="'.$aaunit["id"].'" > '.$aaunit["name"].'</option>\'+';
+						// echo '\'<option value="'.$aaunit["id"].'" '.(Auth::user()->academic_administrative_unit_id == $aaunit["id"] ? "selected" : "").' > '.$aaunit["name"].'</option>\'+';
 				}
 				?> '';
 			

@@ -101,7 +101,7 @@
                 }
             );
 
-            return '{"status":"success","message":"Tarea editada correctamente","task"'.$task.'}';
+            return '{"status":"success","message":"Tarea editada correctamente","task":'.$task.'}';
 
         }
 
