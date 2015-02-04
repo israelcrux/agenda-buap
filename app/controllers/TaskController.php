@@ -79,23 +79,55 @@
                 return '{"status":"error","message":'.$validator->messages().'}';
             }
 
+            /* Cheking if the employee of task change to notifiy both employees */
+            $old_employee = null;
+            if($task->user_id != Input::get('user_id')) {
+                $old_employee = User::find($task->user_id);
+            }
+
             /* Updating the task information */
             $task->description = Input::get('description');
             $task->comment     = Input::get('comment');
             $task->user_id     = Input::get('user_id');
             $task->save();
 
-            /* Sending an email to employee */
-            $user = User::find($task->user_id);
-            Mail::send('emails.notification.edittask', 
-                array(
-                    'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
-                    'task' => $task->description
-                ), 
-                function($message) use($user) {
-                    $message->to($user->email)->subject('Tara asignada editada - DCI');
-                }
-            );
+            /* Find the employee */
+            $employee = User::find($task->user_id);
+
+            if(is_null($old_employee)) {
+                /* Sending email if the employee of the task is the same */
+                Mail::send('emails.notification.edittask', 
+                    array(
+                        'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
+                        'task' => $task->description
+                    ), 
+                    function($message) use($employee) {
+                        $message->to($employee->email)->subject('Tarea asignada editada - DCI');
+                    }
+                );
+            }
+            else {
+                /* Sending emails if the employee of the task is a new one */
+                Mail::send('emails.notification.newtask', 
+                    array(
+                        'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
+                        'task' => $task->description
+                    ), 
+                    function($message) use($employee) {
+                        $message->to($employee->email)->subject('Nueva tarea asignada - DCI');
+                    }
+                );
+
+                Mail::send('emails.notification.deletetask', 
+                    array(
+                        'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
+                        'task' => $task->description
+                    ), 
+                    function($message) use($old_employee) {
+                        $message->to($old_employee->email)->subject('Tarea asignada eliminada - DCI');
+                    }
+                );
+            }
 
             return '{"status":"success","message":"Tarea editada correctamente","task":'.$task.'}';
 
@@ -121,7 +153,7 @@
                     'task' => $task->description
                 ), 
                 function($message) use($user) {
-                    $message->to($user->email)->subject('Tara asignada eliminada - DCI');
+                    $message->to($user->email)->subject('Tarea asignada eliminada - DCI');
                 }
             );
 
@@ -138,21 +170,117 @@
             $pending = $completed = null;
 
             if(is_numeric($task_type)) {
-                return Task::where('user_id', '=', Auth::user()->id)
-                        ->where('id', '=', $task_type)
-                        ->get();
+                return EventDCI::with(
+                    array(
+                        'services' => 
+                            function($query) {
+                                $query  ->whereNull('event_service.deleted_at')
+                                        ->where('services.department_id', '=', Auth::user()->department_id)
+                                        ->orderBy('start_service');
+                            }
+                    )
+                )
+                ->whereHas('services', 
+                    function($query) {
+                        $query  ->whereNull('event_service.deleted_at')
+                                ->where('services.department_id', '=', Auth::user()->department_id)
+                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)', 
+                                    array('Pendiente', 'En Proceso')
+                                );
+                    }
+                )
+                ->whereRaw('(`events`.`dci_status` = ? OR `events`.`dci_status` = ?)',
+                    array('Pendiente', 'En Proceso')
+                )
+                ->get();
+
+                foreach ($events as $event) {
+                    foreach ($event['services'] as $service) {
+                        $service['tasks'] = 
+                            $service
+                            ->pivot
+                            ->tasks()
+                            ->where('user_id', '=', Auth::user()->id)
+                            ->where('id', '=', $task_type)
+                            ->get();
+                    }
+                }
             }
 
             if($task_type == 'pending' or $task_type == 'all') {
-                $pending = Task::where('user_id', '=', Auth::user()->id)
+                $pending = EventDCI::with(
+                    array(
+                        'services' => 
+                            function($query) {
+                                $query  ->whereNull('event_service.deleted_at')
+                                        ->where('services.department_id', '=', Auth::user()->department_id)
+                                        ->orderBy('start_service');
+                            }
+                    )
+                )
+                ->whereHas('services', 
+                    function($query) {
+                        $query  ->whereNull('event_service.deleted_at')
+                                ->where('services.department_id', '=', Auth::user()->department_id)
+                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)', 
+                                    array('Pendiente', 'En Proceso')
+                                );
+                    }
+                )
+                ->whereRaw('(`events`.`dci_status` = ? OR `events`.`dci_status` = ?)',
+                    array('Pendiente', 'En Proceso')
+                )
+                ->get();
+
+                foreach ($pending as $event) {
+                    foreach ($event['services'] as $service) {
+                        $service['tasks'] = 
+                            $service
+                            ->pivot
+                            ->tasks()
+                            ->where('user_id', '=', Auth::user()->id)
                             ->where('status', '=', 'Pendiente')
                             ->get();
+                    }
+                }
             }
             
             if($task_type == 'completed' or $task_type == 'all') {
-                $completed = Task::where('user_id', '=', Auth::user()->id)
+                $completed = EventDCI::with(
+                    array(
+                        'services' => 
+                            function($query) {
+                                $query  ->whereNull('event_service.deleted_at')
+                                        ->where('services.department_id', '=', Auth::user()->department_id)
+                                        ->orderBy('start_service');
+                            }
+                    )
+                )
+                ->whereHas('services', 
+                    function($query) {
+                        $query  ->whereNull('event_service.deleted_at')
+                                ->where('services.department_id', '=', Auth::user()->department_id)
+                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)', 
+                                    array('Pendiente', 'En Proceso')
+                                );
+                    }
+                )
+                ->whereRaw('(`events`.`dci_status` = ? OR `events`.`dci_status` = ?)',
+                    array('Pendiente', 'En Proceso')
+                )
+                ->get();
+
+                foreach ($completed as $event) {
+                    foreach ($event['services'] as $service) {
+                        $service['tasks'] = 
+                            $service
+                            ->pivot
+                            ->tasks()
+                            ->where('user_id', '=', Auth::user()->id)
                             ->where('status', '=', 'Completa')
                             ->get();
+                    }
+                }
             }
 
             return array('pending' => $pending, 'completed' => $completed);
