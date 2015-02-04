@@ -295,19 +295,19 @@
             $task = Task::find($id);
 
             if(is_null($task)) {
-                return Redirect::to('dashboard-employee')->with('alert', 'Error al procesar la petición');
+                return '{"status":"error","message":"La tarea no existe"}';
             }
 
             if($task->status == 'Completa') {
-                return Redirect::to('dashboard-employee')->with('alert', 'Tarea marcada previamente como completa');
+                return '{"status":"error","message":"La ya estaba completa"}';
             }
 
             $task->status = 'Completa';
-            $task->comment .= ' ¡Tarea finalizada! ';
+            $task->comment = Input::get('comment');
             $task->completed_at = new DateTime();
             $task->save();
 
-            return Redirect::to('dashboard-employee')->with('alert', 'La tarea ha sido marcada como completada. ¡Felicitaciones!');
+            return '{"status":"success"}';
 
         }
 

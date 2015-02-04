@@ -412,9 +412,9 @@
 								$scope.alert = null;
 							});
 						},3000);
-						$scope.currenttask = null;
-						$scope.modalLoaderActive = false;
 					}
+					$scope.currenttask = null;
+					$scope.modalLoaderActive = false;
 				});
 		};
 

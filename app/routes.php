@@ -159,7 +159,7 @@ Route::group(array('before' => 'auth'), function(){
 
         Route::group(array('prefix' => 'tasks'), function(){
             /* Route to check a task like Completed */
-            Route::get('/completed/{id}', 'TaskController@taskCompleted');
+            Route::post('/completed/{id}', 'TaskController@taskCompleted');
 
             /* Route to view all tasks (pending and completed tasks) by user */
             Route::get('/view/{task_type?}', 'TaskController@tasksByUserLogged');
