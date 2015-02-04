@@ -340,26 +340,26 @@
 				event_service_id  : $scope.current_sol.pivot.id
 			});
 			res.then(function(resp){
-				console.log(resp);
+				var message = 'Ocurrió un problema al intentar crear la tarea';
 				if(resp && resp.status == 'success'){
 					//append shit!					
 					$scope.current_sol.tasks.push(resp.newtask);
 					//clean shit
 					$scope.newtask_description = null;
 					$scope.current_employee = null;
-					//show shit
-					$scope.modalLoaderActive = false;
 
 					//tell shit was done
-					$scope.alert = 'Tarea creada exitosamente';
-					setTimeout(function(){
-						$scope.$apply(function(){
-							$scope.alert = null;
-						});
-					},3000);					
-				} else {
-					alert('Ocurrió un problema al intentar crear la tarea, por favor intente de nuevo');
+					message = 'Tarea creada exitosamente';
 				}
+				//show shit
+				$scope.modalLoaderActive = false;
+
+				$scope.alert = message;
+				setTimeout(function(){
+					$scope.$apply(function(){
+						$scope.alert = null;
+					});
+				},3000);					
 			});
 		};
 
@@ -384,19 +384,21 @@
 			$scope.modalLoaderActive = true;
 			DataService.deleteTask($scope.currenttask)
 				.then(function(resp){
+					var message = 'Ocurrió un problema al intentar eliminar la tarea';
 					if(resp && resp.status == 'success'){
 						//remove shit
 						$scope.current_sol.tasks.splice($scope.current_sol.tasks.indexOf($scope.currenttask),1);
 						//tell shit was done
-						$scope.alert = 'Tarea eliminada';
-						setTimeout(function(){
-							$scope.$apply(function(){
-								$scope.alert = null;
-							});
-						},3000);
+						message = 'Tarea eliminada';
 						$scope.currenttask = null;
-						$scope.modalLoaderActive = false;
 					}
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+					$scope.modalLoaderActive = false;
 				});
 		};
 		$scope.updateTask = function(){
@@ -404,16 +406,18 @@
 			$scope.modalLoaderActive = true;
 			DataService.updateTask($scope.currenttask)
 				.then(function(resp){
+					var message = "Ocurrió un error al modificar la tarea";
 					if(resp && resp.status == 'success'){
 						//tell shit was done
-						$scope.alert = 'Tarea modificada exitosamente';
-						setTimeout(function(){
-							$scope.$apply(function(){
-								$scope.alert = null;
-							});
-						},3000);
+						message = "Tarea modificada";
+						$scope.currenttask = null;
 					}
-					$scope.currenttask = null;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
 					$scope.modalLoaderActive = false;
 				});
 		};
