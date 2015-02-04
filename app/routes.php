@@ -151,6 +151,12 @@ Route::group(array('before' => 'auth'), function(){
     /* Routes that need a minimum employee role authentication to access */
     Route::group(array('before' => 'employee'), function(){
 
+        /* Route to view the dashboard to the boss */
+        Route::get('/dashboard-employee/', function(){
+            return View::make('dashboard-employee'); 
+        });
+
+
         Route::group(array('prefix' => 'tasks'), function(){
             /* Route to check a task like Completed */
             Route::get('/completed/{id}', 'TaskController@taskCompleted');

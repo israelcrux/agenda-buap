@@ -22,7 +22,7 @@
 						<div class="breadcrumb task">
 							<div class="task-status" ng-class="{pending:task.status=='Pendiente',complete:task.status=='Completa'}">{{task.status}}</div>
 	
-							<div class="col-xs12 ellipsis">{{task.description}}</div>
+							<div class="col-xs12 ellipsis padr">{{task.description}}</div>
 							<div class="col-xs12">Empleado: <b>{{employees[task.user_id].first_name}} {{employees[task.user_id].last_name}}</b></div>
 							<div class="ar-row">
 								<div class="col-xs6">{{task.created_at}}</div>
