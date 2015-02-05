@@ -1,36 +1,45 @@
 <div ng-controller="EDashboardController">
 
-<div class="task-list">
-	
-	<div class="task ar-element" ng-repeat="task in tasks">
-		<div class="ar-over-title">Descripción de la tarea</div>
-		<p>{{task.description}}</p>
-		<div class="ar-element-buttons ar-row">
-			<div class="ar-button-info">Estado: <b>{{task.dci_status}}</b></div>
-			<div class="ar-button-info">Tarea creada en: <b>{{task.created_at}}</b></div>
-			<button class="btn" ng-click="openTaskPanel(task)">Marcar tarea como completada</button>			
+
+<div class="col-xs-12">
+	<div class="event-list task-list" ng-repeat="event in eventTasks">
+		<div class="ar-over-title">Nombre del Evento</div>
+		<h4>{{event.name}}</h4> <a href="">Mas información</a>
+		<div class="task-list">
+			<div ng-repeat="service in event.services">
+				<div class="task ar-element" ng-repeat="task in service.tasks">
+					<div class="ar-over-title">Descripción de la tarea</div>
+					<p>{{task.description}}</p>
+					<div class="ar-element-buttons ar-row">
+						<div class="ar-button-info">Estado: <b>{{task.status}}</b></div>
+						<div class="ar-button-info">Tarea creada en: <b>{{task.created_at}}</b></div>
+						<button class="btn" ng-click="openTaskPanel(task)">Marcar tarea como completada</button>			
+					</div>
+				</div>
+			</div>
+
 		</div>
-	</div>	
+	</div>
+</div>
+
 
 	<p>También puedes <a>revisar las tareas terminadas</a></p>
 
-	<div ng-hide="taskpanel_hidden" class="ar-fullscreen-panel-container">
-		<div class="ar-fullscreen-panel ar-notsofull">
-			<div class="ar-modal-title">Tarea terminada {{current_sol.name}}</div>
-			<div class="ar-modal-closebtn" ng-click="closeTaskPanel()"></div>
-			<div class="ar-modal-content">
-				<p>Por favor escriba un comentario, sobre la tarea que realizó</p>
-				<p class="ar-citation">
-					{{currenttask_comment}}
-				</p>
-				<div class="ar-form-container">
-					<input class="form-control" type="text" ng-model="currenttask_comment" />
-				</div>
-				<button class="btn btn-primary" ng-click="completeTask()">Tarea completada</button>
+<div ng-show="currenttask" class="ar-fullscreen-panel-container">
+	<div class="ar-fullscreen-panel ar-notsofull">
+		<div class="ar-modal-title">Tarea terminada {{current_sol.name}}</div>
+		<div class="ar-modal-closebtn" ng-click="closeTaskPanel()"></div>
+		<div class="ar-modal-content">
+			<p>Por favor escriba un comentario, sobre la tarea que realizó</p>
+			<p class="ar-citation">
+				{{currenttask_comment}}
+			</p>
+			<div class="ar-form-container">
+				<input class="form-control" type="text" ng-model="currenttask_comment" />
 			</div>
+			<button class="btn btn-primary" ng-click="completeTask()">Tarea completada</button>
 		</div>
 	</div>
-
 </div>
 
 <div class="ar-modal-loader" ng-class="{active:modalLoaderActive}">
@@ -61,6 +70,7 @@
 						});
 			},
 			endTask : function(task){
+				console.log('<?php echo URL::to('/') ?>/tasks/completed/'+task.id);
 				return $http.post('<?php echo URL::to('/') ?>/tasks/completed/'+task.id,task)
 					.then(function(response){
 						return response.data;
@@ -77,34 +87,33 @@
 
 		$scope.currenttask = null;
 
-		$scope.tasks = DataService.tasks();
-		$scope.tasks.then(function(data){
-			$scope.tasks = data.pending;
-			console.log($scope.tasks);
+		$scope.eventTasks = DataService.tasks();
+		$scope.eventTasks.then(function(data){
+			$scope.eventTasks = data.pending;
 		});
 
 
-		$scope.taskpanel_hidden = true;
 		$scope.closeTaskPanel = function(){
-			$scope.taskpanel_hidden=true;
+			$scope.currenttask = null;
 		};
 		$scope.openTaskPanel = function(task){
-			$scope.taskpanel_hidden=false;
 			$scope.currenttask = task;
 		};
 		$scope.completeTask = function(){
 			//hide while process
 			console.log('starting up');
+			console.log($scope.currenttask.id);
 			$scope.modalLoaderActive = true;
 			DataService.endTask({
 					id: $scope.currenttask.id,
 					comment: $scope.currenttask_comment
 				})
 				.then(function(resp){
-					console.log('???????');
+					console.log(resp);
 					var message = "";
 					if(resp && resp.status == "success"){
 						message = 'Tarea marcada como completa';
+						$scope.currenttask = null;
 					} else {
 						message = 'Ocurrió un problema, intente de nuevo';
 					}
@@ -114,8 +123,7 @@
 							$scope.alert = null;
 						});
 					},3000);					
-					$scope.currenttask = null;
-					$scope.modalLoaderActive = false;					
+					$scope.modalLoaderActive = false;				
 				});
 
 		};

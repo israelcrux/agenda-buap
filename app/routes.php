@@ -152,6 +152,9 @@ Route::group(array('before' => 'auth'), function(){
 
     /* Route to get events of certain user */
     Route::get('/events/user/{id}', 'EventController@eventsByUser');
+    
+    /* NEW! Route to get a single event, response in html doc */
+    Route::get('/events/{id}', 'EventController@view');
 
     /* Routes that need a minimum employee role authentication to access */
     Route::group(array('before' => 'employee'), function(){
@@ -165,6 +168,7 @@ Route::group(array('before' => 'auth'), function(){
         Route::group(array('prefix' => 'tasks'), function(){
             /* Route to check a task like Completed */
             Route::post('/completed/{id}', 'TaskController@taskCompleted');
+            Route::get('/completed/{id}', 'TaskController@taskCompleted');
 
             /* Route to view all tasks (pending and completed tasks) by user */
             Route::get('/view/{task_type?}', 'TaskController@tasksByUserLogged');

@@ -4,6 +4,10 @@
 
     class EventController extends BaseController {
 
+        public function view($id) {
+            return View::make( 'event-view', array('event' => EventDCI::find($id) ) );
+        }
+
         public function eventsByUser($user_id) {
             $events = EventDCI::where('user_id', '=', $user_id)
                                 ->orderBy('time')->get();
