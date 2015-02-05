@@ -90,6 +90,11 @@ Route::get('/signup', function(){
     return View::make('signup', array('aaunits' => AcademicAdministrativeUnit::all()));
 });
 
+/* Route to show the register form */
+Route::get('/signup-employee', function(){
+    return View::make('signup-employee', array('aaunits' => AcademicAdministrativeUnit::all()));
+});
+
 /* Route to register an user */
 Route::post('/register', 'UserController@register');
 

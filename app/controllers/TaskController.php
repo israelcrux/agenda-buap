@@ -167,7 +167,7 @@
          * Return all task (pending and/or completed) of the user logged
          */
         public function tasksByUserLogged($task_type = 'pending') {
-            $pending = $completed = null;
+            $pending = $completed = array();
 
             if(is_numeric($task_type)) {
                 return EventDCI::with(
@@ -195,6 +195,25 @@
                 ->get();
 
                 foreach ($events as $event) {
+                    $custom_event = $custom_service = array();
+                    $custom_event["id"]          = $event["id"];
+                    $custom_event["id_dci"]      = $event["id_dci"];
+                    $custom_event["name"]        = $event["name"];
+                    $custom_event["start_day"]   = $event["start_day"];
+                    $custom_event["end_day"]     = $event["end_day"];
+                    $custom_event["place"]       = $event["place"];
+                    $custom_event["time"]        = $event["time"];
+                    $custom_event["has_cost"]    = $event["has_cost"];
+                    $custom_event["directed_to"] = $event["directed_to"];
+                    $custom_event["link"]        = $event["link"];
+                    $custom_event["description"] = $event["description"];
+                    $custom_event["dci_status"]  = $event["dci_status"];
+                    $custom_event["created_at"]  = is_null($event["created_at"]) ? null : $event["created_at"]->toDateTimeString();
+                    $custom_event["updated_at"]  = is_null($event["updated_at"]) ? null : $event["updated_at"]->toDateTimeString();
+                    $custom_event["deleted_at"]  = is_null($event["deleted_at"]) ? null : $event["deleted_at"]->toDateTimeString();
+                    $custom_event["user_id"]     = $event["user_id"];
+                    $custom_event["services"]    = array();
+                    $toPush = false;
                     foreach ($event['services'] as $service) {
                         $service['tasks'] = 
                             $service
@@ -203,12 +222,22 @@
                             ->where('user_id', '=', Auth::user()->id)
                             ->where('id', '=', $task_type)
                             ->get();
+
+                        if(!$tasks->isEmpty()) {
+                            $service['tasks'] = $tasks;
+                            array_push($custom_service, $service);
+                            $toPush = true;
+                        }
+                    }
+                    if($toPush) {
+                        array_push($custom_event["services"], $custom_service);
+                        array_push($pending, $custom_event);
                     }
                 }
             }
 
             if($task_type == 'pending' or $task_type == 'all') {
-                $pending = EventDCI::with(
+                $events = EventDCI::with(
                     array(
                         'services' => 
                             function($query) {
@@ -232,15 +261,44 @@
                 )
                 ->get();
 
-                foreach ($pending as $event) {
+                foreach ($events as $event) {
+                    $custom_event = $custom_service = array();
+                    $custom_event["id"]          = $event["id"];
+                    $custom_event["id_dci"]      = $event["id_dci"];
+                    $custom_event["name"]        = $event["name"];
+                    $custom_event["start_day"]   = $event["start_day"];
+                    $custom_event["end_day"]     = $event["end_day"];
+                    $custom_event["place"]       = $event["place"];
+                    $custom_event["time"]        = $event["time"];
+                    $custom_event["has_cost"]    = $event["has_cost"];
+                    $custom_event["directed_to"] = $event["directed_to"];
+                    $custom_event["link"]        = $event["link"];
+                    $custom_event["description"] = $event["description"];
+                    $custom_event["dci_status"]  = $event["dci_status"];
+                    $custom_event["created_at"]  = is_null($event["created_at"]) ? null : $event["created_at"]->toDateTimeString();
+                    $custom_event["updated_at"]  = is_null($event["updated_at"]) ? null : $event["updated_at"]->toDateTimeString();
+                    $custom_event["deleted_at"]  = is_null($event["deleted_at"]) ? null : $event["deleted_at"]->toDateTimeString();
+                    $custom_event["user_id"]     = $event["user_id"];
+                    $custom_event["services"]    = array();
+                    $toPush = false;
                     foreach ($event['services'] as $service) {
-                        $service['tasks'] = 
+                        $tasks =
                             $service
                             ->pivot
                             ->tasks()
                             ->where('user_id', '=', Auth::user()->id)
                             ->where('status', '=', 'Pendiente')
                             ->get();
+
+                        if(!$tasks->isEmpty()) {
+                            $service['tasks'] = $tasks;
+                            array_push($custom_service, $service);
+                            $toPush = true;
+                        }
+                    }
+                    if($toPush) {
+                        array_push($custom_event["services"], $custom_service);
+                        array_push($pending, $custom_event);
                     }
                 }
             }
@@ -271,6 +329,25 @@
                 ->get();
 
                 foreach ($completed as $event) {
+                    $custom_event = $custom_service = array();
+                    $custom_event["id"]          = $event["id"];
+                    $custom_event["id_dci"]      = $event["id_dci"];
+                    $custom_event["name"]        = $event["name"];
+                    $custom_event["start_day"]   = $event["start_day"];
+                    $custom_event["end_day"]     = $event["end_day"];
+                    $custom_event["place"]       = $event["place"];
+                    $custom_event["time"]        = $event["time"];
+                    $custom_event["has_cost"]    = $event["has_cost"];
+                    $custom_event["directed_to"] = $event["directed_to"];
+                    $custom_event["link"]        = $event["link"];
+                    $custom_event["description"] = $event["description"];
+                    $custom_event["dci_status"]  = $event["dci_status"];
+                    $custom_event["created_at"]  = is_null($event["created_at"]) ? null : $event["created_at"]->toDateTimeString();
+                    $custom_event["updated_at"]  = is_null($event["updated_at"]) ? null : $event["updated_at"]->toDateTimeString();
+                    $custom_event["deleted_at"]  = is_null($event["deleted_at"]) ? null : $event["deleted_at"]->toDateTimeString();
+                    $custom_event["user_id"]     = $event["user_id"];
+                    $custom_event["services"]    = array();
+                    $toPush = false;
                     foreach ($event['services'] as $service) {
                         $service['tasks'] = 
                             $service
@@ -279,6 +356,16 @@
                             ->where('user_id', '=', Auth::user()->id)
                             ->where('status', '=', 'Completa')
                             ->get();
+
+                        if(!$tasks->isEmpty()) {
+                            $service['tasks'] = $tasks;
+                            array_push($custom_service, $service);
+                            $toPush = true;
+                        }
+                    }
+                    if($toPush) {
+                        array_push($custom_event["services"], $custom_service);
+                        array_push($pending, $custom_event);
                     }
                 }
             }
