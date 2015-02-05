@@ -382,7 +382,7 @@
             $task = Task::find($id);
 
             if(is_null($task)) {
-                return '{"status":"error","message":"La tarea no existe, EL ID PROPORCIONADO ES:['.$id.'] "}';
+                return '{"status":"error","message":"La tarea no existe"}';
             }
 
             if($task->status == 'Completa') {
