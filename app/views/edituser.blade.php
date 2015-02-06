@@ -14,26 +14,23 @@
 				<select name="academic_administrative_unit_type" id="aaut" value="" required>
 					<option value="0">Seleccionar Procedencia</option>
 					<option value="1" 
-						<?php 
-							if($aautype == 'unidades_administrativas')  
-								echo 'selected' 
-						?> 
+						@if($aautype == 'unidades_administrativas')  
+							selected
+						@endif 
 					>
 						Unidad Administrativa
 					</option>
 					<option value="2" 
-						<?php 
-							if($aautype == 'unidades_academicas')  
-								echo 'selected' 
-						?> 
+						@if($aautype == 'unidades_academicas')  
+							selected
+						@endif 
 					>
 						Unidad Académica
 					</option>
 					<option value="3" 
-						<?php 
-							if($aautype == 'otro')  
-								echo 'selected' 
-						?> 
+						@if($aautype == 'otro')  
+							selected
+						@endif
 					>
 						Otro
 					</option>
@@ -41,14 +38,13 @@
 
 				<select name="academic_administrative_unit" id="acadun" value="">
 					<option value="">Ninguna</option>
-					<?php foreach($aaunits as $aaunit): ?>
-						<?php if($aaunit['id'] == Auth::user()->academic_administrative_unit_id): ?>
-							<option selected value="<?php echo $aaunit['id'] ?>"><?php echo $aaunit['name'] ?></option>
-						<?php elseif (Auth::user()->academic_administrative_unit_id == $aaunit["id"]): ?>
-							<option selected value="<?php echo $aaunit['id'] ?>"><?php echo $aaunit['name'] ?></option>
-						<?php endif; ?>
-						<option value="<?php echo $aaunit['id'] ?>"><?php echo $aaunit['name'] ?></option>
-					<?php endforeach; ?>
+					@foreach($aaunits as $aaunit)
+						@if($aaunit['id'] == Auth::user()->academic_administrative_unit_id)
+							<option value="{{ $aaunit['id'] }}" selected>{{ $aaunit['name'] }}</option>
+						@else
+							<option value="{{ $aaunit['id'] }}">{{ $aaunit['name'] }}</option>
+						@endif
+					@endforeach
 				</select>
 
 

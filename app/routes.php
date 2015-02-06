@@ -90,9 +90,15 @@ Route::get('/signup', function(){
     return View::make('signup', array('aaunits' => AcademicAdministrativeUnit::all()));
 });
 
-/* Route to show the register form */
-Route::get('/signup-employee', function(){
-    return View::make('signup-employee', array('aaunits' => AcademicAdministrativeUnit::all()));
+/* Route to show the register form to employees */
+Route::get('/signup-pro', function(){
+    return View::make('signup-pro', 
+        array(
+            'aaunits' => AcademicAdministrativeUnit::all(),
+            'dunits'  => Department::all(),
+            'utunits' => UserType::all(),
+        )
+    );
 });
 
 /* Route to register an user */

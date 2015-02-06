@@ -179,7 +179,12 @@
             $validation = $this->validateUser('register');
 
             if(!$validation['isValid']) {
-                return Redirect::to('signup')->with('alert', $validation['message'])->withInput(Input::except('password'));
+                if(Input::has('department_id') and Input::has('user_type_id')) {
+                    return Redirect::to('signup-pro')->with('alert', $validation['message'])->withInput(Input::except('password'));
+                }
+                else {
+                    return Redirect::to('signup')->with('alert', $validation['message'])->withInput(Input::except('password'));
+                }
             }
 
             /* Generating encrypted password */
@@ -199,8 +204,19 @@
                 $user_data['academic_administrative_unit_id'] = Input::get('academic_administrative_unit');
             }
 
+            /* If the request came from signup-pro, get the department of user */
+            if(Input::has('department_id')) {
+                $user_data['department_id'] = Input::get('department_id') == 0 ? null : Input::get('department_id');
+            }
+            
             /* Storing the new user */
             $user = User::create($user_data);
+
+            /* If the request came from signup-pro, get the level of user */
+            if(Input::has('user_type_id')) {
+                $user->user_type_id = Input::get('user_type_id');
+                $user->save();
+            }
 
             /* Validatying if the user needs confirm email and sending email if it is necessary */
             $message = $this->mailToValidateMail($user, 'register');
@@ -363,12 +379,18 @@
                         'extension_phone'                   => array('regex:/([0-9]+|-|\s)+/'),
                         'email'                             => 'required|email|unique:users',
                         'password'                          => 'required|min:6',
+                        'user_type_id'                      => 'min:1|integer',
+                        'department_id'                     => 'required_if:user_type_id,2,user_type_id,3|min:0|integer',
                         'academic_administrative_unit_type' => 'min:1|integer',
-                        'academic_administrative_unit'      => 
-                            'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
+                        'academic_administrative_unit'      => 'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
                     ),
                     array(
-                        'academic_administrative_unit_type.min' => 'Seleccione una procedencia de unidad acádemica o administrativa'
+                        'academic_administrative_unit_type.min'     => 'Seleccione una procedencia de unidad acádemica o administrativa',
+                        'academic_administrative_unit_type.integer' => 'Procedencia de unidad acádemica o administrativa inválida',
+                        'user_type_id.min'                          => 'Seleccione un nivel de usuario',
+                        'user_type_id.integer'                      => 'Nivel de usuario inválido',
+                        'department_id.min'                         => 'Seleccione un departamento',
+                        'department_id.integer'                     => 'Departamento inválido',
                     )
                 );
             }
@@ -384,11 +406,11 @@
                         'email'                             => 'required|email|unique:users,email,'.Auth::user()->id,
                         'password'                          => 'min:6|confirmed',
                         'academic_administrative_unit_type' => 'min:1|integer',
-                        'academic_administrative_unit'      => 
-                            'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
+                        'academic_administrative_unit'      => 'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',
                     ),
                     array(
-                        'academic_administrative_unit_type.min' => 'Seleccione una procedencia de unidad acádemica o administrativa'
+                        'academic_administrative_unit_type.min'     => 'Seleccione una procedencia de unidad acádemica o administrativa',
+                        'academic_administrative_unit_type.integer' => 'Procedencia de unidad acádemica o administrativa inválida',
                     )
                 );
             }
