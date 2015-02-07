@@ -216,6 +216,7 @@ Route::group(array('before' => 'auth'), function(){
 
             /* Route that authorize an user to be an employee on the system */
             Route::post('authorize', 'UserController@authorize');
+
         });
         
     });

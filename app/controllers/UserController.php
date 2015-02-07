@@ -431,6 +431,13 @@
             
             $user->status = 1;
             $user->save();
+
+            Mail::send('emails.auth.authorize', array(), 
+                function($message) use($user) {
+                    $message->to($user->email)->subject('Usuario autorizado! DCI');
+                }
+            );
+
             return '{"status":"success","message":"El usuario '.$user->first_name.' '.$user->last_name.' ha sido autorizado como '.$response_message.'"}';
 
         }
