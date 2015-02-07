@@ -207,11 +207,32 @@ Route::group(array('before' => 'auth'), function(){
             Route::post('/delete/', 'TaskController@deleteTask');
             
         });
+
+        /* Route that have the prefix user */
+        Route::group(array('prefix' => 'user'), function(){
+
+            /* Route to get the employees of the boss department logged */
+            Route::get('authorize/employee', 'UserController@getEmployees');
+
+            /* Route that authorize an user to be an employee on the system */
+            Route::post('authorize', 'UserController@authorize');
+        });
         
     });
 
     /* Routes that need a minimum admin role authentication to access */
     Route::group(array('before' => 'admin'), function(){
+
+        /* Route that have the prefix user */
+        Route::group(array('prefix' => 'user'), function(){
+
+            /* Route to get the bosses */
+            Route::get('authorize/boss', 'UserController@getBosses');
+
+            /* Route to get the bosses */
+            Route::get('authorize/administrator', 'UserController@getAdministrators');
+
+        });
 
     });
     

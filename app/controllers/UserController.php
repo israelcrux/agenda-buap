@@ -133,7 +133,12 @@
             if(Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password')))) {
                 /* Verifying status user */
                 if(Auth::user()->status == '2') {
+                    Auth::logout();
                     return Redirect::to('login')->with('alert', 'Usuario requiere activación')->withInput(Input::except('password'));
+                }
+                else if(Auth::user()->status == '3') {
+                    Auth::logout();
+                    return Redirect::to('login')->with('alert', 'Usuario requiere autorización')->withInput(Input::except('password'));
                 }
 
                 /* Verifying if the user role */
@@ -165,6 +170,7 @@
          * Finish the user login
          */
         public function logout() {
+
             Auth::logout();
             return Redirect::to('/');
       
@@ -255,10 +261,15 @@
 
             // Updating the user information with status active
             $user = User::find($user_auth_activation->user_id);
-            $user->status = 1;
+
+            if($user->status != 1) {
+                $user->status = $user->user_type_id > 1 ? 3 : 1;
+            }
+
             $user->save();
 
-            return Redirect::to('login')->with('alert', 'Su cuenta ha sido activada, ahora puede iniciar sesión');
+            $message = $user->status == 1 ? 'Su cuenta ha sido activada, ahora puede iniciar sesión' : 'Su cuenta ha sido activada, solicite autorización con jefe o administrador para iniciar sesión';
+            return Redirect::to('login')->with('alert', $message);
 
         }
 
@@ -328,17 +339,123 @@
         }
 
         /*
+         * User registered as employee get the boss/admin authorization 
+         */
+        public function getEmployees() {
+
+            $unauthorized =  User::where('department_id', '=', Auth::user()->department_id)
+                                ->where('user_type_id', '=', 2)
+                                ->where('status', '=', '3')
+                                ->get();
+
+            $authorized =  User::where('department_id', '=', Auth::user()->department_id)
+                                ->where('user_type_id', '=', 2)
+                                ->where('status', '=', '1')
+                                ->get();
+
+            return array('unauthorized' => $unauthorized, 'authorized' => $authorized);
+
+        }
+
+        /*
+         * User registered as boss get the admin authorization
+         */
+        public function getBosses() {
+
+            $unauthorized = User::where('user_type_id', '=', 3)
+                                ->where('status', '=', 3)
+                                ->get();
+
+            $authorized = User::where('user_type_id', '=', 3)
+                                ->where('status', '=', 1)
+                                ->get();
+
+            return array('unauthorized' => $unauthorized, 'authorized' => $authorized);
+
+        }
+
+        /*
+         * User registered as administrator get the admin authorization
+         */
+        public function getAdministrators() {
+            
+            $unauthorized = User::where('user_type_id', '=', 4)
+                                ->where('status', '=', 3)
+                                ->get();
+
+            $unauthorized = User::where('user_type_id', '=', 4)
+                                ->where('status', '=', 1)
+                                ->get();
+
+            return array('unauthorized' => $unauthorized, 'authorized' => $authorized);
+
+        }
+
+        /*
+         * User registered get authorization to login like employee/boss/administrator
+         * JSON response
+         */
+        public function authorize() {
+
+            $user = User::find(Input::get('id'));
+
+            switch (Input::get('authorize_to')) {
+                case 'employee':
+                    if(Auth::user()->user_type_id <= 2) {
+                        return '{"status":"error","message":"No tiene permisos suficientes para autorizar un empleado"}';
+                    }
+                    elseif (Auth::user()->department_id != $user->department_id) {
+                        return '{"status":"error","message":"No tiene permisos para autorizar un empleado que no pertenece a su departamento"}';
+                    }
+                    $response_message = 'empleado';
+                    break;
+
+                case 'boss':
+                    if(Auth::user()->user_type_id <= 3) {
+                        return '{"status":"error","message":"No tiene permisos suficientes para autorizar un jefe"}';
+                    }
+                    $response_message = 'jefe de '.$user->department_id;
+                    break;
+
+                case 'administrator':
+                    if(Auth::user()->user_type_id < 4) {
+                        return '{"status":"error","message":"No tiene permisos suficientes para autorizar un administrador"}';
+                    }
+                    $response_message = 'administrador';
+                    break;
+                
+                default:
+                    return '{"status":"error","message":"Error inesperado, recargue y vuelva a intentar"}';
+                    break;
+            }
+            
+            $user->status = 1;
+            $user->save();
+            return '{"status":"success","message":"El usuario '.$user->first_name.' '.$user->last_name.' ha sido autorizado como '.$response_message.'"}';
+
+        }
+
+
+        /*
          * Send an mail to validate the user mail
          */
         private function mailToValidateMail($user, $operation) {
 
             /* Verifying if user needs email validation */
             if(preg_match('/buap.mx/', $user->email)) {
+                /* Verifying the type of the user */
+                if($user->user_type_id > 1) {
+                    /* If the operation is a register, the user require authorization; if not, the user continue with status active */
+                    $user->status = $operation == 'register' ? 3 : 1;
+                    $user->save();
+                    return $operation == 'register' ? 'Ha válidado su cuenta, para iniciar sesión contacte a su jefe o administrador para recibir autorización' : 'Su cuenta ha sido actualizada, gracias';
+                }
                 $user->status = 1;
                 $user->save();
                 return $operation == 'register' ? 'Ahora puede hacer uso de su cuenta, inicie sesión' : 'Su cuenta ha sido actualizada, gracias';
             }
             else {
+                /* Saving a operation to activate the user */
                 $now = new DateTime();
                 $user_auth_activation             = new UserAuthOperation();
                 $user_auth_activation->token      = str_random(40);
@@ -347,6 +464,12 @@
                 $user_auth_activation->used       = 0;
                 $user_auth_activation->user_id    = $user->id;
                 $user_auth_activation->save();
+
+                /* Setting the status of the user */
+                if($user->status != 1) {
+                    $user->status = 2;
+                    $user->save();
+                }
 
                 Mail::send('emails.auth.activate', 
                     array(
