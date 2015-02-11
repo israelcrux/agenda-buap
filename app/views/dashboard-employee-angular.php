@@ -90,6 +90,7 @@
 		$scope.eventTasks = DataService.tasks();
 		$scope.eventTasks.then(function(data){
 			$scope.eventTasks = data.pending;
+			console.log($scope.eventTasks);
 		});
 
 
@@ -113,7 +114,28 @@
 					var message = "";
 					if(resp && resp.status == "success"){
 						message = 'Tarea marcada como completa';
+
+						//remove shit from list
+						for (var i = $scope.eventTasks.length - 1; i >= 0; i--) {
+							for(var j = $scope.eventTasks[i].services.length - 1; j >= 0; j--){
+
+								var ind = $scope.eventTasks[i].services[j].tasks.indexOf($scope.currenttask);
+								if(ind != -1){
+									$scope.eventTasks[i].services[j].tasks.splice(ind,1);
+								}
+								if($scope.eventTasks[i].services[j].tasks.length == 0){
+									//remove serice
+									$scope.eventTasks[i].services.splice($scope.eventTasks[i].services[j],1);
+								}
+							}
+							if($scope.eventTasks[i].services.length == 0){
+								//remove event
+								$scope.eventTasks.splice($scope.eventTasks[i],1);
+							}
+						}
+
 						$scope.currenttask = null;
+
 					} else {
 						message = 'Ocurrió un problema, intente de nuevo';
 					}

@@ -165,6 +165,7 @@ input
 
 .btn
 	border-radius 0px
+	background-color shadow
 
 .btn-primary
 	background-color light_blue
@@ -328,6 +329,7 @@ ul.nav.navbar-nav li a
 
 .ar-modal-closebtn
 	position absolute
+	z-index 2
 	top 0px
 	right 0px
 	cursor pointer
@@ -344,7 +346,8 @@ ul.nav.navbar-nav li a
 	color #fff
 	text-indent 15px
 	font-size 1.2em
-	
+	z-index 1
+
 .ar-modal-title,
 .ar-modal-closebtn
 	height 50px
@@ -939,7 +942,7 @@ a.ar-moreinfo
 .ar-fullscreen-panel-container
 	width 100%
 	height 100%
-	position absolute
+	position fixed
 	top 0px
 	left 0px
 	z-index 10
@@ -964,6 +967,9 @@ form
 	display inline-block
 
 /**----------- BOSS PANEL -----------**/
+
+.ar-mbottom
+	margin-bottom 70px;
 
 .ar-element-buttons
 	text-align right
@@ -1084,6 +1090,9 @@ span.dci_status.apr
 .padr
 	padding-right 50px
 
+.ellipsis.unellipsable
+	cursor pointer
+
 .task-list
 	max-width 900px 
 	margin 0 auto
@@ -1100,7 +1109,12 @@ span.dci_status.apr
 		margin 50px auto 30px auto
 	.ar-login-form .ar-form-container
 		margin 30px auto 30px auto
+
 @media (min-width:768px)
+	.ar-scrollable-on-md
+		max-height 100%
+		overflow auto
+
 	.ar-form-wrapper
 		min-height 400px
 	.nav.navbar
@@ -1121,7 +1135,7 @@ span.dci_status.apr
 		padding 20px
 		.ar-fullscreen-panel
 			box-shadow 0px 0px 25px #333
-			height 95%
+			//height 95%
 			margin 0 auto
 
 @media (min-width:1000px)

@@ -5,15 +5,11 @@
 ?>
 <div ng-hide="taskpanel_hidden" class="ar-fullscreen-panel-container">
 	<div class="ar-fullscreen-panel">
-		<div class="ar-modal-title">Tareas asignadas para solicitud de {{current_sol.name}}</div>
+		<div class="ar-modal-title">Tareas asignadas para solicitud de {{current_sol.name}} para el evento "{{current_event.name}}"</div>
 		<div class="ar-modal-closebtn" ng-click="closeTaskPanel()"></div>
 		<div class="ar-modal-content">
-			<div class="col-xs-12 col-md-8">
-				<ol>
-					<h4>Evento: {{current_event.name}}</h4>
-				</ol>
+			<div class="col-xs-12 col-md-8 ar-scrollable-on-md ar-row">
 				<?php /* Tasks and their statuses */ ?>
-				<div class="ar-row">
 				
 					<div class="ar-empty-message" ng-show="!current_sol.tasks.length">Aún no hay tareas asignadas a esta solicitud, ¡Es importante asignar tareas!</div>
 
@@ -22,7 +18,7 @@
 						<div class="breadcrumb task">
 							<div class="task-status" ng-class="{pending:task.status=='Pendiente',complete:task.status=='Completa'}">{{task.status}}</div>
 	
-							<div class="col-xs12 ellipsis padr">{{task.description}}</div>
+							<div class="col-xs12 ellipsis unellipsable padr" ng-click="unellipse($event)" title="{{task.description}}">{{task.description}}</div>
 							<div class="col-xs12">Empleado: <b>{{employees[task.user_id].first_name}} {{employees[task.user_id].last_name}}</b></div>
 							<div class="ar-row">
 								<div class="col-xs6">{{task.created_at}}</div>
@@ -32,17 +28,21 @@
 								{{task.comment}}
 							</p>
 							
-							<div class="edit-btn" title="Editar tarea" ng-click="editTask(task)"></div>
+							<div class="edit-btn" title="Editar tarea" ng-show="task.status!='Completa'" ng-click="editTask(task)"></div>
 							
 						</div>
 
 					</div>
-
-
-				</div>
+				
 			</div>
 			<div class="col-xs-12 col-md-4">
 				
+				<div class="ar-form-container" ng-show="current_sol._completed_tasks==current_sol.tasks.length">
+					<p>Todas las tareas para esta solicitud han sido completadas, si la solicitud ha sido completamente atendida por su área, por favor marque la solicitud como atendida.</p>
+					<button class="btn ar-flatbtn form-control" ng-click="completeSol()">Marcar solicitud como atendida</button>
+				</div>
+
+
 				<div class="ar-form-container" ng-hide="currenttask">
 					
 					<h4>Nueva tarea</h4>
@@ -121,7 +121,7 @@
 	
 	<div class="ar-empty-message" ng-show="events.length==0">Aún no hay solicitudes de los servicios de ésta área.</div>
 
-	<div class="ar-list" ng-repeat="event in events">
+	<div class="ar-list ar-mbottom" ng-repeat="event in events">
 
 
 		<div class="ar-vwrap">
@@ -186,7 +186,7 @@
 				</div>
 
 				<div class="ar-element-buttons ar-row">
-					<div class="ar-button-info ">
+					<div class="ar-button-info" ng-class="{green:sol._completed_tasks==sol.tasks.length}">
 						<b>{{sol.tasks.length}}</b> tareas asignadas
 					</div>
 					<div class="ar-button-info">
@@ -283,7 +283,19 @@
 						alert('No fue posible eliminar la tarea');
 						return false;
 					});
-			}			
+			},
+			cpmpleteEventService : function(data){
+				return $http.post(window['ROOT_PATH']+'/eventservices/complete',data)
+					.then(function(response){
+						return response.data;
+					},
+					function(response){
+						console.log('Could not complete eventService');
+						console.log(response);
+						alert('Hubo un error tratando de completar la solicitud');
+						return false;
+					});
+			}
 		};
 	}]);
 	
@@ -371,9 +383,11 @@
 			$scope.current_event = null;			
 		};
 		$scope.openTaskPanel = function(evt,sol){
+			//update here?
 			$scope.taskpanel_hidden = false;
 			$scope.current_sol = sol;
 			$scope.current_event = evt;
+			//scrollTop();	
 		};
 
 		$scope.editTask = function(task){
@@ -421,7 +435,48 @@
 					$scope.modalLoaderActive = false;
 				});
 		};
+		$scope.completeSol = function(){
 
+			$scope.modalLoaderActive = false;
+			DataService.cpmpleteEventService($scope.current_sol)
+				.then(function(resp){
+					var message = "Ocurrió un error al marcar la solicitud como completa";
+					if(resp && resp.status == 'success'){
+						//tell shit was done
+						message = "Todo listo";
+						//remove it
+						for (var i = $scope.events.length - 1; i >= 0; i--) {
+							var ind = $scope.events[i].services.indexOf($scope.current_sol);
+							if( ind != -1){
+								$scope.events[i].services.splice(ind,1);
+							}
+						}
+						$scope.current_sol = null;
+						closeTaskPanel();
+					}
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+					$scope.modalLoaderActive = false;
+				});
+		};
+
+
+
+		//irrelevant ui
+		$scope.unellipse = function($event){
+			var $e = $( $event.currentTarget );
+			if( $e.hasClass('ellipsis') ){
+				$e.removeClass('ellipsis');
+			} else {
+				$e.addClass('ellipsis');
+			}
+		};
+
+		
 		//Utilities
 		function propAsKey(propstr,data){
 			var struct = {};
@@ -429,6 +484,9 @@
 			 	struct[ data[i][propstr] ] = data[i];
 			};
 			return struct;
+		}
+		function scrollTop(){
+			$('html, body').animate({scrollTop:0}, '500', 'swing');
 		}
 	}]);
 </script>
