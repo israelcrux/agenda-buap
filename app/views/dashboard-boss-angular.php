@@ -285,7 +285,7 @@
 					});
 			},
 			cpmpleteEventService : function(data){
-				return $http.post(window['ROOT_PATH']+'/eventservices/complete',data)
+				return $http.post(window['ROOT_PATH']+'/eventservices/completed',data)
 					.then(function(response){
 						return response.data;
 					},
