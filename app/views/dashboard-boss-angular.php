@@ -254,6 +254,7 @@
 						return response.data;
 					},
 					function(response){
+						console.log(response);
 						console.log('Could not create task');
 						alert('No fue posible crear tarea');
 						return false;
