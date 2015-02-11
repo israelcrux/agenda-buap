@@ -4,10 +4,25 @@
 
     class EventController extends BaseController {
 
+        /*
+         * Show an specific event and its information
+         */
         public function view($id) {
-            return View::make( 'event-view', array('event' => EventDCI::find($id) ) );
+            /* If the user is logged, and is the owner of the event or the user is employee, boss or admin, 
+               can see all; if not, only see the basic information */
+            $event = EventDCI::find($id);
+            if(Auth::check() and Auth::user()->id == $event->user_id or Auth::user()->user_type_id > 1) {
+                $event['services']          = $event->services()->wherePivot('deleted_at', '=', NULL)->get();
+                $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
+                $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
+                $event['support_materials'] = $event->support_materials()->get();
+            }
+            return View::make('event-view', array('event' => $event));
         }
 
+        /*
+         * Return all events of an user
+         */
         public function eventsByUser($user_id) {
             $events = EventDCI::where('user_id', '=', $user_id)
                                 ->orderBy('time')->get();

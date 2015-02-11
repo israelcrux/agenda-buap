@@ -20,14 +20,11 @@
          */
         public function assignTask() {
 
-            var_dump(EventDCIService::find(Input::get('event_service_id')));
-            exit();
-
             /* Verifying that tasks has a correcte and valid data */
             $validation = $this->validateTask();
 
             if(!$validation['isValid']) {
-                return '{"status":"error","message":'.$validator->messages().'}';
+                return '{"status":"error","message":'.$validation['message'].'}';
             }
 
             /* Getting all data to the new task */
@@ -44,6 +41,24 @@
 
             /* Checking if the task was storing successful */
             if(!is_null($task)) {
+                /* Getting and updating event_service (in_process_at) */
+                $event_service = DB::table('event_service')
+                                    ->where('id', Input::get('event_service_id'))
+                                    ->whereNull('deleted_at')
+                                    ->first();
+
+                if($event_service->in_process_at == null) {
+                    DB::table('event_service')
+                        ->where('id', Input::get('event_service_id'))
+                        ->whereNull('deleted_at')
+                        ->update(
+                            array(
+                                'dci_status'    => 'En Proceso',
+                                'in_process_at' => new DateTime()
+                            )
+                        );
+                }
+
                 /* If the task has been succesful saved, send an email to the user with a new task */
                 Mail::send('emails.notification.newtask', array(), 
                     function($message) use($user) {
@@ -79,7 +94,7 @@
             $validation = $this->validateTask();
 
             if(!$validation['isValid']) {
-                return '{"status":"error","message":'.$validator->messages().'}';
+                return '{"status":"error","message":'.$validation['message'].'}';
             }
 
             /* Cheking if the employee of task change to notifiy both employees */

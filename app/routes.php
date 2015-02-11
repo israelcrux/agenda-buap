@@ -192,7 +192,7 @@ Route::group(array('before' => 'auth'), function(){
         Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
 
         /* Route to mark an event service as completed */
-        Route::post('/eventservice/completed', '')
+        Route::post('/eventservice/completed', 'EventServiceController@eventServiceCompleted');
 
         /* Route that have the prefix tasks/ */
         Route::group(array('prefix' => 'tasks'), function(){
