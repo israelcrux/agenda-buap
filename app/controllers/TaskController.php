@@ -20,6 +20,9 @@
          */
         public function assignTask() {
 
+            var_dump(EventDCIService::find(Input::get('event_service_id')));
+            exit();
+
             /* Verifying that tasks has a correcte and valid data */
             $validation = $this->validateTask();
 
@@ -230,7 +233,7 @@
                         }
                     }
                     if($toPush) {
-                        array_push($custom_event["services"], $custom_service);
+                        $custom_event["services"] = $custom_service;
                         array_push($pending, $custom_event);
                     }
                 }
@@ -297,7 +300,7 @@
                         }
                     }
                     if($toPush) {
-                        array_push($custom_event["services"], $custom_service);
+                        $custom_event["services"] = $custom_service;
                         array_push($pending, $custom_event);
                     }
                 }
@@ -364,7 +367,7 @@
                         }
                     }
                     if($toPush) {
-                        array_push($custom_event["services"], $custom_service);
+                        $custom_event["services"] = $custom_service;
                         array_push($pending, $custom_event);
                     }
                 }

@@ -442,54 +442,35 @@
 
         }
 
-
         /*
          * Send an mail to validate the user mail
          */
         private function mailToValidateMail($user, $operation) {
 
-            /* Verifying if user needs email validation */
-            if(preg_match('/buap.mx/', $user->email)) {
-                /* Verifying the type of the user */
-                if($user->user_type_id > 1) {
-                    /* If the operation is a register, the user require authorization; if not, the user continue with status active */
-                    $user->status = $operation == 'register' ? 3 : 1;
-                    $user->save();
-                    return $operation == 'register' ? 'Ha válidado su cuenta, para iniciar sesión contacte a su jefe o administrador para recibir autorización' : 'Su cuenta ha sido actualizada, gracias';
+            /* Saving a operation to activate the user */
+            $now = new DateTime();
+            $user_auth_activation             = new UserAuthOperation();
+            $user_auth_activation->token      = str_random(40);
+            $user_auth_activation->expiration = $now->add(new DateInterval('P1D'));
+            $user_auth_activation->type       = 1;
+            $user_auth_activation->used       = 0;
+            $user_auth_activation->user_id    = $user->id;
+            $user_auth_activation->save();
+
+            /* Setting the status of the user */
+            $user->status = $operation == 'register' ? 1 : 2;
+
+            Mail::send('emails.auth.activate', 
+                array(
+                    'token' => $user_auth_activation->token
+                ), 
+                function($message) use($user, $operation) {
+                    $subject = $operation == 'register' ? 'Bienvenido a la DCI!' : 'Perfil DCI actualizado';
+                    $message->to($user->email)->subject($subject);
                 }
-                $user->status = 1;
-                $user->save();
-                return $operation == 'register' ? 'Ahora puede hacer uso de su cuenta, inicie sesión' : 'Su cuenta ha sido actualizada, gracias';
-            }
-            else {
-                /* Saving a operation to activate the user */
-                $now = new DateTime();
-                $user_auth_activation             = new UserAuthOperation();
-                $user_auth_activation->token      = str_random(40);
-                $user_auth_activation->expiration = $now->add(new DateInterval('P1D'));
-                $user_auth_activation->type       = 1;
-                $user_auth_activation->used       = 0;
-                $user_auth_activation->user_id    = $user->id;
-                $user_auth_activation->save();
+            );
 
-                /* Setting the status of the user */
-                if($user->status != 1) {
-                    $user->status = 2;
-                    $user->save();
-                }
-
-                Mail::send('emails.auth.activate', 
-                    array(
-                        'token' => $user_auth_activation->token
-                    ), 
-                    function($message) use($user, $operation) {
-                        $subject = $operation == 'register' ? 'Bienvenido a la DCI!' : 'Perfil DCI actualizado';
-                        $message->to($user->email)->subject($subject);
-                    }
-                );
-
-                return $operation == 'register' ? 'Gracias por registrarse, en breve recibirá un correo de confirmación' : 'Gracias por actualizar su información, en breve recibirá un correo de activación';
-            }
+            return $operation == 'register' ? 'Gracias por registrarse, en breve recibirá un correo de confirmación' : 'Gracias por actualizar su información, en breve recibirá un correo de activación';
 
         }
 
