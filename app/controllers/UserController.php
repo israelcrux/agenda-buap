@@ -399,21 +399,17 @@
 
             $user = User::find(Input::get('id'));
 
-            // switch (Input::get('authorize_to')) {
             switch (Input::get('user_type_id')) {
-                // case 'employee':
                 case 2:
                     if(Auth::user()->user_type_id <= 2) {
                         return '{"status":"error","message":"No tiene permisos suficientes para autorizar un empleado"}';
                     }
-                    // elseif (Auth::user()->department_id != $user->department_id) {
                     elseif (Auth::user()->department_id != $user->department_id && Auth::user()->user_type_id < 4) {
                         return '{"status":"error","message":"No tiene permisos para autorizar un empleado que no pertenece a su departamento"}';
                     }
                     $response_message = 'empleado';
                     break;
 
-                // case 'boss':
                 case 3:
                     if(Auth::user()->user_type_id <= 3) {
                         return '{"status":"error","message":"No tiene permisos suficientes para autorizar un jefe"}';
@@ -421,7 +417,6 @@
                     $response_message = 'jefe de '.$user->department_id;
                     break;
 
-                // case 'administrator': 
                 case 4: 
                     if(Auth::user()->user_type_id < 4) {
                         return '{"status":"error","message":"No tiene permisos suficientes para autorizar un administrador"}';
