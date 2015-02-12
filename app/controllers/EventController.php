@@ -103,9 +103,20 @@
                             ->withInput();
             }
 
+            /* Getting date of yesterday */
+            $yesterday = new DateTime();
+            $yesterday->sub(new DateInterval('P1D'));
+
+            /* Getting date of today */
+            $tomorrow = new DateTime();
+            $tomorrow->add(new DateInterval('P1D'));
+            
+            /* Gettint the number of events created today */
+            $number = EventDCI::whereBetween('created_at', array($yesterday, $tomorrow))->count();
+
             /* Collecting all event data to store */
             $event_data = array(
-                'id_dci'      => strftime('%y%m%d'),
+                'id_dci'      => strftime('%y%m%d').++$number,
                 'name'        => Input::get('name'),
                 'start_day'   => Input::get('start_day'),
                 'end_day'     => Input::get('end_day'),
@@ -480,16 +491,22 @@
         private function validateEvent() {
 
             /* Getting the actual date to validation */
-            $now = date('Y-m-d', strtotime("-1 days"));
+            $yesterday = date('Y-m-d', strtotime("-1 days"));
 
+            /* Verifying if the dates require advance validation */
+            $start_day_validation = $end_day_validation = '';
+            if(Input::get('start_day') != Input::get('end_day')) {
+                $start_day_validation = '|before:'.Input::get('end_day');
+                $end_day_validation = '|after:'.Input::get('start_day');
+            }
 
             /* Creating a event validator */
             $validator = Validator::make(
                 Input::all(),
                 array(
                     'name'              => 'required',
-                    'start_day'         => 'required|date|before:'.Input::get('end_day'),
-                    'end_day'           => 'required|date|after:'.Input::get('start_day').'|after:'.$now,
+                    'start_day'         => 'required|date'.$start_day_validation,
+                    'end_day'           => 'required|date|after:'.$yesterday.$end_day_validation,
                     'time'              => 'required',
                     'place'             => 'required',
                     'link'              => 'url',
