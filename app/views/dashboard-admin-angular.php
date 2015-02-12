@@ -1,18 +1,28 @@
-<div ng-controller="PendingUsersController">
+<div ng-controller="PendingUsersController" class="col-xs-12 col-sm-6 col-md-4">
 	<section class="ar-module">
-		<div class="ar-section-title"></div>
-		<div class="ar-section-content">
+		<div class="ar-section-title">Usuarios pendientes de aprobación</div>
+		<div class="ar-section-content ar-list">
+		
+			<div class="ar-element" ng-repeat="user in pendingUsers">
+				<div class="ar-row">
+					<h4 class="col-xs-12">{{user.first_name}} {{user.last_name}}</h4>
+				</div>
+				<div class="ar-row">
+					<div class="col-sm-6"><a ng-href="mailto:{{user.email}}">{{user.email}}</a></div>
+					<div class="col-sm-6">{{user.phone}} {{user.extension_phone}}</div>
+				</div>
+				<div class="ar-row">
+					<div class="col-sm-12">Solicitud para el rol: <b>{{userTypes[user.user_type_id]}}</b> </div>
+				</div>
+				<div class="ar-element-buttons ar-row">
+					<div class="ar-button-info">{{user.created_at}}</div>
+					<button class="btn" ng-click="acceptUser(user)">aceptar</button>
+				</div>
+			</div>	
 			
 		</div>
 	</section>
 
-	<div class="ar-user" ng-repeat="user in pendingUsers">
-		<h4>{{user.first_name}} {{user.last_name}}</h4>
-		<p>{{user.email}}</p>
-		<p>{{user.phone}}</p>
-		<p>{{user.created_at}}</p>
-		<button ng-click="acceptUser(user)">aceptar</button>
-	</div>	
 
 	<div class="ar-modal-loader" ng-class="{active:modalLoaderActive}">
 		<div class="spinner">
@@ -52,6 +62,13 @@ var users_app = angular.module('dashboard',[])
 		};
 	}])
 	.controller('PendingUsersController',['$scope','DataService',function($scope,DataService){
+
+		$scope.userTypes = {
+			'1' :  'Cliente',
+			'2' :  'Empleado DCI',
+			'3' :  'Jefe de Área DCI',
+			'4' :  'Administrador'
+		};
 
 		$scope.pendingUsers = DataService.pendingUsers();
 		$scope.pendingUsers.then(function(data){
