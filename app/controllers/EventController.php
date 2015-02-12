@@ -337,7 +337,8 @@
                 }
 
                 /* Updating support material to the event */
-                $new_support_materials = empty(Input::get('support_materials')) ? array() : Input::get('support_materials');
+                $support_materials_aux = Input::get('support_materials');
+                $new_support_materials = empty($support_materials_aux) ? array() : Input::get('support_materials');
                 $old_support_materials = $event->support_materials()->get();
 
                 /* Soft deleting to files deleted by user */
