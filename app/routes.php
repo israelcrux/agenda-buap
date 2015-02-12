@@ -187,6 +187,10 @@ Route::group(array('before' => 'auth'), function(){
         Route::get('/dashboard-boss/', function(){
             return View::make('dashboard-boss', array('area' => Auth::user()->department_id)); 
         });
+        
+        Route::get('/dashboard-admin/', function(){
+            return View::make('dashboard-admin', array('user' => Auth::user())); 
+        });
 
         /* Route to get events to panel of heads */
         Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
