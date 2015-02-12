@@ -29,8 +29,8 @@
 		</div>
 	</div>
 
-	<div class="ar-modal-background" ng-show="FORM_ENABLED||new_event"></div>
-	<div class="ar-modal-wrapper" ng-show="FORM_ENABLED||new_event">
+	<div class="ar-modal-background" ng-show="(FORM_ENABLED &&ACTION=='add')||new_event"></div>
+	<div class="ar-modal-wrapper" ng-show="(FORM_ENABLED && ACTION=='add')||new_event">
 		<div class="ar-modal-container">
 			<div class="ar-modal-title">Agendar Evento</div>
 			<div class="ar-modal-closebtn" ng-click="new_event=false;FORM_ENABLED=false;"></div>
@@ -209,8 +209,8 @@
 	</div>
 
 	<!-- Edit event -->
-	<div class="ar-modal-background" ng-show="FORM_ENABLED||currentEvent"></div>
-	<div class="ar-modal-wrapper" ng-show="FORM_ENABLED||currentEvent">
+	<div class="ar-modal-background" ng-show="(FORM_ENABLED && ACTION=='edit')||currentEvent"></div>
+	<div class="ar-modal-wrapper" ng-show="(FORM_ENABLED && ACTION=='edit')||currentEvent">
 		<div class="ar-modal-container">
 			<div class="ar-modal-title">Editar Evento/Solicitud</div>
 			<div class="ar-modal-closebtn" ng-click="currentEvent=null;FORM_ENABLED=false;"></div>

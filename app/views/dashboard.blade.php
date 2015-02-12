@@ -23,10 +23,8 @@
 
 		ROOT_PATH = "<?php echo URL::to('/'); ?>";
 		FORM_ENABLED = false;
-		<?php if( isset($FORM_ENABLED) ): ?>
-			console.log('form enabled');
-			FORM_ENABLED = true;
-		<?php endif; ?>
+		ACTION = null;
+
 
 		//JQ
 		
@@ -115,12 +113,29 @@
 		.controller('DashboardController',[ '$scope', 'DataService' ,function($scope,DataService){
 
 			$scope.FORM_ENABLED = false;
+			$scope.ACTION = null;
 			<?php 
-			$FORM_ENABLED = Session::get('FORM_ENABLED');
-			if( isset($FORM_ENABLED) ): 
+				$FORM_ENABLED = Session::get('FORM_ENABLED');
+				if( isset($FORM_ENABLED) ): 
 			?>
 				$scope.FORM_ENABLED = true;
+				$scope.ACTION = "<?php echo Session::get('action');  ?>";
+
 			<?php endif; ?>
+
+			if( $scope.ACTION && $scope.ACTION == 'edit' ){
+				$scope.currentEvent = {
+					name : "<?php echo Input::old('name'); ?>",
+	                start_day  : "<?php echo Input::old('start_day'); ?>",
+	                end_day    : "<?php echo Input::old('end_day'); ?>",
+	                time       : "<?php echo Input::old('time'); ?>",
+	                place      : "<?php echo Input::old('place'); ?>",
+	                link       : "<?php echo Input::old('link'); ?>",
+	                directed_to: "<?php echo Input::old('directed_to'); ?>",
+                	has_cost   : "<?php echo Input::has('has_cost'); ?>",
+                	description: "<?php echo Input::get('description') ?>"
+				};
+			}
 
 			$scope.costs = ['Entrada libre','Evento con Costo'];
 
