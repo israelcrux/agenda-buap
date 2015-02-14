@@ -42,7 +42,7 @@ var users_app = angular.module('dashboard',[])
 	.factory('DataService',['$http',function($http){
 		return {
 			pendingUsers : function(){
-				return $http.get(window['ROOT_PATH']+'/user/authorize/employee')
+				return $http.get(window['ROOT_PATH']+'/user/authorize')
 					.then(function(response){
 						console.log(response.data);
 						return response.data;

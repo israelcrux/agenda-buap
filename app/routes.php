@@ -219,7 +219,7 @@ Route::group(array('before' => 'auth'), function(){
         Route::group(array('prefix' => 'user'), function(){
 
             /* Route to get the employees of the boss department logged */
-            Route::get('authorize/employee', 'UserController@getEmployees');
+            Route::get('authorize', 'UserController@getEmployees');
 
             /* Route that authorize an user to be an employee on the system */
             Route::post('authorize', 'UserController@authorize');
@@ -233,12 +233,6 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route that have the prefix user */
         Route::group(array('prefix' => 'user'), function(){
-
-            /* Route to get the bosses */
-            Route::get('authorize/boss', 'UserController@getBosses');
-
-            /* Route to get the bosses */
-            Route::get('authorize/administrator', 'UserController@getAdministrators');
 
         });
 

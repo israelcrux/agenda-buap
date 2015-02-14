@@ -343,51 +343,26 @@
          */
         public function getEmployees() {
 
-            if(Auth::user()->user_type_id!=4){
-                $query = User::where('department_id', '=', Auth::user()->department_id)
-                    ->where('user_type_id', '=', 2);
-            } else {
-                $query = User::where('user_type_id', '=', 2);
+            switch (Auth::user()->user_type_id) {
+
+                case '3':
+                    $query = User::where('department_id', '=', Auth::user()->department_id)
+                                ->where('user_type_id', '=', 2);
+                    break;
+                
+                case '4':
+                    $query = User::where('user_type_id', '!=', 1);
+                    break;
+
+                default:
+                    return '{"status":"error","message":"Error inesperado. Al parecer no tiene permisos para autorizar usuarios"}';
+                    break;
             }
-            
+
             return array(
-                'unauthorized' => $query->where('status', '=', '3')->get(), 
-                'authorized' => $query->where('status', '=', '1')->get()
-                );
-
-        }
-
-        /*
-         * User registered as boss get the admin authorization
-         */
-        public function getBosses() {
-
-            $unauthorized = User::where('user_type_id', '=', 3)
-                                ->where('status', '=', 3)
-                                ->get();
-
-            $authorized = User::where('user_type_id', '=', 3)
-                                ->where('status', '=', 1)
-                                ->get();
-
-            return array('unauthorized' => $unauthorized, 'authorized' => $authorized);
-
-        }
-
-        /*
-         * User registered as administrator get the admin authorization
-         */
-        public function getAdministrators() {
-            
-            $unauthorized = User::where('user_type_id', '=', 4)
-                                ->where('status', '=', 3)
-                                ->get();
-
-            $unauthorized = User::where('user_type_id', '=', 4)
-                                ->where('status', '=', 1)
-                                ->get();
-
-            return array('unauthorized' => $unauthorized, 'authorized' => $authorized);
+                'unauthorized' => $query->where('status', '=', 3)->get(),
+                'authorized' => $query->where('status', '=', 1)->get()
+            );
 
         }
 

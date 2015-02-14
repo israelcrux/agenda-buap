@@ -404,7 +404,6 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-
 -- -----------------------------------------------------
 -- Data for table `db554509897`.`users_types`
 -- -----------------------------------------------------
@@ -525,7 +524,7 @@ INSERT INTO `db554509897`.`departments` (`id`, `name`, `description`, `created_a
 (8, 'Publicaciones', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL),
 (9, 'CIDD', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL),
 (10, 'Radio BUAP', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL),
-(11, 'Contabilidad', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL);
+(11, 'Administrativo', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL);
 
 COMMIT;
 
@@ -568,15 +567,17 @@ START TRANSACTION;
 USE `db554509897`;
 INSERT INTO `db554509897`.`services` (`id`, `name`, `description`, `observations`, `created_at`, `updated_at`, `deleted_at`, `department_id`) VALUES 
 (1, 'Diseño gráfico', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 7),
-(2, 'Asesoría en redacción', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 8),
-(3, 'Radio BUAP', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
+(2, 'Asesoría en redacción', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 4),
+(3, 'Entrevista Radio BUAP', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
 (4, 'Prensa externa', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 4),
-(5, 'Cobertura interna', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 9),
+(5, 'Entrevista en Radiodifusoras', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
 (6, 'Producción de material impreso*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 7),
-(7, 'Producción de material audiovisual*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 7),
-(8, 'Sitio Web', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 7),
-(9, 'Perifoneo*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
+(7, 'Producción de material audiovisual*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 9),
+(8, 'Sitio Web', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 5),
+(9, 'Revistas', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 8),
 (10, 'Redes sociales', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 5);
+(11, 'Spot', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10);
+(12, 'Control Remoto', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10);
 
 COMMIT;
 
