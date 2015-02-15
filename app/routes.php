@@ -92,7 +92,7 @@ Route::get('/signup', function(){
 
 /* Route to show the register form to employees */
 Route::get('/signup-pro', function(){
-    return View::make('signup-pro', 
+    return View::make('signup-pro',
         array(
             'aaunits' => AcademicAdministrativeUnit::all(),
             'dunits'  => Department::all(),
@@ -115,7 +115,7 @@ Route::group(array('before' => 'auth'), function(){
 
     /* Rote to view the dashboard */
     Route::get('/dashboard', function(){
-        return View::make('dashboard', 
+        return View::make('dashboard',
             array(
                 'services' => Service::all(),
                 'resources_sources' => ResourceSource::all(),
@@ -129,7 +129,7 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route to show the form to edit the user information */
         Route::get('/edit', function(){
-            return View::make('edituser', 
+            return View::make('edituser',
                 array(
                     'aaunits' => AcademicAdministrativeUnit::all(),
                     'aautype' => is_null(Auth::user()->academic_administrative_unit()->first()) ? 'otro' : Auth::user()->academic_administrative_unit()->first()->type,
@@ -153,7 +153,7 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route to delete (inactivate) an event */
         Route::post('/delete', 'EventController@deleteEvent');
-        
+
         /* Route to get a single event, response in html doc */
         Route::get('/{id}', 'EventController@view');
     });
@@ -166,7 +166,7 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route to view the dashboard to the boss */
         Route::get('/dashboard-employee/', function(){
-            return View::make('dashboard-employee'); 
+            return View::make('dashboard-employee');
         });
 
 
@@ -185,11 +185,11 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route to view the dashboard to the boss */
         Route::get('/dashboard-boss/', function(){
-            return View::make('dashboard-boss', array('area' => Auth::user()->department_id)); 
+            return View::make('dashboard-boss', array('area' => Auth::user()->department_id));
         });
-        
+
         Route::get('/dashboard-admin/', function(){
-            return View::make('dashboard-admin', array('user' => Auth::user())); 
+            return View::make('dashboard-admin', array('user' => Auth::user()));
         });
 
         /* Route to get events to panel of heads */
@@ -200,7 +200,7 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route that have the prefix tasks/ */
         Route::group(array('prefix' => 'tasks'), function(){
-            
+
             /* Route to view elements required to build form to assign a task to an event */
             Route::get('/assign/', 'TaskController@toAssignTask');
 
@@ -212,7 +212,7 @@ Route::group(array('before' => 'auth'), function(){
 
             /* Route to delete a task */
             Route::post('/delete/', 'TaskController@deleteTask');
-            
+
         });
 
         /* Route that have the prefix user */
@@ -225,7 +225,7 @@ Route::group(array('before' => 'auth'), function(){
             Route::post('authorize', 'UserController@authorize');
 
         });
-        
+
     });
 
     /* Routes that need a minimum admin role authentication to access */
@@ -236,6 +236,20 @@ Route::group(array('before' => 'auth'), function(){
 
         });
 
+        /* Route that have the prefix aau (Academic Administrative Units) */
+        Route::group(array('prefix' => 'aau'), function(){
+
+            /* Route to add a new Academic Administrative Unit */
+            Route::post('add', 'AcademicAdministrativeUnitController@add');
+
+            /* Route to edit an Academic Administrative Unit */
+            Route::post('edit', 'AcademicAdministrativeUnitController@edit');
+
+            /* Route to delete an Academic Administrative Unit */
+            Route::post('delete', 'AcademicAdministrativeUnitController@delete');
+
+        });
+
     });
-    
+
 });

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
@@ -10,6 +10,11 @@
          * The database table used by the model.
          */
         protected $table = 'academic_administrative_units';
+
+        /*
+         * Table fields guarded, attributes do not mass-assignable
+         */
+        protected $guarded = array('id');
 
         /*
          * Academic or Administrative Unit has many users

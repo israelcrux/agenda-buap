@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     use Illuminate\Support\MessageBag;
 
@@ -8,7 +8,7 @@
          * Show an specific event and its information
          */
         public function view($id) {
-            /* If the user is logged, and is the owner of the event or the user is employee, boss or admin, 
+            /* If the user is logged, and is the owner of the event or the user is employee, boss or admin,
                can see all; if not, only see the basic information */
             $event = EventDCI::find($id);
             if(Auth::check() and Auth::user()->id == $event->user_id or Auth::user()->user_type_id > 1) {
@@ -61,16 +61,16 @@
 
                 //Temporalmente, pedido por Amparo, ¿Qué te dije?, igual y mañana se queja de que se ven los eventos sin aprobar :P
                 /*
-                    $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and (dci_status = ? or dci_status = ?) and user_status = ?', 
+                    $events = EventDCI::whereRaw('end_day >= ? and start_day <= ? and (dci_status = ? or dci_status = ?) and user_status = ?',
                         array($start_date, $start_date, 'En Proceso', 'Aprobado', 'Activo'))
                         ->orderBy('time')->get();
                 */
-                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ?', 
+                $events = EventDCI::whereRaw('end_day >= ? and start_day <= ?',
                     array($start_date, $start_date))
                     ->orderBy('time')->get();
 
                 $activities['activities'] = $events->toArray();
-                
+
                 //ola k ase
                 $activities['date'] = $start_date;
 
@@ -110,7 +110,7 @@
             /* Getting date of today */
             $tomorrow = new DateTime();
             $tomorrow->add(new DateInterval('P1D'));
-            
+
             /* Gettint the number of events created today */
             $number = EventDCI::whereBetween('created_at', array($yesterday, $tomorrow))->count();
 
@@ -255,7 +255,7 @@
                             ->with('action', 'edit')
                             ->withInput();
             }
-            
+
             /* Verifying that event has a correct and valid data */
             $validation = $this->validateEvent();
 
@@ -280,19 +280,19 @@
             $event->save();
 
             $now = new DateTime();
-            
+
             /* Getting old services, resources sources and witeness to the event */
             $old_services = $event->services()->get();
             $old_resources_sources = $event->resources_sources()->get();
             $old_witnesses = $event->witnesses()->get();
-            
+
             /* Deactivating old services */
             foreach ($old_services as $old_service) {
                 $event->services()->updateExistingPivot($old_service->id, array('deleted_at' => $now));
             }
 
             /* Deactivateing old resources sources */
-            foreach ($old_resources_sources as $old_resource_source) { 
+            foreach ($old_resources_sources as $old_resource_source) {
                 $event->resources_sources()->updateExistingPivot($old_resource_source->id, array('deleted_at' => $now));
             }
 
@@ -303,7 +303,7 @@
 
             /* Getting information about diffusion */
             if(Input::has('services')) {
-                
+
                 /* Getting new services to the event */
                 $new_services = Input::get('services');
 
@@ -445,28 +445,28 @@
             else {
                 return Redirect::to('dashboard')->with('alert', 'Usted no tiene permisos para eliminar este evento' . $event->id_dci);
             }
-    
+
         }
 
         /*
          * Getting information about services requirements by area to panel of heads
          */
         public function serviceRequirementsByArea($area) {
-            
+
             $events = EventDCI::with(
                 array(
-                    'services' => 
+                    'services' =>
                         function($query) use ($area) {
-                            $query->whereRaw('event_service.deleted_at IS NULL and services.department_id = ?', 
+                            $query->whereRaw('event_service.deleted_at IS NULL and services.department_id = ?',
                                         array($area)
                                     )
                                 ->orderBy('start_service');
                         }
                 )
             )
-            ->whereHas('services', 
+            ->whereHas('services',
                 function($query) use ($area) {
-                    $query  ->whereRaw('`event_service`.`deleted_at` IS NULL and `services`.`department_id` = ? and (`dci_status` = ? OR `dci_status` = ?)', 
+                    $query  ->whereRaw('`event_service`.`deleted_at` IS NULL and `services`.`department_id` = ? and (`dci_status` = ? OR `dci_status` = ?)',
                                 array($area, 'Pendiente', 'En Proceso')
                             );
                 }
@@ -552,7 +552,7 @@
                             $error_files->add(str_random(5), $message);
                         }
                     }
-                
+
                 }
 
                 if($error) {
@@ -560,18 +560,18 @@
                 }
 
             }
-                
+
             return array('isValid' => true, 'message' => '');
-        
+
         }
 
         /*
          * Validator of array types
          */
         private function validateArrayElement($element, $type) {
-        
+
             return gettype($element) == $type ? true : false;
-        
+
         }
 
 

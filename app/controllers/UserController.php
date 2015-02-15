@@ -1,4 +1,4 @@
-<?php    
+<?php
 
     class UserController extends BaseController {
 
@@ -33,7 +33,7 @@
             if(!$user){
                 return Redirect::to('login')->with('alert', 'Error inesperado');
             }
-            
+
             /* Updating the new password */
             $user->password = Hash::make(Input::get('password'));
             $user->save();
@@ -44,7 +44,7 @@
 
             Auth::login($user);
             return Redirect::intended('dashboard')->with('alert','Su contraseña ha sido restablecida');
-  
+
         }
 
         /*
@@ -65,7 +65,7 @@
             }
 
             return View::make('new-password', array('token' => $user_auth_reminder->token));
-   
+
         }
 
         /*
@@ -118,7 +118,7 @@
 
             /* Creating a login validator */
             $validator = Validator::make(
-                Input::all(), 
+                Input::all(),
                 array(
                     'email' => 'required|email',
                     'password' => 'required'
@@ -132,7 +132,7 @@
             /* Verifying that the user exists and correct credentials */
             if(Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password')))) {
                 /* Verifying status user */
-                if(Auth::user()->status == '2') {
+                if(Auth::user()->status == '2' || Auth::user()->status == '4') {
                     Auth::logout();
                     return Redirect::to('login')->with('alert', 'Usuario requiere activación')->withInput(Input::except('password'));
                 }
@@ -163,7 +163,7 @@
             else {
                 return Redirect::to('login')->with('alert', 'Usuario y/o contraseña incorrectos')->withInput(Input::except('password'));
             }
-     
+
         }
 
         /*
@@ -173,7 +173,7 @@
 
             Auth::logout();
             return Redirect::to('/');
-      
+
         }
 
         /*
@@ -205,7 +205,7 @@
                 'email'           => Input::get('email'),
                 'password'        => $crypt_password
             );
-            
+
             if(Input::get('academic_administrative_unit_type') != '3') {
                 $user_data['academic_administrative_unit_id'] = Input::get('academic_administrative_unit');
             }
@@ -214,7 +214,7 @@
             if(Input::has('department_id')) {
                 $user_data['department_id'] = Input::get('department_id') == 0 ? null : Input::get('department_id');
             }
-            
+
             /* Storing the new user */
             $user = User::create($user_data);
 
@@ -262,8 +262,11 @@
             // Updating the user information with status active
             $user = User::find($user_auth_activation->user_id);
 
-            if($user->status != 1) {
+            if($user->status == 2) {
                 $user->status = $user->user_type_id > 1 ? 3 : 1;
+            }
+            else {
+                $user->status = 1;
             }
 
             $user->save();
@@ -304,6 +307,8 @@
                     return Redirect::to('user/edit')->with('alert', $validation['message'])->withInput(Input::except('password'));
             }
 
+            /* Getting the old user email */
+            $old_email = $user->email;
 
             /* Updating data */
             $user->last_name       = Input::get('last_name');
@@ -311,7 +316,7 @@
             $user->phone           = Input::get('phone');
             $user->extension_phone = Input::get('extension_phone');
             $user->email           = Input::get('email');
-            
+
             /* Generating and saving encrypted password */
             if(Input::get('password') != '') {
                 $crypt_password = Hash::make(Input::get('password'));
@@ -328,8 +333,13 @@
             $user->save();
 
             /* Validatying if the user needs confirm email and sending email if it is necessary */
-            $message = $this->mailToValidateMail($user, 'edit');
-            Auth::logout();
+            if($old_email != $user->email) {
+                $message = $this->mailToValidateMail($user, 'edit');
+                Auth::logout();
+            }
+            else {
+                $message = 'Su información ha sido actualizada';
+            }
 
             if($response == 'JSON')
                 return '{"status":"success","message":'.$message.',"user":'.$user.'}';
@@ -339,7 +349,7 @@
         }
 
         /*
-         * User registered as employee get the boss/admin authorization 
+         * User registered as employee get the boss/admin authorization
          */
         public function getEmployees() {
 
@@ -349,7 +359,7 @@
                     $query = User::where('department_id', '=', Auth::user()->department_id)
                                 ->where('user_type_id', '=', 2);
                     break;
-                
+
                 case '4':
                     $query = User::where('user_type_id', '!=', 1);
                     break;
@@ -392,22 +402,22 @@
                     $response_message = 'jefe de '.$user->department_id;
                     break;
 
-                case 4: 
+                case 4:
                     if(Auth::user()->user_type_id < 4) {
                         return '{"status":"error","message":"No tiene permisos suficientes para autorizar un administrador"}';
                     }
                     $response_message = 'administrador';
                     break;
-                
+
                 default:
                     return '{"status":"error","message":"Error inesperado (user type id : '.Auth::user()->user_type_id.'), recargue y vuelva a intentar"}';
                     break;
             }
-            
+
             $user->status = 1;
             $user->save();
 
-            Mail::send('emails.auth.authorize', array(), 
+            Mail::send('emails.auth.authorize', array(),
                 function($message) use($user) {
                     $message->to($user->email)->subject('Usuario autorizado! DCI');
                 }
@@ -433,12 +443,13 @@
             $user_auth_activation->save();
 
             /* Setting the status of the user */
-            $user->status = $operation == 'register' ? 1 : 2;
+            $user->status = $operation == 'register' ? 2 : 4;
+            $user->save();
 
-            Mail::send('emails.auth.activate', 
+            Mail::send('emails.auth.activate',
                 array(
                     'token' => $user_auth_activation->token
-                ), 
+                ),
                 function($message) use($user, $operation) {
                     $subject = $operation == 'register' ? 'Bienvenido a la DCI!' : 'Perfil DCI actualizado';
                     $message->to($user->email)->subject($subject);
