@@ -46,9 +46,13 @@
 				<span class="ar-number-tag">{{ day.ntag }}</span>
 			</div>
 			<div class="ar-daymonth-container">
-				<div class="ar-event" ng-show="day.activities[0]" ng-class="{'strong':day.activities[0].start_day == day.date || day.activities[0].end_day == day.date}">
+				<div class="ar-event" ng-show="day.activities[0]" ng-class="{'strong':day.activities[0].start_day == day.date || day.activities[0].end_day == day.date, 'ar-usubtile':day.activities[0].start_day != day.date && day.activities[0].end_day != day.date}">
 					<div class="ar-eventtitle"> {{day.activities[0].name}} </div>
 					<div class="ar-eventtime"> {{day.activities[0].time}} </div>
+				</div>
+				<div class="ar-event" ng-show="day.activities[1]" ng-class="{'strong':day.activities[1].start_day == day.date || day.activities[1].end_day == day.date, 'ar-usubtile':day.activities[1].start_day != day.date && day.activities[1].end_day != day.date}">
+					<div class="ar-eventtitle"> {{day.activities[1].name}} </div>
+					<div class="ar-eventtime"> {{day.activities[1].time}} </div>
 				</div>
 				<div class="ar-moarrr" ng-show="day.activities[1]">
 					<span></span>
@@ -92,14 +96,26 @@ $(document).ready(function(){
 			days[i].ttag = dayNames[dd];
 			days[i].ntag = (i+1);
 
+			//Activities in a day
 			for (var k = days[i].activities.length - 1; k >= 0; k--) {
+
 				if(days[i].activities[k].description.length > 220){
 					days[i].activities[k].long_description = true;
 				}
+
 				days[i].activities[k].croppedDescription = _.str.prune( days[i].activities[k].description, 220 );
 				days[i].activities[k].time = nicetime(days[i].activities[k].time);
+
 			};
 
+
+
+			//Sort activities by relevance
+			
+			days[i].activities.sort(function(a,b){
+				return (a.start_day == days[i].date)? 1 : -1;
+			});
+			
 			calendarDays.push( days[i] );
 		};
 

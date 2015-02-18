@@ -716,7 +716,7 @@ a.ar-moreinfo
 	margin 1px
 	width 14%
 	height 100px
-	height 7vw
+	height 8.5vw
 	overflow auto
 	cursor pointer
 	position relative
@@ -772,6 +772,12 @@ a.ar-moreinfo
 .strong .ar-eventtitle
 	font-weight bold
 	color deep_blue
+.ar-usubtile .ar-eventtime
+	display none
+.ar-usubtile .ar-eventtitle
+	color subtile-text-color
+	font-weight 500
+	font-size 0.97em
 
 		
 
@@ -1048,9 +1054,42 @@ span.dci_status.apr
 	padding-top 30px
 
 .ar-section-title
-	padding 15px
+	padding 15px 15px 10px 5px
 	margin-bottom 10px
 	border-bottom 1px solid shadow
+	font-size 1.4em
+
+.ar-section-subtitle
+	font-size 1.15em
+	margin-bottom 10px
+	text-indent 10px
+.ar-section-bottombtns
+	overflow auto
+	margin-top 20px
+	.mbtn,
+	button 
+		display inline-block
+		padding 1px 5px
+		border 1px solid shadow
+		border-radius 3px
+		font-size 0.95em
+		cursor pointer
+		-webkit-transition all .15s ease
+		-moz-transition all .15s ease
+		-ms-transition all .15s ease
+		-o-transition all .15s ease
+		transition all .15s ease
+	.mbtn:hover,
+	button:hover
+		color #fff
+		background-color standard-text-color 
+	ul li
+		margin-bottom 10px
+
+.ar-emptylist
+	padding 40px 20px
+	text-align center
+	color shadow
 
 @media (min-width:768px) and (min-height:600px)
 	.ar-login-form.ar-form-wrapper

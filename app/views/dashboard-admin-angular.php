@@ -1,7 +1,12 @@
 <div ng-controller="PendingUsersController" class="col-xs-12 col-sm-6 col-md-4">
 	<section class="ar-module">
-		<div class="ar-section-title">Usuarios pendientes de aprobación</div>
+		<div class="ar-section-title">Usuarios</div>
+		<div class="ar-section-subtitle">Pendientes</div>
 		<div class="ar-section-content ar-list">
+
+			<div class="ar-emptylist" ng-show="pendingUsers.length==0">
+				Aún no hay nuevos usuarios
+			</div>			
 		
 			<div class="ar-element" ng-repeat="user in pendingUsers">
 				<div class="ar-row">
@@ -16,11 +21,19 @@
 				</div>
 				<div class="ar-element-buttons ar-row">
 					<div class="ar-button-info">{{user.created_at}}</div>
-					<button class="btn" ng-click="acceptUser(user)">aceptar</button>
+					<button class="btn" ng-click="deleteUser(user)">Ignorar</button>
+					<button class="btn" ng-click="acceptUser(user)">Aceptar</button>
 				</div>
 			</div>	
 			
 		</div>
+		<div class="ar-section-bottombtns">
+			<ul>
+				<li>{{}} usuarios registrados <div class="mbtn">ver</div></li>
+				<li><div class="mbtn">ver usuarios ignorados</div></li>
+			</ul>
+		</div>
+		<button>Agregar usuario</button>
 	</section>
 
 
@@ -36,6 +49,27 @@
 
 
 </div>
+
+<div ng-controller="MiscController" class="col-xs-12 col-sm-6 col-md-8">
+	<section class="ar-module">
+		<div class="ar-section-title">Solicitudes de difusión</div>
+		<div class="ar-section-subtitle">Pendientes</div>
+		<div class="ar-section-content ar-list">
+			<div class="ar-emptylist">
+				Aún no hay nuevas solicitudes
+			</div>
+		</div>
+		<div class="ar-section-bottombtns">
+			owo
+		</div>
+	</section>
+</div>
+
+
+
+
+
+
 <script>
 ROOT_PATH = "<?php echo URL::to('/'); ?>";
 var users_app = angular.module('dashboard',[])	
