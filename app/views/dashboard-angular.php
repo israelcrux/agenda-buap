@@ -123,9 +123,11 @@
 							</ul>
 							<p>* Servicios con costo</p>
 
-							<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
-							<div id="filebtn" class="btn btn-sourcefiles">
-								Adjuntar material de apoyo
+							<div>
+								<input type="file" class="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
+								<div class="filebtn btn btn-sourcefiles">
+									Adjuntar material de apoyo
+								</div>
 							</div>
 
 							<p></p>
@@ -304,10 +306,11 @@
 						</div>
 
 
-
-						<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
-						<div id="filebtn" class="btn btn-sourcefiles">
-							Adjuntar material
+						<div>
+							<input type="file" class="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
+							<div class="filebtn btn btn-sourcefiles">
+								Adjuntar material
+							</div>
 						</div>
 
 

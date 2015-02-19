@@ -299,7 +299,8 @@ ul.nav.navbar-nav li a {
   z-index: 10;
 }
 .ar-modal-wrapper {
-  position: absolute;
+  overflow: auto;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -1193,6 +1194,14 @@ span.dci_status.apr {
   padding: 40px 20px;
   text-align: center;
   color: #e2e2e2;
+}
+.ar-boldrow {
+  background-color: #f7f7f7;
+  padding: 10px 0;
+  border-top: 1px solid #e2e2e2;
+}
+.ar-boldrow:last-child {
+  border-bottom: 1px solid #e2e2e2;
 }
 @media (min-width: 768px) and (min-height: 600px) {
   .ar-login-form.ar-form-wrapper {

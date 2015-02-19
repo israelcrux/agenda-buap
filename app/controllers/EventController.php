@@ -236,6 +236,8 @@
          */
         public function editEvent() {
 
+            // var_dump(Input::all()); exit();
+
             /* Searching the event */
             $event = EventDCI::find(Input::get('id'));
 

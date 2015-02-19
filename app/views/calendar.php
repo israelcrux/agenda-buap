@@ -113,7 +113,7 @@ $(document).ready(function(){
 			//Sort activities by relevance
 			
 			days[i].activities.sort(function(a,b){
-				return (a.start_day == days[i].date)? 1 : -1;
+				return (a.start_day == days[i].date)? -1 : 1;
 			});
 			
 			calendarDays.push( days[i] );
