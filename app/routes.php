@@ -154,7 +154,7 @@ Route::group(array('before' => 'auth'), function(){
         /* Route to delete (inactivate) an event */
         Route::post('/delete', 'EventController@deleteEvent');
 
-        /* Route to get a single event, response in html doc */
+        /* Route to get a single event, html response */
         Route::get('/{id}', 'EventController@view');
     });
 
@@ -252,6 +252,12 @@ Route::group(array('before' => 'auth'), function(){
 
             /* Route to delete an Academic Administrative Unit */
             Route::post('delete', 'AcademicAdministrativeUnitController@delete');
+
+        });
+
+        Route::group(array('prefix' => 'event'), function() {
+
+            Route::get('adminview', 'EventController@viewEventsByAdmin');
 
         });
 
