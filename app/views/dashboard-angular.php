@@ -123,9 +123,11 @@
 							</ul>
 							<p>* Servicios con costo</p>
 
-							<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
-							<div id="filebtn" class="btn btn-sourcefiles">
-								Adjuntar material de apoyo
+							<div>
+								<input type="file" class="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
+								<div class="filebtn btn btn-sourcefiles">
+									Adjuntar material de apoyo
+								</div>
 							</div>
 
 							<p></p>
@@ -304,10 +306,11 @@
 						</div>
 
 
-
-						<input type="file" id="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
-						<div id="filebtn" class="btn btn-sourcefiles">
-							Adjuntar material
+						<div>
+							<input type="file" class="files" name="files[]" ng-model="fileInput" multiple style="display:none;">
+							<div class="filebtn btn btn-sourcefiles">
+								Adjuntar material
+							</div>
 						</div>
 
 
@@ -381,7 +384,7 @@
 
 					<div class="ar-vwrap ar-lnhh">
 						<div class="col-xs-12 col-sm-9 ar-nopad">
-							<div class="col-xs-12 col-sm-2 ar-eid">{{event.id_dci}}</div>
+							<div class="col-xs-12 col-sm-2 ar-eid">ID: {{event.id}}</div>
 							<div class="col-xs-12 col-sm-10 ar-field ar-ellipsable ar-eventname ar-lnnormal">{{event.name}}</div>
 						</div>
 						<div class="col-xs-12 col-sm-3 ar-nopad">

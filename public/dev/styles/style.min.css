@@ -299,7 +299,8 @@ ul.nav.navbar-nav li a {
   z-index: 10;
 }
 .ar-modal-wrapper {
-  position: absolute;
+  overflow: auto;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -762,7 +763,7 @@ a.ar-moreinfo {
   margin: 1px;
   width: 14%;
   height: 100px;
-  height: 7vw;
+  height: 8.5vw;
   overflow: auto;
   cursor: pointer;
   position: relative;
@@ -828,6 +829,21 @@ a.ar-moreinfo {
 .strong .ar-eventtitle {
   font-weight: bold;
   color: #003a5c;
+}
+.ar-usubtile .ar-eventtime {
+  display: none;
+}
+.ar-usubtile .ar-eventtitle {
+  color: #7d7d7d;
+  font-weight: 500;
+  font-size: 0.97em;
+}
+.ar-list {
+  overflow: auto;
+}
+.ar-maxcent {
+  max-width: 600px;
+  margin: 0 auto;
 }
 .ar-eventtime {
   font-size: 0.85em;
@@ -1138,8 +1154,53 @@ span.dci_status.apr {
   padding-top: 30px;
 }
 .ar-section-title {
-  padding: 15px;
+  padding: 15px 15px 10px 5px;
   margin-bottom: 10px;
+  border-bottom: 1px solid #e2e2e2;
+  font-size: 1.4em;
+}
+.ar-section-subtitle {
+  font-size: 1.15em;
+  margin-bottom: 10px;
+  text-indent: 10px;
+}
+.ar-section-bottombtns {
+  overflow: auto;
+  margin-top: 20px;
+}
+.ar-section-bottombtns .mbtn,
+.ar-section-bottombtns button {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  font-size: 0.95em;
+  cursor: pointer;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+.ar-section-bottombtns .mbtn:hover,
+.ar-section-bottombtns button:hover {
+  color: #fff;
+  background-color: #3d3d3d;
+}
+.ar-section-bottombtns ul li {
+  margin-bottom: 10px;
+}
+.ar-emptylist {
+  padding: 40px 20px;
+  text-align: center;
+  color: #e2e2e2;
+}
+.ar-boldrow {
+  background-color: #f7f7f7;
+  padding: 10px 0;
+  border-top: 1px solid #e2e2e2;
+}
+.ar-boldrow:last-child {
   border-bottom: 1px solid #e2e2e2;
 }
 @media (min-width: 768px) and (min-height: 600px) {

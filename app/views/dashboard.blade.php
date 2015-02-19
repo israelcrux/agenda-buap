@@ -35,10 +35,11 @@
 		});
 
 
-		var fileInput = $('#files'),
-			fileButton = $("#filebtn");
-		fileButton.click(function(){ fileInput.click(); });
-		fileInput.change(function(e){
+		var fileButton = $(".filebtn");
+		fileButton.click(function(){
+			$(this).parent().find('.files').click(); 
+		});
+		$('.files').change(function(e){
 			var n = e.target.files.length,
 				text = (n==1)? 'archivo seleccionado' : 'archivos seleccionados';
 
