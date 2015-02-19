@@ -139,7 +139,9 @@
 					<p>{{event.end_day}}</p>
 				</div>
 			</div>
-
+			<a target="_blank" ng-href="event/{{event.id}}">Ver detalles del evento</a>
+			<?php 
+			/*
 			<div class="col-xs-12">
 				<p class="ar-over-title">Lugar</p>
 				<p>{{event.place}}</p>
@@ -170,7 +172,9 @@
 				<p>{{event.link}}</p>
 			</div>
 
-			<p  class="col-xs-12">{{event.description}}</p>
+			<p  class="col-xs-12">{{event.description}}</p>			
+			*/
+			 ?>
 
 		</div>
 			

@@ -837,6 +837,13 @@ a.ar-moreinfo {
   font-weight: 500;
   font-size: 0.97em;
 }
+.ar-list {
+  overflow: auto;
+}
+.ar-maxcent {
+  max-width: 600px;
+  margin: 0 auto;
+}
 .ar-eventtime {
   font-size: 0.85em;
   color: #7d7d7d;

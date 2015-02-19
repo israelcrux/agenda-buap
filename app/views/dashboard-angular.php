@@ -381,7 +381,7 @@
 
 					<div class="ar-vwrap ar-lnhh">
 						<div class="col-xs-12 col-sm-9 ar-nopad">
-							<div class="col-xs-12 col-sm-2 ar-eid">{{event.id_dci}}</div>
+							<div class="col-xs-12 col-sm-2 ar-eid">ID: {{event.id}}</div>
 							<div class="col-xs-12 col-sm-10 ar-field ar-ellipsable ar-eventname ar-lnnormal">{{event.name}}</div>
 						</div>
 						<div class="col-xs-12 col-sm-3 ar-nopad">
