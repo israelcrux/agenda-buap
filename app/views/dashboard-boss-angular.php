@@ -140,41 +140,6 @@
 				</div>
 			</div>
 			<a target="_blank" ng-href="event/{{event.id}}">Ver detalles del evento</a>
-			<?php 
-			/*
-			<div class="col-xs-12">
-				<p class="ar-over-title">Lugar</p>
-				<p>{{event.place}}</p>
-			</div>	
-			<div class="col-xs-12">
-				<p class="ar-over-title">Hora de inicio</p>
-				<p>{{event.time}} hrs.</p>
-			</div>
-
-			
-
-			<div class="col-xs-12 col-md-6">
-				<p class="ar-over-title">Dirigido a</p>
-				<p>{{event.directed_to}}</p>				
-			</div>
-			<div class="col-xs-12 col-md-6">
-				<p class="ar-over-title">Costo</p>
-				<p ng-show="event.has_cost">
-					Evento con costo
-				</p>
-				<p ng-show="!event.has_cost">
-					Evento con costo
-				</p>
-			</div>
-
-			<div class="col-xs-12" ng-show="event.link">
-				<p class="ar-over-title">Sitio web</p>
-				<p>{{event.link}}</p>
-			</div>
-
-			<p  class="col-xs-12">{{event.description}}</p>			
-			*/
-			 ?>
 
 		</div>
 			
@@ -289,8 +254,8 @@
 						return false;
 					});
 			},
-			cpmpleteEventService : function(data){
-				return $http.post(window['ROOT_PATH']+'/eventservices/completed',data)
+			completeEventService : function(data){
+				return $http.post(window['ROOT_PATH']+'/eventservice/completed',data)
 					.then(function(response){
 						return response.data;
 					},
@@ -316,7 +281,6 @@
 			'Atendido' : 'ate',
 			'Aprobado' : 'apr'
 		};
-
 
 		//----------- Services --------------
 
@@ -443,8 +407,14 @@
 		$scope.completeSol = function(){
 
 			$scope.modalLoaderActive = false;
-			DataService.cpmpleteEventService($scope.current_sol)
+
+			console.log($scope.current_sol.pivot);
+
+			DataService.completeEventService($scope.current_sol.pivot)
 				.then(function(resp){
+
+					console.log(resp);
+
 					var message = "Ocurrió un error al marcar la solicitud como completa";
 					if(resp && resp.status == 'success'){
 						//tell shit was done
@@ -457,7 +427,7 @@
 							}
 						}
 						$scope.current_sol = null;
-						closeTaskPanel();
+						$scope.closeTaskPanel();
 					}
 					$scope.alert = message;
 					setTimeout(function(){

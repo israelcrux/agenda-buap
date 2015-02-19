@@ -1,6 +1,21 @@
-<div ng-controller="PendingUsersController" class="col-xs-12 col-sm-6 col-md-4">
+<div ng-controller="EventsController" class="col-xs-12 col-sm-6 col-md-8">
 	<section class="ar-module">
-		<div class="ar-section-title">Usuarios <div class="btn">Agregar usuario</div></div>
+		<div class="ar-section-title">Solicitudes de difusión</div>
+		<div class="ar-section-subtitle">Pendientes</div>
+		<div class="ar-section-content ar-list">
+			<div class="ar-emptylist">
+				Aún no hay nuevas solicitudes
+			</div>
+		</div>
+		<div class="ar-section-bottombtns">
+			{{works}}
+		</div>
+	</section>
+</div>
+
+<div ng-controller="UsersController" class="col-xs-12 col-sm-6 col-md-4 static">
+	<section class="ar-module">
+		<div class="ar-section-title">Usuarios <div class="mbtn btn" ng-click="showUserForm=true">Agregar usuario</div></div>
 		<div class="ar-section-subtitle">Pendientes</div>
 		<div class="ar-section-content ar-list">
 
@@ -32,6 +47,24 @@
 		</div>
 	</section>
 
+	<?php 
+	/*
+	<div class="ar-modal-loader" ng-class="{active:showUserForm}" ng-click="showUserForm=false">
+		
+	</div>
+	*/ ?>
+
+	<div class="ar-fullscreen-panel-container" ng-class="{active:showUserForm}">
+		<div class="ar-fullscreen-panel">
+			<div class="ar-modal-title">Nuevo usuario</div>
+			<div class="ar-modal-closebtn" ng-click="showUserForm=false"></div>
+			<div class="ar-modal-content">
+				
+			</div>
+		</div>
+	</div>
+
+
 
 	<div class="ar-modal-loader" ng-class="{active:modalLoaderActive}">
 		<div class="spinner">
@@ -45,22 +78,6 @@
 
 
 </div>
-
-<div ng-controller="MiscController" class="col-xs-12 col-sm-6 col-md-8">
-	<section class="ar-module">
-		<div class="ar-section-title">Solicitudes de difusión</div>
-		<div class="ar-section-subtitle">Pendientes</div>
-		<div class="ar-section-content ar-list">
-			<div class="ar-emptylist">
-				Aún no hay nuevas solicitudes
-			</div>
-		</div>
-		<div class="ar-section-bottombtns">
-			owo
-		</div>
-	</section>
-</div>
-
 
 
 
@@ -91,7 +108,7 @@ var users_app = angular.module('dashboard',[])
 			}
 		};
 	}])
-	.controller('PendingUsersController',['$scope','DataService',function($scope,DataService){
+	.controller('UsersController',['$scope','DataService',function($scope,DataService){
 
 		$scope.userTypes = {
 			'1' :  'Cliente',
@@ -129,6 +146,14 @@ var users_app = angular.module('dashboard',[])
 					},3000);
 				});
 		};
+
+		
+
 	}]);
+
+
+users_app.controller('EventsController',['$scope',function($scope){
+	$scope.works = 'HOla!';
+}]);
 
 </script>

@@ -189,7 +189,12 @@ Route::group(array('before' => 'auth'), function(){
         });
 
         Route::get('/dashboard-admin/', function(){
-            return View::make('dashboard-admin', array('user' => Auth::user()));
+            return View::make('dashboard-admin', array(
+                'user' => Auth::user(),
+                'aaunits' => AcademicAdministrativeUnit::all(),
+                'dunits'  => Department::all(),
+                'utunits' => UserType::all()
+                ));
         });
 
         /* Route to get events to panel of heads */
