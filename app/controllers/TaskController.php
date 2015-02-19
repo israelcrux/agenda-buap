@@ -1,5 +1,5 @@
-<?php 
-    
+<?php
+
     class TaskController extends BaseController {
 
         /*
@@ -8,10 +8,10 @@
         public function toAssignTask() {
 
             /* Getting the employees of certain department to assign a task */
-            return User::whereRaw('status = ? and user_type_id = ? and department_id = ?', 
+            return User::whereRaw('status = ? and user_type_id = ? and department_id = ?',
                 array(1, 2, Auth::user()->department_id)
             )->get();
-        
+
         }
 
         /*
@@ -60,7 +60,7 @@
                 }
 
                 /* If the task has been succesful saved, send an email to the user with a new task */
-                Mail::send('emails.notification.newtask', array(), 
+                Mail::send('emails.notification.newtask', array(),
                     function($message) use($user) {
                         $message->to($user->email)->subject('Nueva tarea asignada - DCI');
                     }
@@ -114,11 +114,11 @@
 
             if(is_null($old_employee)) {
                 /* Sending email if the employee of the task is the same */
-                Mail::send('emails.notification.edittask', 
+                Mail::send('emails.notification.edittask',
                     array(
                         'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
                         'task' => $task->description
-                    ), 
+                    ),
                     function($message) use($employee) {
                         $message->to($employee->email)->subject('Tarea asignada editada - DCI');
                     }
@@ -126,21 +126,21 @@
             }
             else {
                 /* Sending emails if the employee of the task is a new one */
-                Mail::send('emails.notification.newtask', 
+                Mail::send('emails.notification.newtask',
                     array(
                         'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
                         'task' => $task->description
-                    ), 
+                    ),
                     function($message) use($employee) {
                         $message->to($employee->email)->subject('Nueva tarea asignada - DCI');
                     }
                 );
 
-                Mail::send('emails.notification.deletetask', 
+                Mail::send('emails.notification.deletetask',
                     array(
                         'boss' => Auth::user()->first_name.' '.Auth::user()->last_name,
                         'task' => $task->description
-                    ), 
+                    ),
                     function($message) use($old_employee) {
                         $message->to($old_employee->email)->subject('Tarea asignada eliminada - DCI');
                     }
@@ -169,7 +169,7 @@
             Mail::send('emails.notification.deletetask',
                 array(
                     'task' => $task->description
-                ), 
+                ),
                 function($message) use($user) {
                     $message->to($user->email)->subject('Tarea asignada eliminada - DCI');
                 }
@@ -190,7 +190,7 @@
             if(is_numeric($task_type)) {
                 return EventDCI::with(
                     array(
-                        'services' => 
+                        'services' =>
                             function($query) {
                                 $query  ->whereNull('event_service.deleted_at')
                                         ->where('services.department_id', '=', Auth::user()->department_id)
@@ -198,11 +198,11 @@
                             }
                     )
                 )
-                ->whereHas('services', 
+                ->whereHas('services',
                     function($query) {
                         $query  ->whereNull('event_service.deleted_at')
                                 ->where('services.department_id', '=', Auth::user()->department_id)
-                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)', 
+                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)',
                                     array('Pendiente', 'En Proceso')
                                 );
                     }
@@ -233,7 +233,7 @@
                     $custom_event["services"]    = array();
                     $toPush = false;
                     foreach ($event['services'] as $service) {
-                        $service['tasks'] = 
+                        $service['tasks'] =
                             $service
                             ->pivot
                             ->tasks()
@@ -257,7 +257,7 @@
             if($task_type == 'pending' or $task_type == 'all') {
                 $events = EventDCI::with(
                     array(
-                        'services' => 
+                        'services' =>
                             function($query) {
                                 $query  ->whereNull('event_service.deleted_at')
                                         ->where('services.department_id', '=', Auth::user()->department_id)
@@ -265,11 +265,11 @@
                             }
                     )
                 )
-                ->whereHas('services', 
+                ->whereHas('services',
                     function($query) {
                         $query  ->whereNull('event_service.deleted_at')
                                 ->where('services.department_id', '=', Auth::user()->department_id)
-                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)', 
+                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)',
                                     array('Pendiente', 'En Proceso')
                                 );
                     }
@@ -320,11 +320,11 @@
                     }
                 }
             }
-            
+
             if($task_type == 'completed' or $task_type == 'all') {
                 $completed = EventDCI::with(
                     array(
-                        'services' => 
+                        'services' =>
                             function($query) {
                                 $query  ->whereNull('event_service.deleted_at')
                                         ->where('services.department_id', '=', Auth::user()->department_id)
@@ -332,11 +332,11 @@
                             }
                     )
                 )
-                ->whereHas('services', 
+                ->whereHas('services',
                     function($query) {
                         $query  ->whereNull('event_service.deleted_at')
                                 ->where('services.department_id', '=', Auth::user()->department_id)
-                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)', 
+                                ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)',
                                     array('Pendiente', 'En Proceso')
                                 );
                     }
@@ -367,7 +367,7 @@
                     $custom_event["services"]    = array();
                     $toPush = false;
                     foreach ($event['services'] as $service) {
-                        $service['tasks'] = 
+                        $service['tasks'] =
                             $service
                             ->pivot
                             ->tasks()
@@ -387,6 +387,7 @@
                     }
                 }
             }
+
 
             return array('pending' => $pending, 'completed' => $completed);
 

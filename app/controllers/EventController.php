@@ -11,13 +11,66 @@
             /* If the user is logged, and is the owner of the event or the user is employee, boss or admin,
                can see all; if not, only see the basic information */
             $event = EventDCI::find($id);
-            if(Auth::check() and Auth::user()->id == $event->user_id or Auth::user()->user_type_id > 1) {
-                $event['services']          = $event->services()->wherePivot('deleted_at', '=', NULL)->get();
+            if(is_null($event)) {
+                App::abort(404);
+            }
+
+            if(Auth::check()) {
+                if(Auth::user()->id == $event->user_id or Auth::user()->user_type_id > 1) {
+                    $event['services']          = $event->services()->wherePivot('deleted_at', '=', NULL)->get();
+                    $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
+                    $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
+                    $event['support_materials'] = $event->support_materials()->get();
+                }
+            }
+            return View::make('event-view', array('event' => $event));
+        }
+
+        /*
+         * Show all events that have services associated and the services that
+         * have tasks associated don't finished and the event isn't finished
+         */
+        public function viewEventsByAdmin() {
+
+            $events = EventDCI::with(
+                array(
+                    'services' =>
+                        function($query) {
+                            $query  ->whereNull('event_service.deleted_at')
+                                    ->orderBy('start_service');
+                        }
+                )
+            )
+            ->whereHas('services',
+                function($query) {
+                    $query  ->whereNull('event_service.deleted_at')
+                            ->whereRaw('(`dci_status` = ? OR `dci_status` = ?)',
+                                array('Pendiente', 'En Proceso')
+                            );
+                }
+            )
+            ->whereRaw('(`events`.`dci_status` = ? OR `events`.`dci_status` = ?)',
+                array('Pendiente', 'En Proceso')
+            )
+            ->get();
+
+            foreach ($events as $event) {
                 $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['support_materials'] = $event->support_materials()->get();
+
+                foreach ($event['services'] as $service) {
+                    $service['tasks'] = $service
+                                        ->pivot
+                                        ->tasks()
+                                        ->where('user_id', '=', Auth::user()->id)
+                                        ->where('status', '=', 'Pendiente')
+                                        ->get();
+                }
             }
-            return View::make('event-view', array('event' => $event));
+
+            return $events;
+
         }
 
         /*
