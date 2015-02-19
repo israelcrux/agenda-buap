@@ -1,6 +1,6 @@
 <div ng-controller="PendingUsersController" class="col-xs-12 col-sm-6 col-md-4">
 	<section class="ar-module">
-		<div class="ar-section-title">Usuarios</div>
+		<div class="ar-section-title">Usuarios <div class="btn">Agregar usuario</div></div>
 		<div class="ar-section-subtitle">Pendientes</div>
 		<div class="ar-section-content ar-list">
 
@@ -28,12 +28,8 @@
 			
 		</div>
 		<div class="ar-section-bottombtns">
-			<ul>
-				<li>{{}} usuarios registrados <div class="mbtn">ver</div></li>
-				<li><div class="mbtn">ver usuarios ignorados</div></li>
-			</ul>
+			<div class="mbtn">ver usuarios registrados</div> <div class="mbtn">ver usuarios ignorados</div>
 		</div>
-		<button>Agregar usuario</button>
 	</section>
 
 
