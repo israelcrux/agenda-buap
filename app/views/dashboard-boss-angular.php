@@ -3,7 +3,7 @@
 <?php 
 	/*--------------------- Panel de "detalles" de solicitud---------------------------*/ 
 ?>
-<div ng-hide="taskpanel_hidden" class="ar-fullscreen-panel-container">
+<div ng-hide="taskpanel_hidden" class="ar-fullscreen-panel-container" ng-class="{active:!taskpanel_hidden}">
 	<div class="ar-fullscreen-panel">
 		<div class="ar-modal-title">Tareas asignadas para solicitud de {{current_sol.name}} para el evento "{{current_event.name}}"</div>
 		<div class="ar-modal-closebtn" ng-click="closeTaskPanel()"></div>
