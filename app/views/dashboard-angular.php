@@ -197,9 +197,36 @@
 	                            </li>
 	                            <?php } ?>
 							</ul>
-
 						</div>
-
+						<div ng-show="diff">
+							<p class="ar-ptitle">
+								Programa PDI
+							</p>
+							<ul class="ar-plist">
+								<?php foreach ($pdi_programs as $pdi_program): ?>
+									<li>
+										<div class="checkbox">
+											<label>
+												<input
+													name="pdi_programs[]"
+													type="checkbox"
+													value="<?php echo $pdi_program['id']; ?>"
+													<?php
+														if(Input::old('pdi_programs')) {
+															$old_pdi_programs = Input::old('pdi_programs');
+															foreach ($old_pdi_programs as $old_pdi_program) {
+																echo 'checked="checked"';
+																break;
+															}
+														}
+													?>
+												> <?php echo $pdi_program['name']; ?>
+											</label>
+										</div>
+									</li>
+								<?php endforeach ?>
+							</ul>
+						</div>
 						<input type="submit" value="Agendar Evento">
 					</div>
 				<?php echo Form::close(); ?>
@@ -366,6 +393,26 @@
 	                            <?php } ?>
 							</ul>
 
+							<p class="ar-ptitle">
+								Programa PDI
+							</p>
+							<ul class="ar-plist">
+								<?php foreach ($pdi_programs as $pdi_program): ?>
+									<li>
+										<div class="checkbox">
+											<label>
+												<input
+													name="pdi_programs[]"
+													type="checkbox"
+													value="<?php echo $pdi_program['id']; ?>"
+													ng-checked="currentEvent.pdi_program_<?php echo $pdi_program['id']; ?>"
+												> <?php echo $pdi_program['name']; ?>
+											</label>
+										</div>
+									</li>
+								<?php endforeach ?>
+							</ul>
+
 						<input type="submit" value="Guardar cambios">
 					</div>
 				<?php echo Form::close(); ?>
@@ -384,7 +431,7 @@
 
 					<div class="ar-vwrap ar-lnhh">
 						<div class="col-xs-12 col-sm-9 ar-nopad">
-							<div class="col-xs-12 col-sm-2 ar-eid">ID: {{event.id}}</div>
+							<div class="col-xs-12 col-sm-2 ar-eid">ID: {{event.id_dci}}</div>
 							<div class="col-xs-12 col-sm-10 ar-field ar-ellipsable ar-eventname ar-lnnormal">{{event.name}}</div>
 						</div>
 						<div class="col-xs-12 col-sm-3 ar-nopad">

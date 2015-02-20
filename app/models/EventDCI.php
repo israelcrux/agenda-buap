@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
@@ -10,7 +10,7 @@
          * The database table used by the model.
          */
         protected $table = 'events';
-        
+
         /*
          * Table fields guarded, need admin privileges to modify.
         */
@@ -22,7 +22,7 @@
         protected $dates = ['deleted_at'];
 
         /*
-         * One event belongst to one request
+         * One event belongs to one request
          */
         public function request(){
             return $this->belongsTo('Request');
@@ -33,6 +33,15 @@
         */
         public function user() {
             return $this->belongsTo('User');
+        }
+
+        /*
+         * Many events have many PDI Programs
+         */
+        public function pdi_programs() {
+            return $this->belongsToMany('PDIProgram', 'event_pdi_program', 'event_id', 'pdi_program_id')
+                        ->withPivot('deleted_at')
+                        ->withTimestamps();
         }
 
         /*

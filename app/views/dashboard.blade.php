@@ -7,15 +7,15 @@
     		<h3>Hola {{ Auth::user()->first_name }}</h3>
     	</div>
     	<div class="col-xs-12 col-sm-2">
-			<!-- 
+			<!--
 			<button type="button" class="btn btn-default" aria-label="Left Align">
 				<span class="glyphicon glyphicon-align-left" aria-hidden="true"></span> 1 Mensaje
-			</button>    		
+			</button>
 			 -->
     	</div>
 
     </div>
-	
+
     @include('alert')
 	@include('dashboard-angular')
 
@@ -27,7 +27,7 @@
 
 
 		//JQ
-		
+
 		$(document).ready(function(){
 			$('.datepicker').datepicker({autoclose: true,format: 'yyyy-mm-dd'}).on('changeDate', function(){
 				$('.datepicker.dropdown-menu').hide();
@@ -37,7 +37,7 @@
 
 		var fileButton = $(".filebtn");
 		fileButton.click(function(){
-			$(this).parent().find('.files').click(); 
+			$(this).parent().find('.files').click();
 		});
 		$('.files').change(function(e){
 			var n = e.target.files.length,
@@ -61,7 +61,7 @@
 
 		function niceDates(data){
 			for (var i = data.length - 1; i >= 0; i--) {
-				
+
 				data[i].end_day = yymmddToddmmyy(data[i].end_day);
 				data[i].start_day = yymmddToddmmyy(data[i].start_day);
 
@@ -84,10 +84,13 @@
 					events[i]['service_'+events[i].services[j].id] = true;
 				}
 				for (var j = events[i].resources_sources.length - 1; j >= 0; j--) {
-					events[i]['resource_source_'+events[i].resources_sources[j].id] = true;					
+					events[i]['resource_source_'+events[i].resources_sources[j].id] = true;
 				}
 				for (var j = events[i].witnesses.length - 1; j >= 0; j--) {
 					events[i]['witness_'+events[i].witnesses[j].id] = true;
+				}
+				for (var j = events[i].pdi_programs.length - 1; j >= 0; j--) {
+					events[i]['pdi_program_'+events[i].pdi_programs[j].id] = true;
 				}
 				for (var j = events[i].support_materials.length - 1; j >= 0; j--) {
 					var ext = events[i].support_materials[j].file.match(/\.[a-zA-Z]+$/);
@@ -115,9 +118,9 @@
 
 			$scope.FORM_ENABLED = false;
 			$scope.ACTION = null;
-			<?php 
+			<?php
 				$FORM_ENABLED = Session::get('FORM_ENABLED');
-				if( isset($FORM_ENABLED) ): 
+				if( isset($FORM_ENABLED) ):
 			?>
 				$scope.FORM_ENABLED = true;
 				$scope.ACTION = "<?php echo Session::get('action');  ?>";
@@ -146,7 +149,7 @@
 			});
 
 			$scope.showCreateForm = function(){
-				$scope.new_event = true; 
+				$scope.new_event = true;
 				$('html, body').animate({ scrollTop: 0 }, 'slow');
 			};
 
@@ -157,7 +160,7 @@
 
 			$scope.showCancelForm = function(event){
 				$scope.eventToCancel = event;
-			};			
+			};
 
 			$scope.deleteFile = function(file){
 				$scope.currentEvent.support_materials.splice(  $scope.currentEvent.support_materials.indexOf(file) ,1 );

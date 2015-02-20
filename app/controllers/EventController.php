@@ -21,6 +21,7 @@
                     $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
                     $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
                     $event['support_materials'] = $event->support_materials()->get();
+                    $event['pdi_programs']      = $event->pdi_programs()->wherePivot('deleted_at', '=', NULL)->get();
                 }
             }
             return View::make('event-view', array('event' => $event));
@@ -58,6 +59,7 @@
                 $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['support_materials'] = $event->support_materials()->get();
+                $event['pdi_programs']      = $event->pdi_programs()->wherePivot('deleted_at', '=', NULL)->get();
 
                 foreach ($event['services'] as $service) {
                     $service['tasks'] = $service
@@ -85,6 +87,7 @@
                 $event['resources_sources'] = $event->resources_sources()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['witnesses']         = $event->witnesses()->wherePivot('deleted_at', '=', NULL)->get();
                 $event['support_materials'] = $event->support_materials()->get();
+                $event['pdi_programs']      = $event->pdi_programs()->wherePivot('deleted_at', '=', NULL)->get();
             }
 
             return json_encode($events);
@@ -280,6 +283,24 @@
                 }
             }
 
+            if(Input::has('pdi_programs')) {
+                /* Getting, validating and storing pdi_programs to the event */
+                $pdi_programs = Input::get('pdi_programs');
+
+                foreach ($pdi_programs as $pdi_program) {
+                    if($this->validateArrayElement($pdi_program, 'string')) {
+                        $event->pdi_programs()->attach($pdi_program);
+                    }
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Los programas pdi recibidos no son válidos')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','add')
+                            ->withInput();
+                    }
+                }
+            }
+
             return Redirect::to('dashboard')->with('alert', 'Evento creado exitosamente ' . $event->id_dci);
 
         }
@@ -288,8 +309,6 @@
          * Editing an event
          */
         public function editEvent() {
-
-            // var_dump(Input::all()); exit();
 
             /* Searching the event */
             $event = EventDCI::find(Input::get('id'));
@@ -337,9 +356,10 @@
             $now = new DateTime();
 
             /* Getting old services, resources sources and witeness to the event */
-            $old_services = $event->services()->get();
+            $old_services          = $event->services()->get();
             $old_resources_sources = $event->resources_sources()->get();
-            $old_witnesses = $event->witnesses()->get();
+            $old_witnesses         = $event->witnesses()->get();
+            $old_pdi_programs      = $event->pdi_programs()->get();
 
             /* Deactivating old services */
             foreach ($old_services as $old_service) {
@@ -354,6 +374,11 @@
             /* Deactivateing old resources sources */
             foreach ($old_witnesses as $old_witness) {
                 $event->witnesses()->updateExistingPivot($old_witness->id, array('deleted_at' => $now));
+            }
+
+            /* Deactivateing old PDI programs */
+            foreach ($old_pdi_programs as $old_pdi_program) {
+                $event->pdi_programs()->updateExistingPivot($old_pdi_program->id, array('deleted_at' => $now));
             }
 
             /* Getting information about diffusion */
@@ -412,7 +437,8 @@
                         $file->move('./support_materials', $new_name);
 
                         $support_material_data = array(
-                            'file' => 'support_materials/'.$new_name,
+                            'original_name' => $file->getClientOriginalName(),
+                            'file'          => 'support_materials/'.$new_name,
                         );
 
                         $support_material = new SupportMaterial($support_material_data);
@@ -471,6 +497,36 @@
                         }
                         if(!$witnesses_exist) {
                             $event->witnesses()->attach($new_witness);
+                        }
+                    }
+                    else {
+                        return Redirect::to('dashboard')
+                            ->with('alert', 'Los testigos actualizados no son válidos')
+                            ->with('FORM_ENABLED','true')
+                            ->with('action','edit')
+                            ->withInput();
+                    }
+                }
+            }
+
+            if(Input::has('pdi_programs')) {
+
+                /*Getting new PDI programs to the event*/
+                $new_pdi_programs = Input::get('pdi_programs');
+
+                /* Updating old PDI programs and adding new PDI programs */
+                foreach ($new_pdi_programs as $new_pdi_program) {
+                    if($this->validateArrayElement($new_pdi_program, 'string')) {
+                        $pdi_programs_exist = false;
+                        foreach ($old_pdi_programs as $old_pdi_program) {
+                            if($old_pdi_program['original']['pivot_pdi_program_id'] == $new_pdi_program) {
+                                $pdi_programs_exist = true;
+                                $event->pdi_programs()->updateExistingPivot($old_pdi_program->id, array('deleted_at' => NULL));
+                                break;
+                            }
+                        }
+                        if(!$pdi_programs_exist) {
+                            $event->pdi_programs()->attach($new_pdi_program);
                         }
                     }
                     else {
