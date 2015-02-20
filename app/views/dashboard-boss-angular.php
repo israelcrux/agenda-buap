@@ -20,6 +20,7 @@
 	
 							<div class="col-xs12 ellipsis unellipsable padr" ng-click="unellipse($event)" title="{{task.description}}">{{task.description}}</div>
 							<div class="col-xs12">Empleado: <b>{{employees[task.user_id].first_name}} {{employees[task.user_id].last_name}}</b></div>
+							<div class="col-xs12"><a ng-href="mailto:{{employees[task.user_id].email}}">{{employees[task.user_id].email}}</a></div>
 							<div class="ar-row">
 								<div class="col-xs6">{{task.created_at}}</div>
 								<div class="col-xs6">{{task.deleted_at}}</div>
@@ -37,7 +38,7 @@
 			</div>
 			<div class="col-xs-12 col-md-4">
 				
-				<div class="ar-form-container" ng-show="current_sol._completed_tasks==current_sol.tasks.length">
+				<div class="ar-form-container" ng-show="current_sol.tasks.length>0 && current_sol._completed_tasks==current_sol.tasks.length">
 					<p>Todas las tareas para esta solicitud han sido completadas, si la solicitud ha sido completamente atendida por su área, por favor marque la solicitud como atendida.</p>
 					<button class="btn ar-flatbtn form-control" ng-click="completeSol()">Marcar solicitud como atendida</button>
 				</div>
