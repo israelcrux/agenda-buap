@@ -1,11 +1,82 @@
 <div ng-controller="EventsController" class="col-xs-12 col-sm-6 col-md-8">
 	<section class="ar-module">
-		<div class="ar-section-title">Solicitudes de difusión</div>
-		<div class="ar-section-subtitle">Pendientes</div>
+		<div class="ar-section-title">Eventos y solicitudes <b>({{events.length}} eventos)</b></div>
+		<div class="ar-section-subtitle ar-row">
+			<div class="col-xs-0 col-sm-4">Eventos </div>
+			<div class="col-xs-0 col-sm-8">Solicitudes</div>
+			<?php 
+			/*
+			huehue
+			*/
+			 ?>
+		</div>
 		<div class="ar-section-content ar-list">
-			<div class="ar-emptylist">
+			<div class="ar-emptylist" ng-show="events.length==0">
 				Aún no hay nuevas solicitudes
 			</div>
+			<?php /* wuea de event service en boss panel  */ ?>
+
+
+
+
+
+			<div class="ar-list ar-mbottom" ng-repeat="event in events">
+				
+
+				<div class="ar-vwrap">
+					<h4 class="it">{{event.name}}</h4>
+				</div>
+
+				<div class="col-xs-12 col-sm-4">
+					<div class="ar-row">
+						<div class="col-xs-12 col-md-6">
+							<p class="ar-over-title">Inicia</p>
+							<p>{{event.start_day}}</p>
+						</div> 
+						<div class="col-xs-12 col-md-6">
+							<p class="ar-over-title">Termina</p>					
+							<p>{{event.end_day}}</p>
+						</div>
+					</div>
+					<a target="_blank" ng-href="event/{{event.id}}">Ver detalles del evento</a>
+
+				</div>
+					
+				<div class="col-xs-12 col-sm-8">
+					<div class="ar-element" ng-repeat="sol in event.services">
+						<div class="status-tag"></div>
+						<div class="ar-row">
+							<div class="col-sm-12 col-md-8">
+								<h4 class="sm">{{sol.name}}</h4>
+							</div>
+							<div class="col-sm-12 col-md-4">
+								<h5 class="ar-right">{{sol.pivot.dci_status}}</h5>
+							</div>
+						</div>
+
+						<div class="ar-element-buttons ar-row">
+							<div class="ar-button-info" ng-class="{green:sol._completed_tasks==sol.tasks.length}">
+								<b>{{sol.tasks.length}}</b> tareas asignadas
+							</div>
+							<div class="ar-button-info">
+								<b>{{sol.tasks.length - sol._completed_tasks}}</b> tareas pendientes
+							</div>
+							<button class="btn" ng-click="openTaskPanel(event,sol)" ng-hide="true">
+								+
+							</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+
+
+
+
 		</div>
 		<div class="ar-section-bottombtns">
 			{{works}}
@@ -198,9 +269,24 @@ var users_app = angular.module('dashboard',[])
 
 	}]);
 
-
-users_app.controller('EventsController',['$scope',function($scope){
-	$scope.works = 'HOla!';
-}]);
+users_app.factory('EventsDataService',['$http',function($http){
+		return {
+			events : function(){
+				return $http.get(window['ROOT_PATH']+'/event/adminview')
+					.then(function(response){
+						console.log(response.data);
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar obtener datos del servidor');
+					});
+			}
+		};
+	}])
+	.controller('EventsController',['$scope','EventsDataService',function($scope,EventsDataService){
+		$scope.events = EventsDataService.events();
+		$scope.events.then(function(data){
+			$scope.events = data;
+		}); 
+	}]);
 
 </script>

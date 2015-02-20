@@ -815,6 +815,9 @@ a.ar-moreinfo {
 .ar-daytag span {
   color: #00b2e2;
 }
+h4.sm {
+  font-size: 15px;
+}
 .ar-right {
   text-align: right;
 }
@@ -1238,6 +1241,16 @@ span.dci_status.apr {
 }
 .ar-boldrow:last-child {
   border-bottom: 1px solid #e2e2e2;
+}
+.ar-element {
+  position: relative;
+}
+.status-tag {
+  width: 5px;
+  position: absolute;
+  left: 0px;
+  height: 100%;
+  background-color: #f6aa3e;
 }
 @media (min-width: 768px) and (min-height: 600px) {
   .ar-login-form.ar-form-wrapper {
