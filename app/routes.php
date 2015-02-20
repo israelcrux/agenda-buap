@@ -245,6 +245,9 @@ Route::group(array('before' => 'auth'), function(){
         /* Route that have the prefix aau (Academic Administrative Units) */
         Route::group(array('prefix' => 'aau'), function(){
 
+            /* Route to view all Academic Administrative Units */
+            Route::get('/', 'AcademicAdministrativeUnitController@view');
+            
             /* Route to add a new Academic Administrative Unit */
             Route::post('add', 'AcademicAdministrativeUnitController@add');
 

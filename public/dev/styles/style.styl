@@ -68,7 +68,12 @@ ul
 	overflow auto
 ul.nav.navbar-nav
 	overflow visible
-
+ul.inline li
+	display inline-block
+	margin-right 5px
+ul.inline li:last-child
+	margin-right 0px
+	
 
 input[type="date"]:before
 	content: attr(placeholder);
@@ -76,6 +81,10 @@ input[type="date"]:before
 
 input[type="date"]:focus:before, input[type="date"]:valid:before
 	content: "";
+
+.ar-autoscroll
+	overflow auto
+	max-height 100%
 
 .ar-spacer
 	margin-bottom 50px
@@ -334,11 +343,13 @@ ul.nav.navbar-nav li a
 	position absolute
 	top 0px
 	right 0px
+	z-index 1
 	cursor pointer
 	standard-background()
 	background-image url(../img/arrows_remove.svg)
 
 .ar-modal-title
+	z-index 1
 	position absolute
 	width 100%
 	line-height 50px
@@ -363,9 +374,13 @@ ul.nav.navbar-nav li a
 	padding 15px
 	padding-top 55px
 	max-height 100%
+	height 100%
 	overflow auto
 	.ar-form-container
 		max-width 100%
+
+.ar-fullscreen-panel .ar-modal-content
+	height 100%
 
 /****************************	ALERT   ****************************/
 .ar-alert.in
@@ -1013,6 +1028,7 @@ form
 .ar-element
 	border-bottom 1px solid gray
 	border-top 1px solid gray
+	overflow auto
 .ar-switcher
 	margin 5px 2px
 	background-color gray

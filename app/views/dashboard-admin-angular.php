@@ -1,3 +1,76 @@
+<div class="ar-vwrap" ng-controller="MiscController">
+
+	<div class="col-xs-10 col-sm-8">
+		<h3>Hola <?php echo Auth::user()->first_name;  ?> </h3>
+		<p>Panel de administración global - Dirección de Comunicación Institucional</p>
+	</div>
+	<div class="col-xs-2 col-sm-4">
+		<ul>
+			<li><a ng-click="showAAUPanel=true">Unidades administrativas</a></li>
+			<li>Servicios</li>
+			<li>Áreas DCI</li>
+		</ul>
+	</div>
+
+	<div class="ar-fullscreen-panel-container" ng-class="{active:showAAUPanel}">
+		<div class="ar-fullscreen-panel">
+			<div class="ar-modal-title">Unidades académicas y administrativas</div>
+			<div class="ar-modal-closebtn" ng-click="showAAUPanel=false"></div>
+			<div class="ar-modal-content">
+				
+				<div class="col-xs-12 col-sm-8 ar-autoscroll">
+					
+					<div class="ar-list">
+						<div class="ar-element" ng-repeat="aau in aaus">
+							<div class="col-xs-6">{{aau.name}}</div>
+							<div class="col-xs-4">{{aau.type}}</div>
+							<div class="col-xs-2"> 
+								<ul class="inline">
+									<?php /*  
+									<li><a>Editar</a></li>
+									<li><a ng-click="deleteAAU">Eliminar</a></li>
+									*/ ?>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<h4>Agregar unidad</h4>
+					<div class="ar-form-container">
+						<form>
+							<input type="text" ng-model="newAAU.name" class="form-control" placeholder="Nombre">
+							<select ng-model="newAAU.type" class="form-control">
+								<option value="unidades_academicas">Académica</option>
+								<option value="unidades_administrativas">Administrativa</option>
+								<option value="otro">Otro</option>
+							</select>
+							<button class="btn btn-primary form-control" ng-click="addAAU()">Crear</button>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="ar-modal-loader" ng-class="{active:modalLoaderActive}">
+		<div class="spinner">
+		  <div class="bounce1"></div>
+		  <div class="bounce2"></div>
+		  <div class="bounce3"></div>
+		</div>
+	</div>
+
+	<div class="ar-alert" ng-class="{in:alert}">{{alert}}</div>
+
+
+</div>
+
+
 <div ng-controller="EventsController" class="col-xs-12 col-sm-6 col-md-8">
 	<section class="ar-module">
 		<div class="ar-section-title">Eventos y solicitudes <b>({{events.length}} eventos)</b></div>
@@ -208,7 +281,7 @@
 <script>
 ROOT_PATH = "<?php echo URL::to('/'); ?>";
 var users_app = angular.module('dashboard',[])	
-	.factory('DataService',['$http',function($http){
+	.factory('UsersDataService',['$http',function($http){
 		return {
 			pendingUsers : function(){
 				return $http.get(window['ROOT_PATH']+'/user/authorize')
@@ -230,7 +303,7 @@ var users_app = angular.module('dashboard',[])
 			}
 		};
 	}])
-	.controller('UsersController',['$scope','DataService',function($scope,DataService){
+	.controller('UsersController',['$scope','UsersDataService',function($scope,UsersDataService){
 
 		$scope.showUserForm = false;
 		$scope.userTypes = {
@@ -240,7 +313,7 @@ var users_app = angular.module('dashboard',[])
 			'4' :  'Administrador'
 		};
 
-		$scope.pendingUsers = DataService.pendingUsers();
+		$scope.pendingUsers = UsersDataService.pendingUsers();
 		$scope.pendingUsers.then(function(data){
 			//error never expected
 			$scope.pendingUsers = data.unauthorized;
@@ -249,7 +322,7 @@ var users_app = angular.module('dashboard',[])
 		//events
 		$scope.acceptUser = function(user){
 			$scope.modalLoaderActive = true;
-			return DataService.acceptUser(user)
+			return UsersDataService.acceptUser(user)
 				.then(function(resp){
 					var message = 'Ocurrió un problema al intentar aceptar a la persona';
 					if(resp && resp.status == 'success'){
@@ -292,6 +365,70 @@ users_app.factory('EventsDataService',['$http',function($http){
 		$scope.events.then(function(data){
 			$scope.events = data;
 		}); 
+	}]);
+
+users_app.factory('MiscDataService',['$http',function($http){
+		return {
+			aau : function(){
+				return $http.get(window['ROOT_PATH']+'/aau')
+					.then(function(response){
+						console.log(response);
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar obtener datos del servidor');
+					}) 
+			},
+			addAAU : function(newAAU){
+				return $http.post(window['ROOT_PATH']+'/aau/add',newAAU)
+					.then(function(response){
+						console.log(response);
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					})
+			}
+		};
+	}])
+	.controller('MiscController',['$scope','MiscDataService',function($scope,MiscDataService){
+		$scope.aaus = MiscDataService.aau();
+		$scope.aaus.then(function(data){
+			$scope.aaus = data;
+		});
+
+		//events
+		$scope.addAAU = function(){
+			return MiscDataService.addAAU($scope.newAAU)
+				.then(function(resp){
+
+					console.log('afta');
+					console.log(resp);
+
+					var message = 'Ocurrió un problema al intentar crear los datos';
+					if(resp && resp.status == 'success'){
+						//add shit
+						$scope.aaus.push($scope.newAAU);
+
+						//clean shit
+						$scope.newAAU = {};
+
+						//tell shit was done
+						message = 'Unidad creada';
+					}
+					//show shit
+					$scope.modalLoaderActive = false;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+				});
+		};
+
+		$scope.deleteAAU = function(){
+
+		};
+
 	}]);
 
 </script>

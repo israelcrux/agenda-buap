@@ -2,6 +2,10 @@
 
     class AcademicAdministrativeUnitController extends BaseController {
 
+        public function view() {
+            return AcademicAdministrativeUnit::all();
+        }
+
         /*
          * Create a new Academic or Administrative Unit
          */
@@ -18,7 +22,7 @@
             /* Creating the data to save */
             $unit_data = array(
                 'name' => Input::get('name'),
-                'type' => Input::get('academic_administrative_unit_type')
+                'type' => Input::get('type')
             );
 
             /* Creating the new Academic/Administrative Unit */
@@ -60,7 +64,7 @@
 
             /* Updating information */
             $unit->name = Input::get('name');
-            $unit->type = Input::get('academic_administrative_unit_type');
+            $unit->type = Input::get('type');
             $unit->save();
 
             if(is_null($unit)) {
@@ -110,7 +114,7 @@
                 Input::all(),
                 array(
                     'name'                              => 'required|unique:academic_administrative_units,name'.$except_id,
-                    'academic_administrative_unit_type' => 'required|alpha_dash|exists:academic_administrative_units,type'
+                    'type' => 'required|alpha_dash|exists:academic_administrative_units,type'
                 )
             );
 
