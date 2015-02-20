@@ -117,9 +117,10 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('/dashboard', function(){
         return View::make('dashboard',
             array(
-                'services' => Service::all(),
+                'services'          => Service::all(),
                 'resources_sources' => ResourceSource::all(),
-                'witnesses' => Witness::all(),
+                'witnesses'         => Witness::all(),
+                'pdi_programs'      => PDIProgram::all(),
             )
         );
     });
