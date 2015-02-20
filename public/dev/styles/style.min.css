@@ -774,6 +774,15 @@ a.ar-moreinfo {
 .ar-morelink:after {
   content: ']';
 }
+.ar-fitpanel,
+.ar-fullscreen-panel.ar-fitpanel {
+  width: auto !important;
+  height: auto !important;
+  margin: 0 auto !important;
+}
+.ar-fitpanel.ar500 {
+  max-width: 500px;
+}
 .ar-day-month {
   float: left;
   background-color: #f7f7f7;
@@ -1037,9 +1046,11 @@ h4.sm {
   z-index: 10;
 }
 .ar-fullscreen-panel-container {
+  background-color: rgba(55,55,55,0.75);
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
+  overflow: auto;
   top: 0px;
   left: 0px;
   z-index: -1;

@@ -9,7 +9,7 @@
     	</div>
     	<div class="col-xs-2 col-sm-4">
     		<ul>
-    			<li>Unidades administrativas</li>
+    			<li>{{ HTML::link('/aau','Unidades administrativas') }}</li>
     			<li>Servicios</li>
     			<li>Áreas DCI</li>
     		</ul>
