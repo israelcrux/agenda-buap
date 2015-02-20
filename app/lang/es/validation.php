@@ -26,7 +26,7 @@ return array(
 "alpha_num"      => "El campo :attribute sólo puede contener letras y números.",
 "array"          => "El campo :attribute debe ser un arreglo.",
 "before"         => "El campo :attribute debe ser una fecha antes :date.",
-"between"        => 
+"between"        =>
 	array(
 		"numeric" => "El campo :attribute debe estar entre :min - :max.",
 		"file"    => "El campo :attribute debe estar entre :min - :max kilobytes.",
@@ -46,7 +46,7 @@ return array(
 "integer"        => "El campo :attribute debe ser un entero.",
 "ip"             => "El campo :attribute Debe ser una dirección IP válida.",
 "match"          => "El formato :attribute es inválido.",
-"max"            => 
+"max"            =>
 	array(
 		"numeric" => "El campo :attribute debe ser menor que :max.",
 		"file"    => "El campo :attribute debe ser menor que :max kilobytes.",
@@ -54,7 +54,7 @@ return array(
 		"array"   => "El campo :attribute debe tener al menos :min elementos.",
 	),
 "mimes"         => "El campo :attribute debe ser un archivo de tipo :values.",
-"min"           => 
+"min"           =>
 	array(
 		"numeric" => "El campo :attribute debe tener al menos :min.",
 		"file"    => "El campo :attribute debe tener al menos :min kilobytes.",
@@ -71,7 +71,7 @@ return array(
 "required_without"      => "El campo :attribute es requerido cuando :values no está presente.",
 "required_without_all"  => "El campo :attribute es requerido cuando ningún :values está presentes.",
 "same"                  => "El campo :attribute y :other debe coincidir.",
-"size"                  => 
+"size"                  =>
 	array(
 		"numeric" => "El campo :attribute debe ser :size.",
 		"file"    => "El campo :attribute debe tener :size kilobytes.",
@@ -140,5 +140,6 @@ return array(
 		'place'                             => 'Lugar',
 		'link'                              => 'URL',
 		'directed_to'                       => 'Dirigido a',
+		'pdi_programs'                      => 'Programas PDI',
 	),
 );

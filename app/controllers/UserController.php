@@ -472,7 +472,7 @@
                     array(
                         'first_name'                        => 'required',
                         'last_name'                         => 'required',
-                        'phone'                             => array('regex:/([0-9]+|-|\s)+/'),
+                        'phone'                             => array('regex:/([0-9]+|-|\s)+/', 'required_with:extension_phone,'),
                         'extension_phone'                   => array('regex:/([0-9]+|-|\s)+/'),
                         'email'                             => 'required|email|unique:users',
                         'password'                          => 'required|min:6',

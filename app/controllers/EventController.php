@@ -627,6 +627,7 @@
                     'resources_sources' => 'array',
                     'witnesses'         => 'array',
                     'files'             => 'array',
+                    'pdi_programs'      => 'array|required',
                 )
             );
 
