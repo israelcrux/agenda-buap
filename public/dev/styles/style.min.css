@@ -21,8 +21,10 @@ section {
   overflow: auto;
   padding-bottom: 170px;
 }
-a {
+a,
+.a {
   color: #00b2e2;
+  cursor: pointer;
 }
 ul {
   list-style: none;
@@ -712,7 +714,8 @@ section.ar-reg-msg button {
 }
 .ar-form-container select {
   min-height: 50px;
-  margin: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
 }
 .ar-form-container input:focus {
   box-shadow: 3px 3px 0px #e2e2e2;
@@ -1112,10 +1115,16 @@ form {
 .ar-element-buttons .ar-button-info:last-child {
   margin-right: 0px;
 }
+.ar-thick {
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
 .ar-element {
-  border-bottom: 1px solid #f2f2f2;
   border-top: 1px solid #f2f2f2;
   overflow: auto;
+}
+.ar-element:last-child {
+  border-bottom: 1px solid #f2f2f2;
 }
 .ar-switcher {
   margin: 5px 2px;

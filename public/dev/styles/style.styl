@@ -59,8 +59,9 @@ section
 	// padding-bottom footer_height
 	padding-bottom 170px
 
-a
+a, .a
 	color light_blue
+	cursor pointer
 
 ul
 	list-style none
@@ -667,7 +668,8 @@ section.ar-reg-msg
 		outline none
 	select
 		min-height 50px
-		margin 0px
+		margin-right 0px
+		margin-left 0px
 	input:focus
 		box-shadow 3px 3px 0px shadow
 	
@@ -1024,11 +1026,16 @@ form
 	.ar-button-info:last-child
 		margin-right 0px
 		
-
+.ar-thick
+	padding-top 15px
+	padding-bottom 10px
 .ar-element
-	border-bottom 1px solid gray
 	border-top 1px solid gray
 	overflow auto
+.ar-element:last-child
+	border-bottom 1px solid gray
+	
+
 .ar-switcher
 	margin 5px 2px
 	background-color gray

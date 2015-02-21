@@ -20,23 +20,42 @@
 				
 				<div class="col-xs-12 col-sm-8 ar-autoscroll">
 					
-					<div class="ar-list">
-						<div class="ar-element" ng-repeat="aau in aaus">
+					<br>
+					<br>
+					<div class="ar-list ar-autoscroll">
+						<div class="ar-element ar-thick" ng-repeat="aau in aaus">
 							<div class="col-xs-6">{{aau.name}}</div>
 							<div class="col-xs-4">{{aau.type}}</div>
 							<div class="col-xs-2"> 
 								<ul class="inline">
+									<li><a ng-click="setCurrentAAU(aau)">Editar</a></li>
 									<?php /*  
-									<li><a>Editar</a></li>
 									<li><a ng-click="deleteAAU">Eliminar</a></li>
 									*/ ?>
 								</ul>
 							</div>
 						</div>
 					</div>
-					
+					<br>
+					<br>
+
 				</div>
-				<div class="col-xs-12 col-sm-4">
+				<div class="col-xs-12 col-sm-4" ng-show="currentAAU">
+					<h4>Editar unidad</h4>
+					<div class="ar-form-container">
+						<form>
+							<input type="text" ng-model="currentAAU.name" class="form-control" placeholder="Nombre">
+							<select ng-model="currentAAU.type" class="form-control">
+								<option value="unidades_academicas">Académica</option>
+								<option value="unidades_administrativas">Administrativa</option>
+								<option value="otro">Otro</option>
+							</select>
+							<button class="btn btn-primary form-control" ng-click="editAAU()">Guardar cambios</button>
+						</form>
+					</div>
+				</div>
+
+				<div class="col-xs-12 col-sm-4" ng-hide="currentAAU">
 					<h4>Agregar unidad</h4>
 					<div class="ar-form-container">
 						<form>
@@ -395,6 +414,8 @@ users_app.factory('MiscDataService',['$http',function($http){
 			$scope.aaus = data;
 		});
 
+		$scope.currentAAU = false;
+
 		//events
 		$scope.addAAU = function(){
 			return MiscDataService.addAAU($scope.newAAU)
@@ -425,8 +446,8 @@ users_app.factory('MiscDataService',['$http',function($http){
 				});
 		};
 
-		$scope.deleteAAU = function(){
-
+		$scope.setCurrentAAU = function(caau){
+			$scope.currentAAU = caau;
 		};
 
 	}]);
