@@ -404,7 +404,16 @@ users_app.factory('MiscDataService',['$http',function($http){
 						return response.data;
 					},function(){
 						alert('Ocurrió un error al intentar subir datos al servidor');
-					})
+					});
+			},
+			editAAU : function(currentAAU){
+				return $http.post(window['ROOT_PATH']+'/aau/edit',currentAAU)
+					.then(function(response){
+						console.log(response);
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					});
 			}
 		};
 	}])
@@ -420,9 +429,6 @@ users_app.factory('MiscDataService',['$http',function($http){
 		$scope.addAAU = function(){
 			return MiscDataService.addAAU($scope.newAAU)
 				.then(function(resp){
-
-					console.log('afta');
-					console.log(resp);
 
 					var message = 'Ocurrió un problema al intentar crear los datos';
 					if(resp && resp.status == 'success'){
@@ -448,6 +454,29 @@ users_app.factory('MiscDataService',['$http',function($http){
 
 		$scope.setCurrentAAU = function(caau){
 			$scope.currentAAU = caau;
+		};
+
+		$scope.editAAU = function(){
+			return MiscDataService.editAAU($scope.currentAAU)
+				.then(function(resp){
+					var message = 'Ocurrió un problema al intentar actualizar los datos';
+					if(resp && resp.status == 'success'){
+
+						//clean shit
+						$scope.currentAAU = null;
+
+						//tell shit was done
+						message = 'Unidad actualizada';
+					}
+					//show shit
+					$scope.modalLoaderActive = false;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+				});
 		};
 
 	}]);
