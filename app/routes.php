@@ -241,8 +241,11 @@ Route::group(array('before' => 'auth'), function(){
         /* Route that have the prefix user */
         Route::group(array('prefix' => 'user'), function(){
 
-            /* Dum da users */
+            /* Route to show users */
             Route::get('/', 'UserController@view');
+
+            /* Route to deactivate an user */
+            Route::get('deactivate', 'UserController@deactivate');
 
         });
 
@@ -251,7 +254,7 @@ Route::group(array('before' => 'auth'), function(){
 
             /* Route to view all Academic Administrative Units */
             Route::get('/', 'AcademicAdministrativeUnitController@view');
-            
+
             /* Route to add a new Academic Administrative Unit */
             Route::post('add', 'AcademicAdministrativeUnitController@add');
 
