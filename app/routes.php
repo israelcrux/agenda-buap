@@ -245,7 +245,7 @@ Route::group(array('before' => 'auth'), function(){
             Route::get('/', 'UserController@view');
 
             /* Route to deactivate an user */
-            Route::get('deactivate', 'UserController@deactivate');
+            Route::post('deactivate', 'UserController@deactivate');
 
         });
 
