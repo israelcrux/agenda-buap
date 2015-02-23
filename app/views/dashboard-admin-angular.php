@@ -206,7 +206,7 @@
 			
 		</div>
 		<div class="ar-section-bottombtns">
-			<div class="mbtn">ver usuarios registrados</div> <div class="mbtn">ver usuarios ignorados</div>
+			<div class="mbtn" ng-click="showRegisteredUserPanel=true">ver usuarios registrados</div> <div class="mbtn">ver usuarios ignorados</div>
 		</div>
 	</section>
 
@@ -216,6 +216,40 @@
 		
 	</div>
 	*/ ?>
+
+
+	<div class="ar-fullscreen-panel-container" ng-class="{active:showRegisteredUserPanel}">
+		<div class="ar-fullscreen-panel">
+			<div class="ar-modal-title">Usuarios registrados</div>
+			<div class="ar-modal-closebtn" ng-click="showRegisteredUserPanel=false"></div>
+			<div class="ar-modal-content">
+				
+				<div class="col-xs-12 ar-autoscroll">
+					
+					<br>
+					<br>
+					<div class="ar-list ar-autoscroll">
+						<div class="ar-element ar-thick" ng-repeat="user in users">
+							<div class="col-xs-12 col-sm-3">{{user.first_name}} {{user.last_name}}</div>
+							<div class="col-xs-12 col-sm-2"><a ng-href="mailto:{{user.email}}">{{user.email}}</a></div>
+							<div class="col-xs-12 col-sm-2"><a ng-href="tel:{{user.phone}}">{{user.phone}}</a></div>
+							<div class="col-xs-12 col-sm-2">{{user.created_at}}</div>
+							<div class="col-xs-12 col-sm-2">{{user.department_id}} : {{user.user_type.name}}</div>
+							<div class="col-xs-12 col-sm-1 ar-right"> 
+								<ul class="inline">
+									<li><a ng-click="deleteUser(user)">Desactivar</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="ar-fullscreen-panel-container" ng-class="{active:showUserForm}">
 		<div class="ar-fullscreen-panel ar-fitpanel ar500">
@@ -319,12 +353,22 @@ var users_app = angular.module('dashboard',[])
 					},function(){
 						alert('Ocurrió un error al intentar obtener datos del servidor');
 					});
+			},
+			users : function(){
+				return $http.get(window['ROOT_PATH']+'/user')
+					.then(function(response){
+						console.log(response.data);
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar obtener datos del servidor');
+					});
 			}
 		};
 	}])
 	.controller('UsersController',['$scope','UsersDataService',function($scope,UsersDataService){
 
 		$scope.showUserForm = false;
+		$scope.showRegisteredUserPanel = false;
 		$scope.userTypes = {
 			'1' :  'Cliente',
 			'2' :  'Empleado DCI',
@@ -337,6 +381,13 @@ var users_app = angular.module('dashboard',[])
 			//error never expected
 			$scope.pendingUsers = data.unauthorized;
 		});
+
+
+		$scope.users = UsersDataService.users();
+		$scope.users.then(function(data){
+			$scope.users = data;
+		});
+
 
 		//events
 		$scope.acceptUser = function(user){

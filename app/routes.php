@@ -224,6 +224,7 @@ Route::group(array('before' => 'auth'), function(){
         /* Route that have the prefix user */
         Route::group(array('prefix' => 'user'), function(){
 
+
             /* Route to get the employees of the boss department logged */
             Route::get('authorize', 'UserController@getEmployees');
 
@@ -239,6 +240,9 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route that have the prefix user */
         Route::group(array('prefix' => 'user'), function(){
+
+            /* Dum da users */
+            Route::get('/', 'UserController@view');
 
         });
 

@@ -3,6 +3,14 @@
     class UserController extends BaseController {
 
         /*
+         * Show users
+         */
+        public function view(){
+            return User::with('user_type')->get();
+        }
+
+
+        /*
          * Reset password
          */
         public function passwordReset() {
