@@ -53,6 +53,10 @@ input[type="date"]:valid:before {
   overflow: auto;
   max-height: 100%;
 }
+.ar-autoscroll::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f7f7f7;
+}
 .ar-spacer {
   margin-bottom: 50px;
   width: 100%;
@@ -113,7 +117,7 @@ a.ar-footer-logo {
   background-color: #999;
 }
 *::-moz-scrollbar {
-  width: 0px;
+  width: 2px;
   height: 10px;
   background-color: #fff;
 }

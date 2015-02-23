@@ -20,9 +20,8 @@
 				
 				<div class="col-xs-12 col-sm-8 ar-autoscroll">
 					
-					<br>
-					<br>
-					<div class="ar-list ar-autoscroll">
+					
+					
 						<div class="ar-element ar-thick" ng-repeat="aau in aaus">
 							<div class="col-xs-6">{{aau.name}}</div>
 							<div class="col-xs-4">{{aau.type}}</div>
@@ -35,9 +34,8 @@
 								</ul>
 							</div>
 						</div>
-					</div>
-					<br>
-					<br>
+					
+					
 
 				</div>
 				<div class="col-xs-12 col-sm-4" ng-show="currentAAU">
@@ -226,9 +224,6 @@
 				
 				<div class="col-xs-12 ar-autoscroll">
 					
-					<br>
-					<br>
-					<div class="ar-list ar-autoscroll">
 						<div class="ar-element ar-thick" ng-repeat="user in users">
 							<div class="col-xs-12 col-sm-3">{{user.first_name}} {{user.last_name}}</div>
 							<div class="col-xs-12 col-sm-2"><a ng-href="mailto:{{user.email}}">{{user.email}}</a></div>
@@ -241,9 +236,6 @@
 								</ul>
 							</div>
 						</div>
-					</div>
-					<br>
-					<br>
 
 				</div>
 			</div>
