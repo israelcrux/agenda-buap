@@ -219,6 +219,54 @@
                     }
                 }
 
+                /* Sending email to all boss that have relation with the services */
+                $departments_sended_mail = array();
+                foreach ($event->services()->get() as $service) {
+                    /* Getting the departments associated to the services */
+                    $department = $service->department()->first();
+
+                    if(!in_array($department->id, $departments_sended_mail)) {
+                        /* Getting the users associated to a department that they are bosses */
+                        $bosses = $department->users()->where('user_type_id', '=', 3)->where('status', '=', 1)->get();
+
+                        if($bosses->isEmpty()) {
+                            /* Getting the admin users */
+                            $admins = User::where('user_type_id', '=', 4)->where('status', '=', 1)->get();
+
+                            /* Sending email to admins */
+                            foreach ($admins as $admin) {
+                                Mail::send('emails.notification.neweventnoboss',
+                                    array(
+                                        'event'      => $event->name,
+                                        'department' => $department->name,
+                                    ),
+                                    function($message) use($admin) {
+                                        $message->to($admin->email)->subject('Nuevo evento agendado (Revisar detalle) - DCI');
+                                    }
+
+                                );
+                            }
+                        }
+                        else {
+                            /* Sending email to bosses */
+                            foreach ($bosses as $boss) {
+                                Mail::send('emails.notification.newevent',
+                                    array(
+                                        'event'      => $event->name,
+                                        'department' => $department->name,
+                                    ),
+                                    function($message) use($boss) {
+                                        $message->to($boss->email)->subject('Nuevo evento agendado - DCI');
+                                    }
+
+                                );
+                            }
+                        }
+
+                        array_push($departments_sended_mail, $department->id);
+                    }
+                }
+
                 /* Getting, validating and storing support material to the event */
                 if(Input::hasFile('files')) {
                     $files = Input::file('files');
@@ -416,6 +464,53 @@
                     }
                 }
 
+                /* Sending email to all boss that have relation with the services */
+                $departments_sended_mail = array();
+                foreach ($event->services()->wherePivot('deleted_at', '=', NULL)->get() as $service) {
+                    /* Getting the departments associated to the services */
+                    $department = $service->department()->first();
+
+                    if(!in_array($department->id, $departments_sended_mail)) {
+                        /* Getting the users associated to a department that they are bosses */
+                        $bosses = $department->users()->where('user_type_id', '=', 3)->where('status', '=', 1)->get();
+
+                        if($bosses->isEmpty()) {
+                            /* Getting the admin users */
+                            $admins = User::where('user_type_id', '=', 4)->where('status', '=', 1)->get();
+
+                            /* Sending email to admins */
+                            foreach ($admins as $admin) {
+                                Mail::send('emails.notification.editeventnoboss',
+                                    array(
+                                        'event'      => $event->name,
+                                        'department' => $department->name,
+                                    ),
+                                    function($message) use($admin) {
+                                        $message->to($admin->email)->subject('Evento editado (Revisar detalle) - DCI');
+                                    }
+
+                                );
+                            }
+                        }
+                        else {
+                            /* Sending email to bosses */
+                            foreach ($bosses as $boss) {
+                                Mail::send('emails.notification.editevent',
+                                    array(
+                                        'event' => $event->name,
+                                    ),
+                                    function($message) use($boss) {
+                                        $message->to($boss->email)->subject('Evento editado - DCI');
+                                    }
+
+                                );
+                            }
+                        }
+
+                        array_push($departments_sended_mail, $department->id);
+                    }
+                }
+
                 /* Updating support material to the event */
                 $support_materials_aux = Input::get('support_materials');
                 $new_support_materials = empty($support_materials_aux) ? array() : Input::get('support_materials');
@@ -550,6 +645,37 @@
         public function deleteEvent() {
             $event = EventDCI::find(Input::get('id'));
             if($event->user_id == Auth::user()->id) {
+                /* Sending email to all boss that have relation with the services */
+                $departments_sended_mail = array();
+                foreach ($event->services()->wherePivot('deleted_at', '=', NULL)->get() as $service) {
+                    /* Getting the departments associated to the services */
+                    $department = $service->department()->first();
+
+                    if(!in_array($department->id, $departments_sended_mail)) {
+                        /* Getting the users associated to a department that they are bosses */
+                        $users = $department->users()->where('user_type_id', '=', 3)->where('status', '=', 1)->get();
+
+                        if($users->isEmpty()) {
+                            /* Getting the admin users */
+                            $users = User::where('user_type_id', '=', 4)->where('status', '=', 1)->get();
+                        }
+
+                        /* Sending email to bosses or admins (users) */
+                        foreach ($users as $user) {
+                            Mail::send('emails.notification.deleteevent',
+                                array(
+                                    'event' => $event->name,
+                                ),
+                                function($message) use($user) {
+                                    $message->to($user->email)->subject('Evento eliminado - DCI');
+                                }
+
+                            );
+                        }
+
+                        array_push($departments_sended_mail, $department->id);
+                    }
+                }
                 $event->delete();
                 return Redirect::to('dashboard')->with('alert', 'Evento eliminado exitosamente ' . $event->id_dci);
             }
@@ -649,7 +775,7 @@
                             'file' => $file
                         ),
                         array(
-                            'file' => 'mimes:jpg,jpeg,png,bmp,pdf,doc,docx,ppt,pptx,zip,rar|max:2024',
+                            'file' => 'mimes:jpg,jpeg,png,bmp,pdf,doc,docx,ppt,pptx,zip,rar|max:1024',
                         ),
                         array(
                             'file.mimes' => 'Archivo '.$file->getClientOriginalName().' con formato inválido',

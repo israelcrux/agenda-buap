@@ -5,6 +5,8 @@
     </head>
     <body>
         <h1>Dirección de Comunicación Institucional - BUAP</h1>
-        <h2>Una nueva tarea le ha sido asignada</h2>
+        <p>
+            Un evento ha sido editado, se le recomienda revisar cuales son los cambios realizados: {{ $event }}
+        </p>
     </body>
 </html>

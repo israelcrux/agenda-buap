@@ -17,6 +17,13 @@
         public $dates = ['deleted_at'];
 
         /*
+         * Many services belongs to a department
+         */
+        public function department() {
+            return $this->belongsTo('Department');
+        }
+
+        /*
          * Many services have many events
          */
         public function events() {

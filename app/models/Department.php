@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
@@ -21,6 +21,13 @@
          */
         public function users() {
             return $this->hasMany('User');
+        }
+
+        /*
+         * Department has many services
+         */
+        public function services() {
+            return $this->hasMany('ServiceDCI');
         }
 
     }

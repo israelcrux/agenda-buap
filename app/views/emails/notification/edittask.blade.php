@@ -6,8 +6,5 @@
     <body>
         <h1>Dirección de Comunicación Institucional - BUAP</h1>
         <h2>La tarea "{{ $task }}" que tiene asignada ha sido editada por {{ $boss }}</h2>
-        <p>
-            ¿URL a tarea?
-        </p>
     </body>
 </html>
