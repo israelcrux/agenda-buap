@@ -113,7 +113,7 @@
             $validator = Validator::make(
                 Input::all(),
                 array(
-                    'name'                              => 'required|unique:academic_administrative_units,name'.$except_id,
+                    'name' => 'required|unique:academic_administrative_units,name'.$except_id,
                     'type' => 'required|alpha_dash|exists:academic_administrative_units,type'
                 )
             );

@@ -266,6 +266,23 @@ Route::group(array('before' => 'auth'), function(){
 
         });
 
+        /* Route that have the prefix service */
+        Route::group(array('prefix' => 'service'), function(){
+
+            /* Route to view all Services */
+            Route::get('/', 'ServiceController@view');
+
+            /* Route to add a new Service */
+            Route::get('add', 'ServiceController@add');
+
+            /* Route to edit a Service */
+            Route::get('edit', 'ServiceController@edit');
+
+            /* Route to delete a Service */
+            Route::get('delete', 'ServiceController@delete');
+
+        });
+
         Route::group(array('prefix' => 'event'), function() {
 
             Route::get('adminview', 'EventController@viewEventsByAdmin');
