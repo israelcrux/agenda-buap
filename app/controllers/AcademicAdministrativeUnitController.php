@@ -47,7 +47,7 @@
 
             /* Cheking if the unit exists */
             if(is_null($unit)) {
-                return '{"status":"error","message":"La nueva Unidad Académica/Administrativa no existe"}';
+                return '{"status":"error","message":"La Unidad Académica/Administrativa no existe"}';
             }
 
             /* Checking if the user has the rights to update units */
@@ -84,7 +84,7 @@
 
             /* Cheking if the unit exists */
             if(is_null($unit)) {
-                return '{"status":"error","message":"La nueva Unidad Académica/Administrativa no existe"}';
+                return '{"status":"error","message":"La Unidad Académica/Administrativa no existe"}';
             }
 
             /* Checking if the user has the rights to update units */
@@ -95,6 +95,7 @@
             $unit->delete();
 
             return '{"status":"success","message":"La Unidad Académica/Administrativa ha sido eliminada"}';
+
         }
 
         /*
@@ -113,7 +114,7 @@
             $validator = Validator::make(
                 Input::all(),
                 array(
-                    'name' => 'required|unique:academic_administrative_units,name'.$except_id,
+                    'name' => 'required|max:80|unique:academic_administrative_units,name'.$except_id,
                     'type' => 'required|alpha_dash|exists:academic_administrative_units,type'
                 )
             );

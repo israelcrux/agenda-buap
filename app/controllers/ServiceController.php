@@ -6,7 +6,9 @@
 		 * Return all services
 		 */
 		public function view() {
-			return Service::with('department')->get();
+
+            return Service::with('department')->get();
+
 		}
 
 		/*
@@ -25,8 +27,8 @@
             /* Creating the data to save */
             $service_data = array(
 				'name'          => Input::get('name'),
-				'description'   => Input::get('type'),
-				'observations'  => Input::get('type'),
+				'description'   => Input::get('description'),
+				'observations'  => Input::get('observations'),
 				'department_id' => Input::get('department_id'),
             );
 
@@ -47,12 +49,61 @@
 		 */
 		public function edit() {
 
+            /* Getting the Service */
+            $service = Service::find(Input::get('id'));
+
+            /* Cheking if the unit exists */
+            if(is_null($service)) {
+                return '{"status":"error","message":"El Servicio no existe"}';
+            }
+
+            /* Checking if the user has the rights to update units */
+            if(Auth::user()->user_type_id != 4) {
+                return '{"status":"error","message":"Usted no tiene permisos para editar esta sección"}';
+            }
+
+            /* Validating data */
+            $validation = $this->validateService('edit');
+
+            if(!$validation['isValid']) {
+                return '{"status":"error","message":'.$validation['message'].'}';
+            }
+
+            /* Updating information */
+            $service->name          = Input::get('name');
+            $service->description   = Input::get('description');
+            $service->observations  = Input::get('observations');
+            $service->department_id = Input::get('department_id');
+            $service->save();
+
+            if(is_null($service)) {
+                return '{"status":"error","message":"Ha ocurrido un error al actualizar el Servicio, recargue e intente nuevamente"}';
+            }
+            return '{"status":"success","message":"El Servicio ha sido actualizado"}';
+
 		}
 
 		/*
 		 * Delete a service
 		 */
 		public function delete() {
+
+            /* Getting the Academic/Administrative Unit */
+            $service = Service::find(Input::get('id'));
+
+            /* Cheking if the unit exists */
+            if(is_null($service)) {
+                return '{"status":"error","message":"El Servicio que intenta eliminar no existe"}';
+            }
+
+            /* Checking if the user has the rights to update units */
+            if(Auth::user()->user_type_id != 4) {
+                return '{"status":"error","message":"Usted no tiene permisos para editar esta sección"}';
+            }
+
+            $service->delete();
+
+            return '{"status":"success","message":"El Servicio ha sido eliminado"}';
 
 		}
 

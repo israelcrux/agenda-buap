@@ -12,6 +12,11 @@
         protected $table = 'departments';
 
         /*
+         * Table fields guarded, attributes do not mass-assignable
+         */
+        protected $guarded = array('id');
+
+        /*
          * Table field to execute a soft deleting action
          */
         protected $dates = ['deleted_at'];

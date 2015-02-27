@@ -273,13 +273,47 @@ Route::group(array('before' => 'auth'), function(){
             Route::get('/', 'ServiceController@view');
 
             /* Route to add a new Service */
-            Route::get('add', 'ServiceController@add');
+            Route::post('add', 'ServiceController@add');
 
             /* Route to edit a Service */
-            Route::get('edit', 'ServiceController@edit');
+            Route::post('edit', 'ServiceController@edit');
 
             /* Route to delete a Service */
-            Route::get('delete', 'ServiceController@delete');
+            Route::post('delete', 'ServiceController@delete');
+
+        });
+
+        /* Route that have the prefix service */
+        Route::group(array('prefix' => 'department'), function(){
+
+            /* Route to view all Services */
+            Route::get('/', 'DepartmentController@view');
+
+            /* Route to add a new Service */
+            Route::post('add', 'DepartmentController@add');
+
+            /* Route to edit a Service */
+            Route::post('edit', 'DepartmentController@edit');
+
+            /* Route to delete a Service */
+            Route::post('delete', 'DepartmentController@delete');
+
+        });
+
+        /* Route that have the prefix PDI Programs */
+        Route::group(array('prefix' => 'pdi-program'), function(){
+
+            /* Route to view all PDI Programs */
+            Route::get('/', 'PDIProgramController@view');
+
+            /* Route to add a new PDI Program */
+            Route::get('add', 'PDIProgramController@add');
+
+            /* Route to edit a PDI Program */
+            Route::get('edit', 'PDIProgramController@edit');
+
+            /* Route to delete a PDI Program */
+            Route::get('delete', 'PDIProgramController@delete');
 
         });
 
