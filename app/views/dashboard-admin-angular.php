@@ -206,7 +206,11 @@
 			
 		</div>
 		<div class="ar-section-bottombtns">
-			<div class="mbtn" ng-click="showRegisteredUserPanel=true">ver usuarios registrados</div> <div class="mbtn">ver usuarios ignorados</div>
+			<div class="mbtn" ng-click="showRegisteredUserPanel=true">ver usuarios registrados</div> 
+			<?php 
+			/*
+			<div class="mbtn">ver usuarios ignorados</div>
+			*/ ?>
 		</div>
 	</section>
 
@@ -386,6 +390,8 @@ var users_app = angular.module('dashboard',[])
 		$scope.users = UsersDataService.users();
 		$scope.users.then(function(data){
 			$scope.users = data;
+			console.log('$scope.users::::');
+			console.log($scope.users);
 		});
 
 
