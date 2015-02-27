@@ -186,7 +186,7 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route to view the dashboard to the boss */
         Route::get('/dashboard-boss/', function(){
-            return View::make('dashboard-boss', array('area' => Auth::user()->department_id));
+            return View::make('dashboard-boss', array('area' => Auth::user()->department_id, 'area_full' => Department::find(Auth::user()->department_id) ));
         });
 
         Route::get('/dashboard-admin/', function(){
@@ -199,7 +199,7 @@ Route::group(array('before' => 'auth'), function(){
         });
 
         /* Route to get events to panel of heads */
-        Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
+        Route::get('/service-requirements/{id}/{attended?}', 'EventController@serviceRequirementsByArea');
 
         /* Route to mark an event service as completed */
         Route::post('/eventservice/completed', 'EventServiceController@eventServiceCompleted');

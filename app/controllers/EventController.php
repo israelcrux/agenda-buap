@@ -688,7 +688,9 @@
         /*
          * Getting information about services requirements by area to panel of heads
          */
-        public function serviceRequirementsByArea($area) {
+        public function serviceRequirementsByArea($area,$attended = false) {
+
+            $stats = ($attended)? array($area, 'Atendido', 'Atendido') : array($area, 'Pendiente', 'En Proceso') ;
 
             $events = EventDCI::with(
                 array(
@@ -702,9 +704,10 @@
                 )
             )
             ->whereHas('services',
-                function($query) use ($area) {
+                function($query) use ($area,$stats) {
                     $query  ->whereRaw('`event_service`.`deleted_at` IS NULL and `services`.`department_id` = ? and (`dci_status` = ? OR `dci_status` = ?)',
-                                array($area, 'Pendiente', 'En Proceso')
+                                $stats
+                                // array($area, 'Pendiente', 'En Proceso')
                             );
                 }
             )

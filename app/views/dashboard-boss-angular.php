@@ -82,98 +82,160 @@
 	</div>
 </div>
 
+<div class="ar-fullscreen-panel-container" ng-class="{active:!taskpanelat_hidden}">
+	<div class="ar-fullscreen-panel">
+		<div class="ar-modal-title">Tareas asignadas para solicitud de {{current_sol.name}} para el evento "{{current_event.name}}"</div>
+		<div class="ar-modal-closebtn" ng-click="closeTaskPanelAt()"></div>
+		<div class="ar-modal-content">
+			<div class="col-xs-12 col-md-8 ar-scrollable-on-md ar-row">
+				<?php /* Tasks and their statuses */ ?>
+				
+					<div class="ar-empty-message" ng-show="!current_sol.tasks.length">Aún no hay tareas asignadas a esta solicitud, ¡Es importante asignar tareas!</div>
+
+					<div class="ar-row col-sm-12 col-md-5" ng-repeat="task in current_sol.tasks">
+	
+						<div class="breadcrumb task">
+							<div class="task-status" ng-class="{pending:task.status=='Pendiente',complete:task.status=='Completa'}">{{task.status}}</div>
+	
+							<div class="col-xs12 ellipsis unellipsable padr" ng-click="unellipse($event)" title="{{task.description}}">{{task.description}}</div>
+							<div class="col-xs12">Empleado: <b>{{employees[task.user_id].first_name}} {{employees[task.user_id].last_name}}</b></div>
+							<div class="col-xs12"><a ng-href="mailto:{{employees[task.user_id].email}}">{{employees[task.user_id].email}}</a></div>
+							<div class="ar-row">
+								<div class="col-xs6">{{task.created_at}}</div>
+								<div class="col-xs6">{{task.deleted_at}}</div>
+							</div>
+							<p>
+								{{task.comment}}
+							</p>
+						</div>
+
+					</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 <?php 
 /*--------------------- PANEL PRINCIPAL ---------------------------*/ 
 ?>
-<div class="ar-vwrap well">
-
-	<?php 
-	/*--------------------- Switchers---------------------------*/ 
-	/*
-	?>	
-	<div class="ar-vwrap">
-		<div class="ar-row ar-contright">
-			<div class="col-xs-12 col-sm-3 col-md-2">
-				<div class="ar-switcher">
-					<input type="checkbox" name="pending" ng-model="pending" id="pending" aria-label="...">
-					<div class="icon" ng-class="{'active':pending}" ng-click="pending=!pending"></div>
-					<label for="pending" >Pendientes</label>
-				</div>
-			</div>		
-			<div class="col-xs-12 col-sm-3 col-md-2">
-				<div class="ar-switcher">
-					<input type="checkbox" name="process" ng-model="process" id="process" aria-label="...">
-					<div class="icon" ng-class="{'active':process}" ng-click="process=!process"></div>
-					<label for="process" >En proceso</label>
-				</div>
-			</div>
-		</div>
+<section class="ar-module">
+	<div class="ar-section-title">
+		Solicitudes de servicios pare el área de <b><?php echo $area_full->name; ?></b>
 	</div>
-	<div class="ar-spacer"></div>
-	<?php 
-	*/
-	?>
-	
+	<div class="ar-section-subtitle">
+		Pendientes
+	</div>
+	<div class="ar-section-content">
+		<div class="ar-empty-message" ng-show="events.length==0">Aún no hay solicitudes pendientes de los servicios de ésta área.</div>
 
-	<?php 
-	/*--------------------- Service requests ---------------------------*/ 
-	 ?>
-	<!-- <div class="col-xs-12 col-sm-8"> -->
-	
-	<div class="ar-empty-message" ng-show="events.length==0">Aún no hay solicitudes de los servicios de ésta área.</div>
-
-	<div class="ar-list ar-mbottom" ng-repeat="event in events">
+		<div class="ar-list ar-mbottom" ng-repeat="event in events">
 
 
-		<div class="ar-vwrap">
-			<h4 class="it">{{event.name}}</h4>
-		</div>
-
-		<div class="col-xs-12 col-sm-4">
-			<div class="ar-row">
-				<div class="col-xs-12 col-md-6">
-					<p class="ar-over-title">Inicia</p>
-					<p>{{event.start_day}}</p>
-				</div> 
-				<div class="col-xs-12 col-md-6">
-					<p class="ar-over-title">Termina</p>					
-					<p>{{event.end_day}}</p>
-				</div>
+			<div class="col-xs-12">
+				<h4 class="it">{{event.name}}</h4>
 			</div>
-			<a target="_blank" ng-href="event/{{event.id}}">Ver detalles del evento</a>
 
-		</div>
-			
-		<div class="col-xs-12 col-sm-8">
-			<div class="ar-element" ng-repeat="sol in event.services">
+			<div class="col-xs-12 col-sm-4">
 				<div class="ar-row">
-					<div class="col-sm-12 col-md-8">
-						<h4>{{sol.name}} <span class="dci_status {{pendingclasses[sol.pivot.dci_status]}}">[{{sol.pivot.dci_status}}]</span></h4>
-					</div>
-					<div class="col-sm-12 col-md-4">
-						<h5>Soliciitado en: {{sol.pivot.start_service}}</h5>
+					<div class="col-xs-12 col-md-6">
+						<p class="ar-over-title">Inicia</p>
+						<p>{{event.start_day}}</p>
+					</div> 
+					<div class="col-xs-12 col-md-6">
+						<p class="ar-over-title">Termina</p>					
+						<p>{{event.end_day}}</p>
 					</div>
 				</div>
+				<a target="_blank" ng-href="event/{{event.id}}">Ver detalles del evento</a>
 
-				<div class="ar-element-buttons ar-row">
-					<div class="ar-button-info" ng-class="{green:sol._completed_tasks==sol.tasks.length}">
-						<b>{{sol.tasks.length}}</b> tareas asignadas
+			</div>
+				
+			<div class="col-xs-12 col-sm-8">
+				<div class="ar-element" ng-repeat="sol in event.services">
+					<div class="ar-row">
+						<div class="col-sm-12 col-md-8">
+							<h4>{{sol.name}} <span class="dci_status {{pendingclasses[sol.pivot.dci_status]}}">[{{sol.pivot.dci_status}}]</span></h4>
+						</div>
+						<div class="col-sm-12 col-md-4">
+							<h5>Soliciitado en: {{sol.pivot.start_service}}</h5>
+						</div>
 					</div>
-					<div class="ar-button-info">
-						<b>{{sol.tasks.length - sol._completed_tasks}}</b> tareas pendientes
+
+					<div class="ar-element-buttons ar-row">
+						<div class="ar-button-info" ng-class="{green:sol._completed_tasks==sol.tasks.length}">
+							<b>{{sol.tasks.length}}</b> tareas asignadas
+						</div>
+						<div class="ar-button-info">
+							<b>{{sol.tasks.length - sol._completed_tasks}}</b> tareas pendientes
+						</div>
+						<button class="btn" ng-click="openTaskPanel(event,sol)">
+							Asignar/Revisar Tareas
+						</button>
 					</div>
-					<button class="btn" ng-click="openTaskPanel(event,sol)">
-						Asignar/Revisar Tareas
-					</button>
 				</div>
 			</div>
+
 		</div>
 
-	</div>
-		
-</div>
+		<div class="ar-section-subtitle">
+			Atendidas
+		</div>
 
-<a href="">Ver solicitudes atendidas</a>
+
+		<div class="ar-list ar-mbottom" ng-repeat="event in attended">
+
+			<div class="col-xs-12">
+				<h4 class="it">{{event.name}}</h4>
+			</div>
+
+			<div class="col-xs-12 col-sm-4">
+				<div class="ar-row">
+					<div class="col-xs-12 col-md-6">
+						<p class="ar-over-title">Inicia</p>
+						<p>{{event.start_day}}</p>
+					</div> 
+					<div class="col-xs-12 col-md-6">
+						<p class="ar-over-title">Termina</p>					
+						<p>{{event.end_day}}</p>
+					</div>
+				</div>
+				<a target="_blank" ng-href="event/{{event.id}}">Ver detalles del evento</a>
+
+			</div>
+				
+			<div class="col-xs-12 col-sm-8">
+				<div class="ar-element" ng-repeat="sol in event.services">
+					<div class="ar-row">
+						<div class="col-sm-12 col-md-8">
+							<h4>{{sol.name}} <span class="dci_status {{pendingclasses[sol.pivot.dci_status]}}">[{{sol.pivot.dci_status}}]</span></h4>
+						</div>
+						<div class="col-sm-12 col-md-4">
+							<h5>Soliciitado en: {{sol.pivot.start_service}}</h5>
+						</div>
+					</div>
+
+					<div class="ar-element-buttons ar-row">
+						<div class="ar-button-info" ng-class="{green:sol._completed_tasks==sol.tasks.length}">
+							<b>{{sol.tasks.length}}</b> tareas asignadas
+						</div>
+						<div class="ar-button-info">
+							<b>{{sol.tasks.length - sol._completed_tasks}}</b> tareas pendientes
+						</div>
+						<button class="btn" ng-click="openTaskPanelAt(event,sol)">
+							Revisar Tareas
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+</section>
 
 <div class="ar-modal-loader" ng-class="{active:modalLoaderActive}">
 	<div class="spinner">
@@ -206,6 +268,15 @@
 					function(){
 						console.log('Could not load service requirements!');
 					})
+			},
+			attended : function(area_id){
+				return $http.get(window['ROOT_PATH']+'/service-requirements/'+area_id+'/true')
+					.then(function(response){
+						return response.data;
+					},
+					function(){
+						console.log('Could not load attended service requirements!');
+					}) 
 			},
 			employees : function(){
 				return $http.get(window['ROOT_PATH']+'/tasks/assign')
@@ -300,6 +371,25 @@
 			};
 			$scope.events = data;
 		});
+
+		$scope.attended = DataService.attended(<?php echo $area; ?>);
+		$scope.attended.then(function(data){
+			for (var i = data.length - 1; i >= 0; i--) {
+				var evt = data[i];
+				for (var j = evt.services.length - 1; j >= 0; j--) {
+					var sol = evt.services[j];
+					sol._completed_tasks = 0;
+					for (var k = sol.tasks.length - 1; k >= 0; k--) {
+						if( sol.tasks[k].status == 'Completa' )
+							sol._completed_tasks++; 
+					};
+				};
+			};
+			$scope.attended = data;
+		});
+
+
+
 		$scope.employees = DataService.employees();
 		$scope.employees.then(function(data){
 			$scope.employees = propAsKey('id',data);
@@ -358,6 +448,18 @@
 			$scope.current_sol = sol;
 			$scope.current_event = evt;
 			//scrollTop();	
+		};
+
+		$scope.taskpanelat_hidden = true;
+		$scope.openTaskPanelAt = function(evt,sol){
+			$scope.taskpanelat_hidden = false;
+			$scope.current_sol = sol;
+			$scope.current_event = evt;
+		};
+		$scope.closeTaskPanelAt = function(){
+			$scope.taskpanelat_hidden = true;
+			$scope.current_sol = null;
+			$scope.current_event = null;			
 		};
 
 		$scope.editTask = function(task){
