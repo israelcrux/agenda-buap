@@ -307,13 +307,13 @@ Route::group(array('before' => 'auth'), function(){
             Route::get('/', 'PDIProgramController@view');
 
             /* Route to add a new PDI Program */
-            Route::get('add', 'PDIProgramController@add');
+            Route::post('add', 'PDIProgramController@add');
 
             /* Route to edit a PDI Program */
-            Route::get('edit', 'PDIProgramController@edit');
+            Route::post('edit', 'PDIProgramController@edit');
 
             /* Route to delete a PDI Program */
-            Route::get('delete', 'PDIProgramController@delete');
+            Route::post('delete', 'PDIProgramController@delete');
 
         });
 
