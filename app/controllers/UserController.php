@@ -246,7 +246,7 @@
 
             /* If the request came from signup-pro, get the department of user */
             if(Input::has('department_id')) {
-                $user_data['department_id'] = Input::get('department_id') == 0 ? null : Input::get('department_id');
+                $user_data['department_id'] = Input::get('department_id') == 0 ? NULL : Input::get('department_id');
             }
 
             /* Storing the new user */
@@ -319,7 +319,7 @@
 
             if(is_null($user)) {
                 if($response == 'JSON')
-                    return '{"status":"error","message":"Usuario inválivo","data":'.Input::except('password').'}';
+                    return '{"status":"error","message":"Usuario inválido","data":'.Input::except('password').'}';
                 else
                     return Redirect::to('user/edit')->with('alert', 'Usuario inválido')->withInput(Input::except('password'));
             }
@@ -357,6 +357,7 @@
                 $user->password = $crypt_password;
             }
 
+            /* If the request brings with a valid academic administrative unit, set it, if not, set to NULL */
             if(Input::get('academic_administrative_unit_type') == '3') {
                 $user->academic_administrative_unit_id = NULL;
             }
@@ -364,15 +365,27 @@
                 $user->academic_administrative_unit_id = Input::get('academic_administrative_unit');
             }
 
+            /* If the request came from signup-pro, get the department of user */
+            if(Input::has('department_id')) {
+                $user->department_id = Input::get('department_id') == 0 ? NULL : Input::get('department_id');
+            }
+
+            /* If the request came from signup-pro, get the user_type_id of user */
+            if(Input::has('user_type_id')) {
+                $user->user_type_id = Input::get('user_type_id');
+            }
+
             $user->save();
 
             /* Validatying if the user needs confirm email and sending email if it is necessary */
             if($old_email != $user->email) {
                 $message = $this->mailToValidateMail($user, 'edit');
-                Auth::logout();
+                if(Auth::user()->user_type_id != 4) {
+                    Auth::logout();
+                }
             }
             else {
-                $message = 'Su información ha sido actualizada';
+                $message = 'Información de usuario actualizada';
             }
 
             if($response == 'JSON')
