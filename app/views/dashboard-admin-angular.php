@@ -625,7 +625,7 @@ users_app.factory('MiscDataService',['$http',function($http){
 			},
 
 
-			program : function(){
+			programs : function(){
 				return $http.get(window['ROOT_PATH']+'/pdi-program')
 					.then(function(response){
 						return response.data;
@@ -772,7 +772,7 @@ users_app.factory('MiscDataService',['$http',function($http){
 		};
 
 
-		$scope.programs = MiscDataService.aau();
+		$scope.programs = MiscDataService.programs();
 		$scope.programs.then(function(data){
 			$scope.programs = data;
 		});
