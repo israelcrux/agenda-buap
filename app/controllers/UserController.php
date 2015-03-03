@@ -388,8 +388,9 @@
                 $message = 'Información de usuario actualizada';
             }
 
-            if($response == 'JSON')
-                return '{"status":"success","message":'.$message.',"user":'.$user.'}';
+
+            if($response == 'JSON')                
+                return '{"status":"success","message":"'.$message.'","user":'.$user.'}';
             else
                 return Redirect::to('login')->with('alert', $message);
 
