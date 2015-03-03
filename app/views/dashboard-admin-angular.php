@@ -552,8 +552,9 @@ var users_app = angular.module('dashboard',[])
 					.then(function(response){
 						console.log(response.data);
 						return response.data;
-					},function(){
+					},function(resp){
 						alert('Ocurrió un error al intentar obtener datos del servidor');
+						console.log();
 					});
 			},
 			editUser : function(currentUser){
@@ -562,8 +563,10 @@ var users_app = angular.module('dashboard',[])
 						console.log('editUser response:');
 						console.log(response);
 						return response.data;
-					},function(){
-						alert('Ocurrió un error al intentar obtener datos del servidor');
+					},function(response){
+						console.log('editUser ERROR response:');
+						console.log(response);
+						console.log('Ocurrió un error al intentar obtener datos del servidor');
 					});
 			}
 		};
@@ -636,6 +639,7 @@ var users_app = angular.module('dashboard',[])
 					if(resp && resp.status == 'success'){
 						//clean shit
 						$scope.currentUser = false;
+						$scope.showEditUserForm = false;
 
 						//tell shit was done
 						message = 'Usuario modificado';
