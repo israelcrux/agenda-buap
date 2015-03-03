@@ -336,7 +336,7 @@
 
             if(!$validation['isValid']) {
                 if($response == 'JSON')
-                    return '{"status":"error","message":'.$validation['message'].',"data":'.Input::except('password').'}';
+                    return '{"status":"error","message":'.$validation['message'].',"data":'.json_encode(Input::except('password')).'}';
                 else
                     return Redirect::to('user/edit')->with('alert', $validation['message'])->withInput(Input::except('password'));
             }
@@ -539,6 +539,9 @@
                 );
             }
             else if($type == 'edit') {
+                /* Checking if the user that edit is admin */
+                $email_unique = Auth::user()->user_type_id != 4 ? Auth::user()->id : Input::get('id');
+
                 /* Creating a register/edition user validator */
                 $validator = Validator::make(
                     Input::all(),
@@ -547,7 +550,7 @@
                         'last_name'                         => 'required',
                         'phone'                             => array('regex:/([0-9]+|-|\s)+/'),
                         'extension_phone'                   => array('regex:/([0-9]+|-|\s)+/'),
-                        'email'                             => 'required|email|unique:users,email,'.Auth::user()->id,
+                        'email'                             => 'required|email|unique:users,email,'.$email_unique,
                         'password'                          => 'min:6|confirmed',
                         'academic_administrative_unit_type' => 'min:1|integer',
                         'academic_administrative_unit'      => 'required_if:academic_administrative_unit_type,1,academic_administrative_unit_type,2|integer',

@@ -17,16 +17,16 @@
 			<div class="ar-modal-title">Programas PDI</div>
 			<div class="ar-modal-closebtn" ng-click="showProgramsPanel=false"></div>
 			<div class="ar-modal-content">
-				
+
 				<div class="col-xs-12 col-sm-8 ar-autoscroll">
-					
+
 					<br>
 					<br>
 					<div class="ar-list ar-autoscroll">
 						<div class="ar-element ar-thick" ng-repeat="program in programs">
 							<div class="col-xs-6">{{program.name}}</div>
 							<div class="col-xs-4">{{program.description}}</div>
-							<div class="col-xs-2"> 
+							<div class="col-xs-2">
 								<ul class="inline">
 									<li><a ng-click="setCurrentProgram(program)">Editar</a></li>
 								</ul>
@@ -73,25 +73,25 @@
 			<div class="ar-modal-title">Unidades académicas y administrativas</div>
 			<div class="ar-modal-closebtn" ng-click="showAAUPanel=false"></div>
 			<div class="ar-modal-content">
-				
+
 				<div class="col-xs-12 col-sm-8 ar-autoscroll">
-					
-					
-					
+
+
+
 						<div class="ar-element ar-thick" ng-repeat="aau in aaus">
 							<div class="col-xs-6">{{aau.name}}</div>
 							<div class="col-xs-4">{{aau.type}}</div>
-							<div class="col-xs-2"> 
+							<div class="col-xs-2">
 								<ul class="inline">
 									<li><a ng-click="setCurrentAAU(aau)">Editar</a></li>
-									<?php /*  
+									<?php /*
 									<li><a ng-click="deleteAAU">Eliminar</a></li>
 									*/ ?>
 								</ul>
 							</div>
 						</div>
-					
-					
+
+
 
 				</div>
 				<div class="col-xs-12 col-sm-4" ng-show="currentAAU">
@@ -136,9 +136,9 @@
 			<div class="ar-modal-title">Servicios</div>
 			<div class="ar-modal-closebtn" ng-click="showServicesPanel=false"></div>
 			<div class="ar-modal-content">
-				
+
 				<div class="col-xs-12 col-sm-8 ar-autoscroll">
-					
+
 					<br>
 					<br>
 					<div class="ar-list ar-autoscroll">
@@ -146,7 +146,7 @@
 							<div class="col-xs-4">{{service.name}}</div>
 							<div class="col-xs-3">{{service.department.name||departments[service.department_id].name}}</div>
 							<div class="col-xs-3">{{service.description}} <br> {{service.observations}}</div>
-							<div class="col-xs-2"> 
+							<div class="col-xs-2">
 								<ul class="inline">
 									<li><a ng-click="setCurrentService(service)">Editar</a></li>
 								</ul>
@@ -177,7 +177,7 @@
 						</form>
 					</div>
 				</div>
-				
+
 
 				<div class="col-xs-12 col-sm-4" ng-hide="currentService">
 					<h4>Agregar Servicio</h4>
@@ -223,7 +223,7 @@
 		<div class="ar-section-subtitle ar-row">
 			<div class="col-xs-0 col-sm-4">Eventos </div>
 			<div class="col-xs-0 col-sm-8">Solicitudes</div>
-			<?php 
+			<?php
 			/*
 			huehue
 			*/
@@ -240,7 +240,7 @@
 
 
 			<div class="ar-list ar-mbottom" ng-repeat="event in events">
-				
+
 
 				<div class="ar-vwrap">
 					<h4 class="it">{{event.name}}</h4>
@@ -251,16 +251,16 @@
 						<div class="col-xs-12 col-md-6">
 							<p class="ar-over-title">Inicia</p>
 							<p>{{event.start_day}}</p>
-						</div> 
+						</div>
 						<div class="col-xs-12 col-md-6">
-							<p class="ar-over-title">Termina</p>					
+							<p class="ar-over-title">Termina</p>
 							<p>{{event.end_day}}</p>
 						</div>
 					</div>
 					<a target="_blank" ng-href="event/{{event.id}}">Ver detalles del evento</a>
 
 				</div>
-					
+
 				<div class="col-xs-12 col-sm-8">
 					<div class="ar-element" ng-repeat="sol in event.services">
 						<div class="status-tag"></div>
@@ -308,11 +308,11 @@
 		<div class="ar-section-title">Usuarios <div class="mbtn btn" ng-click="showUserForm=true">Agregar usuario</div></div>
 		<div class="ar-section-subtitle">Pendientes</div>
 		<div class="ar-section-content ar-list">
-			
+
 			<div class="ar-emptylist" ng-show="pendingUsers.length==0">
 				Aún no hay nuevos usuarios
-			</div>			
-		
+			</div>
+
 			<div class="ar-element" ng-repeat="user in pendingUsers">
 				<div class="ar-row">
 					<h4 class="col-xs-12">{{user.first_name}} {{user.last_name}}</h4>
@@ -329,22 +329,22 @@
 					<button class="btn" ng-click="deleteUser(user)">Ignorar</button>
 					<button class="btn" ng-click="acceptUser(user)">Aceptar</button>
 				</div>
-			</div>	
-			
+			</div>
+
 		</div>
 		<div class="ar-section-bottombtns">
-			<div class="mbtn" ng-click="showRegisteredUserPanel=true">ver usuarios registrados</div> 
-			<?php 
+			<div class="mbtn" ng-click="showRegisteredUserPanel=true">ver usuarios registrados</div>
+			<?php
 			/*
 			<div class="mbtn">ver usuarios ignorados</div>
 			*/ ?>
 		</div>
 	</section>
 
-	<?php 
+	<?php
 	/*
 	<div class="ar-modal-loader" ng-class="{active:showUserForm}" ng-click="showUserForm=false">
-		
+
 	</div>
 	*/ ?>
 
@@ -354,9 +354,9 @@
 			<div class="ar-modal-title">Usuarios registrados <input ng-model="userquery" type="search" placeholder="Buscar" autofocus></div>
 			<div class="ar-modal-closebtn" ng-click="showRegisteredUserPanel=false"></div>
 			<div class="ar-modal-content ar-nonscroll">
-				
+
 				<div class="col-xs-12 ar-autoscroll ar-list ar-titled">
-			
+
 						<div class="ar-title-row">
 							<ar class="row">
 								<div class="col-xs-0 col-sm-2">Nombre</div>
@@ -364,7 +364,7 @@
 								<div class="col-xs-0 col-sm-2">Teléfono</div>
 								<div class="col-xs-0 col-sm-2">Departamento : nombre</div>
 								<div class="col-xs-0 col-sm-2">Fecha de creación</div>
-								<div class="col-xs-0 col-sm-1">estado</div>								
+								<div class="col-xs-0 col-sm-1">estado</div>
 							</ar>
 
 						</div>
@@ -376,7 +376,7 @@
 							<div class="col-xs-12 col-sm-2">{{user.department.name}} : {{user.user_type.name}}</div>
 							<div class="col-xs-6 col-sm-2">{{user.created_at}}</div>
 							<div class="col-xs-6 col-sm-1">{{statuses[user.status]}}</div>
-							<div class="col-xs-12 col-sm-1 ar-right"> 
+							<div class="col-xs-12 col-sm-1 ar-right">
 								<ul class="inline">
 									<li><a ng-click="setCurrentUser(user)">Editar</a></li>
 									<?php /*
@@ -399,7 +399,7 @@
 			<div class="ar-modal-content">
 			    <div class="ar-form-wrapper" >
 					<div class="ar-form-container">
-				
+
 						<?php echo Form::open(array('url' => '/register', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); ?>
 							<input class="form-control" name="first_name" type="text" id="first_name" placeholder="Nombre(s)" autocomplete="off" required>
 							<input class="form-control" name="last_name" type="text" id="last_name" placeholder="Apellidos" autocomplete="off" required>
@@ -440,7 +440,7 @@
 									<option value="<?php echo $dunit['id'] ?>"><?php echo $dunit['name'] ?></option>
 								<?php endforeach; ?>
 							</select>
-							
+
 							<input class="form-control" name="email" type="email" id="username" placeholder="E-mail" autocomplete="off" required>
 							<input class="form-control" name="password" type="password" value="" id="password" placeholder="Contraseña" required>
 							<input class="form-control" type="submit" value="Registrarse">
@@ -462,13 +462,13 @@
 			<div class="ar-modal-content">
 			    <div class="ar-form-wrapper" >
 					<div class="ar-form-container">
-				
+
 						<form>
 							<input class="form-control" ng-model="currentUser.first_name" type="text" placeholder="Nombre(s)">
 							<input class="form-control" ng-model="currentUser.last_name" type="text" placeholder="Apellidos">
 							<input class="form-control" ng-model="currentUser.phone" type="text" placeholder="Teléfono" autocomplete="off" pattern="([0-9]+|-|\s)+" title="Ejemplos: 888888, 8-888-888, 8 888 888">
 							<input class="form-control" ng-model="currentUser.extension_phone" type="text" placeholder="Teléfono/Extensión Buap" autocomplete="off" >
-							
+
 							Unidad (académica o administrativa)
 							<select ng-model="currentUser.academic_administrative_unit" value="">
 								<option value="">Ninguna</option>
@@ -492,7 +492,7 @@
 									<option value="<?php echo $dunit['id'] ?>"><?php echo $dunit['name'] ?></option>
 								<?php endforeach; ?>
 							</select>
-							
+
 							<input class="form-control" ng-model="currentUser.email" type="email" placeholder="E-mail" autocomplete="off">
 							<button class="btn" ng-click="editUser()">Guardar cambios</button>
 						</form>
@@ -526,7 +526,7 @@
 
 <script>
 ROOT_PATH = "<?php echo URL::to('/'); ?>";
-var users_app = angular.module('dashboard',[])	
+var users_app = angular.module('dashboard',[])
 	.factory('UsersDataService',['$http',function($http){
 		return {
 			pendingUsers : function(){
@@ -650,7 +650,7 @@ var users_app = angular.module('dashboard',[])
 					},3000);
 				});
 		};
-		
+
 
 	}]);
 
@@ -671,7 +671,7 @@ users_app.factory('EventsDataService',['$http',function($http){
 		$scope.events = EventsDataService.events();
 		$scope.events.then(function(data){
 			$scope.events = data;
-		}); 
+		});
 	}]);
 
 users_app.factory('MiscDataService',['$http',function($http){
@@ -682,7 +682,7 @@ users_app.factory('MiscDataService',['$http',function($http){
 						return response.data;
 					},function(){
 						alert('Ocurrió un error al intentar obtener datos del servidor');
-					}) 
+					})
 			},
 			addAAU : function(newAAU){
 				return $http.post(window['ROOT_PATH']+'/aau/add',newAAU)
