@@ -308,7 +308,7 @@
 		<div class="ar-section-title">Usuarios <div class="mbtn btn" ng-click="showUserForm=true">Agregar usuario</div></div>
 		<div class="ar-section-subtitle">Pendientes</div>
 		<div class="ar-section-content ar-list">
-
+			
 			<div class="ar-emptylist" ng-show="pendingUsers.length==0">
 				Aún no hay nuevos usuarios
 			</div>			
@@ -351,21 +351,37 @@
 
 	<div class="ar-fullscreen-panel-container" ng-class="{active:showRegisteredUserPanel}">
 		<div class="ar-fullscreen-panel">
-			<div class="ar-modal-title">Usuarios registrados</div>
+			<div class="ar-modal-title">Usuarios registrados <input ng-model="userquery" type="search" placeholder="Buscar" autofocus></div>
 			<div class="ar-modal-closebtn" ng-click="showRegisteredUserPanel=false"></div>
-			<div class="ar-modal-content">
+			<div class="ar-modal-content ar-nonscroll">
 				
-				<div class="col-xs-12 ar-autoscroll">
-					
-						<div class="ar-element ar-thick" ng-repeat="user in users">
-							<div class="col-xs-12 col-sm-3">{{user.first_name}} {{user.last_name}}</div>
+				<div class="col-xs-12 ar-autoscroll ar-list ar-titled">
+			
+						<div class="ar-title-row">
+							<ar class="row">
+								<div class="col-xs-12 col-sm-2">Nombre</div>
+								<div class="col-xs-12 col-sm-2">Correo</div>
+								<div class="col-xs-12 col-sm-2">Teléfono</div>
+								<div class="col-xs-12 col-sm-2">Departamento : nombre</div>
+								<div class="col-xs-12 col-sm-2">Fecha de creación</div>
+								<div class="col-xs-12 col-sm-1">estado</div>								
+							</ar>
+
+						</div>
+
+						<div class="ar-element ar-thick" ng-repeat="user in users | filter: userquery">
+							<div class="col-xs-12 col-sm-2">{{user.first_name}} {{user.last_name}}</div>
 							<div class="col-xs-12 col-sm-2"><a ng-href="mailto:{{user.email}}">{{user.email}}</a></div>
 							<div class="col-xs-12 col-sm-2"><a ng-href="tel:{{user.phone}}">{{user.phone}}</a></div>
+							<div class="col-xs-12 col-sm-2">{{user.department.name}} : {{user.user_type.name}}</div>
 							<div class="col-xs-12 col-sm-2">{{user.created_at}}</div>
-							<div class="col-xs-12 col-sm-2">{{user.department_id}} : {{user.user_type.name}}</div>
+							<div class="col-xs-12 col-sm-1">{{statuses[user.status]}}</div>
 							<div class="col-xs-12 col-sm-1 ar-right"> 
 								<ul class="inline">
+									<li><a ng-click="deleteUser(user)">Editar</a></li>
+									<?php /*
 									<li><a ng-click="deleteUser(user)">Desactivar</a></li>
+									*/ ?>
 								</ul>
 							</div>
 						</div>
@@ -491,6 +507,8 @@ var users_app = angular.module('dashboard',[])
 		};
 	}])
 	.controller('UsersController',['$scope','UsersDataService',function($scope,UsersDataService){
+
+		$scope.statuses = ['Inactivo','Activo'];
 
 		$scope.showUserForm = false;
 		$scope.showRegisteredUserPanel = false;

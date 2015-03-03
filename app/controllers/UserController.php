@@ -6,7 +6,7 @@
          * Show users
          */
         public function view(){
-            return User::with('user_type')->get();
+            return User::with('user_type')->with('department')->get();
         }
 
 

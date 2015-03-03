@@ -75,5 +75,14 @@
 			</div>
 		</div>
 	</footer>
+	<script>
+	$(document).ready(function(){
+		$('.ar-autoscroll').mousewheel(function(e){
+			//e.preventDefault();
+			//e.stopPropagation();
+			//return false;
+		});
+	});
+	</script>
 </body>
 </html>

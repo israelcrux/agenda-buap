@@ -41,8 +41,8 @@ return array(
 
 	'providers' => array(
 
-		'Barryvdh\Debugbar\ServiceProvider',
-		'Clockwork\Support\Laravel\ClockworkServiceProvider',
+		//'Barryvdh\Debugbar\ServiceProvider',
+		//'Clockwork\Support\Laravel\ClockworkServiceProvider',
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
