@@ -319,14 +319,14 @@
 
             if(is_null($user)) {
                 if($response == 'JSON')
-                    return '{"status":"error","message":"Usuario inválido","data":'.Input::except('password').'}';
+                    return '{"status":"error","message":"Usuario inválido","data":'.json_encode(Input::except('password')).'}';
                 else
                     return Redirect::to('user/edit')->with('alert', 'Usuario inválido')->withInput(Input::except('password'));
             }
 
             if($user->id != Auth::user()->id and Auth::user()->user_type_id != 4) {
                 if($response == 'JSON')
-                    return '{"status":"error","message":"Usted no tiene permisos para modificar este usuario","data":'.Input::except('password').'}';
+                    return '{"status":"error","message":"Usted no tiene permisos para modificar este usuario","data":'.json_encode(Input::except('password')).'}';
                 else
                     return Redirect::to('user/edit')->with('alert', 'Usted no tiene permisos para modificar este usuario')->withInput(Input::except('password'));
             }
