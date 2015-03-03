@@ -378,7 +378,7 @@
 							<div class="col-xs-12 col-sm-1">{{statuses[user.status]}}</div>
 							<div class="col-xs-12 col-sm-1 ar-right"> 
 								<ul class="inline">
-									<li><a ng-click="deleteUser(user)">Editar</a></li>
+									<li><a ng-click="setCurrentUser(user)">Editar</a></li>
 									<?php /*
 									<li><a ng-click="deleteUser(user)">Desactivar</a></li>
 									*/ ?>
@@ -455,6 +455,58 @@
 
 
 
+	<div class="ar-fullscreen-panel-container" ng-class="{active:showEditUserForm}">
+		<div class="ar-fullscreen-panel ar-fitpanel ar500">
+			<div class="ar-modal-title">Modificar usuario</div>
+			<div class="ar-modal-closebtn" ng-click="showEditUserForm=false"></div>
+			<div class="ar-modal-content">
+			    <div class="ar-form-wrapper" >
+					<div class="ar-form-container">
+				
+						<form>
+							<input class="form-control" ng-model="currentUser.first_name" type="text" placeholder="Nombre(s)">
+							<input class="form-control" ng-model="currentUser.last_name" type="text" placeholder="Apellidos">
+							<input class="form-control" ng-model="currentUser.phone" type="text" placeholder="Teléfono" autocomplete="off" pattern="([0-9]+|-|\s)+" title="Ejemplos: 888888, 8-888-888, 8 888 888">
+							<input class="form-control" ng-model="currentUser.extension_phone" type="text" placeholder="Teléfono/Extensión Buap" autocomplete="off" >
+							
+							Unidad (académica o administrativa)
+							<select ng-model="currentUser.academic_administrative_unit" value="">
+								<option value="">Ninguna</option>
+								<?php foreach($aaunits as $aaunit): ?>
+									<option value="<?php echo $aaunit['id'] ?>"><?php echo $aaunit['name'] ?></option>
+								<?php endforeach; ?>
+							</select>
+
+							Nivel de usuario (rol)
+							<select ng-model="currentUser.user_type_id" value="">
+								<option value="0">Seleccionar Nivel de Usuario</option>
+								<?php foreach($utunits as $utunit): ?>
+									<option value="<?php echo $utunit['id'] ?>"><?php echo $utunit['name'] ?></option>
+								<?php endforeach; ?>
+							</select>
+
+							Departamento DCI
+							<select ng-model="currentUser.department_id" value="">
+								<option value="0">Seleccionar Departamento</option>
+								<?php foreach($dunits as $dunit): ?>
+									<option value="<?php echo $dunit['id'] ?>"><?php echo $dunit['name'] ?></option>
+								<?php endforeach; ?>
+							</select>
+							
+							<input class="form-control" ng-model="currentUser.email" type="email" placeholder="E-mail" autocomplete="off">
+							<button class="btn" ng-click="editUser()">Guardar cambios</button>
+						</form>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
 	<div class="ar-modal-loader" ng-class="{active:modalLoaderActive}">
 		<div class="spinner">
 		  <div class="bounce1"></div>
@@ -503,6 +555,16 @@ var users_app = angular.module('dashboard',[])
 					},function(){
 						alert('Ocurrió un error al intentar obtener datos del servidor');
 					});
+			},
+			editUser : function(currentUser){
+				return $http.post(window['ROOT_PATH']+'/user/edit',currentUser)
+					.then(function(response){
+						console.log('editUser response:');
+						console.log(response);
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar obtener datos del servidor');
+					});
 			}
 		};
 	}])
@@ -517,6 +579,13 @@ var users_app = angular.module('dashboard',[])
 			'2' :  'Empleado DCI',
 			'3' :  'Jefe de Área DCI',
 			'4' :  'Administrador'
+		};
+
+		$scope.showEditUserForm = false;
+		$scope.setCurrentUser = function(user){
+			console.log(user);
+			$scope.currentUser = user;
+			$scope.showEditUserForm = true;
 		};
 
 		$scope.pendingUsers = UsersDataService.pendingUsers();
@@ -558,6 +627,29 @@ var users_app = angular.module('dashboard',[])
 				});
 		};
 
+		$scope.editUser = function(){
+			$scope.modalLoaderActive = true;
+			$scope.currentUser.response = 'JSON';
+			return UsersDataService.editUser($scope.currentUser)
+				.then(function(resp){
+					var message = 'Ocurrió un problema al intentar modificar los datos';
+					if(resp && resp.status == 'success'){
+						//clean shit
+						$scope.currentUser = false;
+
+						//tell shit was done
+						message = 'Usuario modificado';
+					}
+					//show shit
+					$scope.modalLoaderActive = false;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+				});
+		};
 		
 
 	}]);

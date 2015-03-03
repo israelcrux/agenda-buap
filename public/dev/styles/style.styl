@@ -324,6 +324,7 @@ ul.nav.navbar-nav li a
 
 .ar-modal-background
 	position fixed
+	-webkit-transform: translateZ(0)
 	top 0px
 	left 0px
 	width 100%
@@ -334,6 +335,7 @@ ul.nav.navbar-nav li a
 .ar-modal-wrapper
 	overflow auto
 	position fixed
+	-webkit-transform: translateZ(0)
 	top 0px
 	left 0px
 	width 100%
@@ -404,7 +406,7 @@ ul.nav.navbar-nav li a
 	padding 15px
 	top -500px
 	z-index 20
-	position absolute
+	position fixed
 	left 50%
 	margin-left -300px
 	-webkit-transition top .7s ease-out
@@ -567,6 +569,7 @@ p.ar-ptitle
 @media (max-width:767px)
 	.ar-modal-wrapper
 		position fixed
+		-webkit-transform: translateZ(0)
 	.ar-modal-content
 		padding-left 0px
 		padding-right 0px
@@ -872,6 +875,7 @@ h4.sm
 .ar-day
 	display block
 	position fixed
+	-webkit-transform: translateZ(0)
 	top 0px
 	padding-top nav-height-padding
 	width 555px	
@@ -990,6 +994,7 @@ h4.sm
 	width 100%
 	height 100%
 	position fixed
+	-webkit-transform: translateZ(0)
 	overflow auto
 	top 0px
 	left 0px
@@ -1239,18 +1244,18 @@ input[type="search"]
 	background-color transparent
 
 .ar-modal-title input::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #909;
+    color: #fff;
 }
 .ar-modal-title input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #909;
+   color:    #fff;
    opacity:  1;
 }
 .ar-modal-title input::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #909;
+   color:    #fff;
    opacity:  1;
 }
 .ar-modal-title input:-ms-input-placeholder { /* Internet Explorer 10+ */
-   color:    #909;
+   color:    #fff;
 }
 
 
@@ -1266,6 +1271,7 @@ input[type="search"]
 		min-height 400px
 	.nav.navbar
 		position fixed
+		-webkit-transform: translateZ(0)
 		width 100%
 	.ar-wrapper.ar-thecontent
 		padding-top nav-height-padding
