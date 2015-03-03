@@ -359,23 +359,23 @@
 			
 						<div class="ar-title-row">
 							<ar class="row">
-								<div class="col-xs-12 col-sm-2">Nombre</div>
-								<div class="col-xs-12 col-sm-2">Correo</div>
-								<div class="col-xs-12 col-sm-2">Teléfono</div>
-								<div class="col-xs-12 col-sm-2">Departamento : nombre</div>
-								<div class="col-xs-12 col-sm-2">Fecha de creación</div>
-								<div class="col-xs-12 col-sm-1">estado</div>								
+								<div class="col-xs-0 col-sm-2">Nombre</div>
+								<div class="col-xs-0 col-sm-2">Correo</div>
+								<div class="col-xs-0 col-sm-2">Teléfono</div>
+								<div class="col-xs-0 col-sm-2">Departamento : nombre</div>
+								<div class="col-xs-0 col-sm-2">Fecha de creación</div>
+								<div class="col-xs-0 col-sm-1">estado</div>								
 							</ar>
 
 						</div>
 
 						<div class="ar-element ar-thick" ng-repeat="user in users | filter: userquery">
 							<div class="col-xs-12 col-sm-2">{{user.first_name}} {{user.last_name}}</div>
-							<div class="col-xs-12 col-sm-2"><a ng-href="mailto:{{user.email}}">{{user.email}}</a></div>
-							<div class="col-xs-12 col-sm-2"><a ng-href="tel:{{user.phone}}">{{user.phone}}</a></div>
+							<div class="col-xs-6 col-sm-2"><a ng-href="mailto:{{user.email}}">{{user.email}}</a></div>
+							<div class="col-xs-6 col-sm-2"><a ng-href="tel:{{user.phone}}">{{user.phone}}</a></div>
 							<div class="col-xs-12 col-sm-2">{{user.department.name}} : {{user.user_type.name}}</div>
-							<div class="col-xs-12 col-sm-2">{{user.created_at}}</div>
-							<div class="col-xs-12 col-sm-1">{{statuses[user.status]}}</div>
+							<div class="col-xs-6 col-sm-2">{{user.created_at}}</div>
+							<div class="col-xs-6 col-sm-1">{{statuses[user.status]}}</div>
 							<div class="col-xs-12 col-sm-1 ar-right"> 
 								<ul class="inline">
 									<li><a ng-click="setCurrentUser(user)">Editar</a></li>
