@@ -5,6 +5,9 @@
     </head>
     <body>
         <h1>Dirección de Comunicación Institucional - BUAP</h1>
-        <h2>Una nueva tarea le ha sido asignada</h2>
+        <p>
+            El evento {{ $event }} ha sido modificado y no se han encontrado jefes asociados al
+            departamento {{ $department }}
+        </p>
     </body>
 </html>

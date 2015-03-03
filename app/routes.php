@@ -186,7 +186,7 @@ Route::group(array('before' => 'auth'), function(){
 
         /* Route to view the dashboard to the boss */
         Route::get('/dashboard-boss/', function(){
-            return View::make('dashboard-boss', array('area' => Auth::user()->department_id));
+            return View::make('dashboard-boss', array('area' => Auth::user()->department_id, 'area_full' => Department::find(Auth::user()->department_id) ));
         });
 
         Route::get('/dashboard-admin/', function(){
@@ -199,7 +199,7 @@ Route::group(array('before' => 'auth'), function(){
         });
 
         /* Route to get events to panel of heads */
-        Route::get('/service-requirements/{id}', 'EventController@serviceRequirementsByArea');
+        Route::get('/service-requirements/{id}/{attended?}', 'EventController@serviceRequirementsByArea');
 
         /* Route to mark an event service as completed */
         Route::post('/eventservice/completed', 'EventServiceController@eventServiceCompleted');
@@ -241,8 +241,11 @@ Route::group(array('before' => 'auth'), function(){
         /* Route that have the prefix user */
         Route::group(array('prefix' => 'user'), function(){
 
-            /* Dum da users */
+            /* Route to show users */
             Route::get('/', 'UserController@view');
+
+            /* Route to deactivate an user */
+            Route::post('deactivate', 'UserController@deactivate');
 
         });
 
@@ -251,7 +254,7 @@ Route::group(array('before' => 'auth'), function(){
 
             /* Route to view all Academic Administrative Units */
             Route::get('/', 'AcademicAdministrativeUnitController@view');
-            
+
             /* Route to add a new Academic Administrative Unit */
             Route::post('add', 'AcademicAdministrativeUnitController@add');
 
@@ -260,6 +263,57 @@ Route::group(array('before' => 'auth'), function(){
 
             /* Route to delete an Academic Administrative Unit */
             Route::post('delete', 'AcademicAdministrativeUnitController@delete');
+
+        });
+
+        /* Route that have the prefix service */
+        Route::group(array('prefix' => 'service'), function(){
+
+            /* Route to view all Services */
+            Route::get('/', 'ServiceController@view');
+
+            /* Route to add a new Service */
+            Route::post('add', 'ServiceController@add');
+
+            /* Route to edit a Service */
+            Route::post('edit', 'ServiceController@edit');
+
+            /* Route to delete a Service */
+            Route::post('delete', 'ServiceController@delete');
+
+        });
+
+        /* Route that have the prefix service */
+        Route::group(array('prefix' => 'department'), function(){
+
+            /* Route to view all Services */
+            Route::get('/', 'DepartmentController@view');
+
+            /* Route to add a new Service */
+            Route::post('add', 'DepartmentController@add');
+
+            /* Route to edit a Service */
+            Route::post('edit', 'DepartmentController@edit');
+
+            /* Route to delete a Service */
+            Route::post('delete', 'DepartmentController@delete');
+
+        });
+
+        /* Route that have the prefix PDI Programs */
+        Route::group(array('prefix' => 'pdi-program'), function(){
+
+            /* Route to view all PDI Programs */
+            Route::get('/', 'PDIProgramController@view');
+
+            /* Route to add a new PDI Program */
+            Route::post('add', 'PDIProgramController@add');
+
+            /* Route to edit a PDI Program */
+            Route::post('edit', 'PDIProgramController@edit');
+
+            /* Route to delete a PDI Program */
+            Route::post('delete', 'PDIProgramController@delete');
 
         });
 

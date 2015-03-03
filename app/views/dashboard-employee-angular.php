@@ -2,10 +2,13 @@
 
 
 <div class="col-xs-12">
+	<div class="ar-empty-message" ng-show="!eventTasks.length">Aún no hay tareas pendientes</div>
 	<div class="event-list task-list" ng-repeat="event in eventTasks">
 		<div class="ar-over-title">Nombre del Evento</div>
-		<h4>{{event.name}}</h4> <a href="">Mas información</a>
+		<h4>{{event.name}}</h4> <a target="_blank" ng-href="event/{{event.id}}">Mas información</a>
 		<div class="task-list">
+			
+
 			<div ng-repeat="service in event.services">
 				<div class="task ar-element" ng-repeat="task in service.tasks">
 					<div class="ar-over-title">Descripción de la tarea</div>
@@ -22,10 +25,7 @@
 	</div>
 </div>
 
-
-	<p>También puedes <a>revisar las tareas terminadas</a></p>
-
-<div ng-show="currenttask" class="ar-fullscreen-panel-container">
+<div ng-show="currenttask" class="ar-fullscreen-panel-container" ng-class="{active:currenttask}">
 	<div class="ar-fullscreen-panel ar-notsofull">
 		<div class="ar-modal-title">Tarea terminada {{current_sol.name}}</div>
 		<div class="ar-modal-closebtn" ng-click="closeTaskPanel()"></div>

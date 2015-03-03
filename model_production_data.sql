@@ -122,7 +122,8 @@ INSERT INTO `db554509897`.`departments` (`id`, `name`, `description`, `created_a
 (8, 'Publicaciones', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL),
 (9, 'CIDD', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL),
 (10, 'Radio BUAP', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL),
-(11, 'Administrativo', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL);
+(11, 'Administrativo', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL),
+(12, 'Fotografía', NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL);
 
 COMMIT;
 
@@ -188,13 +189,18 @@ INSERT INTO `db554509897`.`services` (`id`, `name`, `description`, `observations
 (3, 'Entrevista Radio BUAP', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
 (4, 'Prensa externa', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 4),
 (5, 'Entrevista en Radiodifusoras', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
-(6, 'Producción de material impreso*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 7),
+(6, 'Producción de material impreso*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 2),
 (7, 'Producción de material audiovisual*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 9),
 (8, 'Sitio Web', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 5),
 (9, 'Revistas', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 8),
 (10, 'Redes sociales', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 5),
-(11, 'Spot', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
-(12, 'Control Remoto', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10);
+(11, 'Spot Radio BUAP', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
+(12, 'Control Remoto Radio BUAP', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
+(13, 'Blog Radio BUAP', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 10),
+(14, 'Cobertura de Eventos', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 2),
+(15, 'Perifoneo*', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 2),
+(16, 'Monitoreo de Medios', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 6),
+(17, 'Testigo Fotográfico de Eventos', NULL, NULL, '2015-02-11 16:46:40', '2015-02-11 16:46:40', NULL, 12);
 
 COMMIT;
 

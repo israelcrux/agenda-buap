@@ -148,6 +148,7 @@ input {
 }
 .btn {
   border-radius: 0px;
+  background-color: #ddd;
 }
 .mbtn {
   border: 1px solid #e2e2e2;
@@ -358,10 +359,10 @@ ul.nav.navbar-nav li a {
   background-image: url("../img/arrows_remove.svg");
 }
 .ar-modal-title {
+  padding-top: 5px;
   z-index: 1;
   position: absolute;
   width: 100%;
-  line-height: 50px;
   top: 0px;
   left: 0px;
   background-color: #00b2e2;
@@ -1229,6 +1230,38 @@ span.dci_status.apr {
   overflow: hidden;
   padding-top: 30px;
 }
+.edit-btn:hover {
+  background-color: #7d7d7d;
+}
+.edit-btn {
+  width: 50px;
+  height: 50px;
+  background-color: #e2e2e2;
+  background-image: url("../img/edit.svg");
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  cursor: pointer;
+}
+.padr {
+  padding-right: 50px;
+}
+.ellipsis.unellipsable {
+  cursor: pointer;
+}
+.task-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.event-list {
+  margin-bottom: 50px;
+}
+.event-list .ar-element {
+  margin-top: 20px;
+}
 .ar-section-title {
   padding: 15px 15px 10px 5px;
   margin-bottom: 10px;
@@ -1293,6 +1326,43 @@ span.dci_status.apr {
   left: 0px;
   height: 100%;
   background-color: #f6aa3e;
+}
+.ar-list.ar-titled,
+.ar-autoscroll.ar-titled {
+  padding-top: 80px;
+  position: relative;
+}
+.ar-title-row {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 80px;
+  width: 100%;
+}
+input[type="search"] {
+  margin: 5px;
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid #e2e2e2;
+  background-color: transparent;
+}
+.ar-modal-title input::-webkit-input-placeholder {
+/* WebKit browsers */
+  color: #909;
+}
+.ar-modal-title input:-moz-placeholder {
+/* Mozilla Firefox 4 to 18 */
+  color: #909;
+  opacity: 1;
+}
+.ar-modal-title input::-moz-placeholder {
+/* Mozilla Firefox 19+ */
+  color: #909;
+  opacity: 1;
+}
+.ar-modal-title input:-ms-input-placeholder {
+/* Internet Explorer 10+ */
+  color: #909;
 }
 @media (min-width: 768px) and (min-height: 600px) {
   .ar-login-form.ar-form-wrapper {

@@ -7,10 +7,66 @@
 	<div class="col-xs-2 col-sm-4">
 		<ul>
 			<li><a ng-click="showAAUPanel=true">Unidades administrativas</a></li>
-			<li>Servicios</li>
-			<li>Áreas DCI</li>
+			<li><a ng-click="showServicesPanel=true">Servicios</a></li>
+			<li><a ng-click="showProgramsPanel=true">Programas PDI</a></li>
 		</ul>
 	</div>
+
+	<div class="ar-fullscreen-panel-container" ng-class="{active:showProgramsPanel}">
+		<div class="ar-fullscreen-panel">
+			<div class="ar-modal-title">Programas PDI</div>
+			<div class="ar-modal-closebtn" ng-click="showProgramsPanel=false"></div>
+			<div class="ar-modal-content">
+				
+				<div class="col-xs-12 col-sm-8 ar-autoscroll">
+					
+					<br>
+					<br>
+					<div class="ar-list ar-autoscroll">
+						<div class="ar-element ar-thick" ng-repeat="program in programs">
+							<div class="col-xs-6">{{program.name}}</div>
+							<div class="col-xs-4">{{program.description}}</div>
+							<div class="col-xs-2"> 
+								<ul class="inline">
+									<li><a ng-click="setCurrentProgram(program)">Editar</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+
+				</div>
+				<div class="col-xs-12 col-sm-4" ng-show="currentProgram">
+					<h4>Editar programa</h4>
+					<div class="ar-form-container">
+						<form>
+							<input type="text" ng-model="currentProgram.name" class="form-control" placeholder="Nombre">
+							<input type="text" ng-model="currentProgram.description" class="form-control" placeholder="Descripción">
+							<button class="btn btn-primary form-control" ng-click="editProgram()">Guardar cambios</button>
+							<br>
+							<br>
+							<a class="cancel mbtn" ng-click="currentProgram=false">Cancelar</a>
+						</form>
+					</div>
+				</div>
+
+				<div class="col-xs-12 col-sm-4" ng-hide="currentProgram">
+					<h4>Agregar programa</h4>
+					<div class="ar-form-container">
+						<form>
+							<input type="text" ng-model="newProgram.name" class="form-control" placeholder="Nombre">
+							<input type="text" ng-model="newProgram.description" class="form-control" placeholder="Descripción">
+							<button class="btn btn-primary form-control" ng-click="addProgram()">Crear</button>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
 
 	<div class="ar-fullscreen-panel-container" ng-class="{active:showAAUPanel}">
 		<div class="ar-fullscreen-panel">
@@ -49,6 +105,9 @@
 								<option value="otro">Otro</option>
 							</select>
 							<button class="btn btn-primary form-control" ng-click="editAAU()">Guardar cambios</button>
+							<br>
+							<br>
+							<a class="cancel mbtn" ng-click="currentAAU=false">Cancelar</a>
 						</form>
 					</div>
 				</div>
@@ -67,6 +126,76 @@
 						</form>
 					</div>
 				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="ar-fullscreen-panel-container" ng-class="{active:showServicesPanel}">
+		<div class="ar-fullscreen-panel">
+			<div class="ar-modal-title">Servicios</div>
+			<div class="ar-modal-closebtn" ng-click="showServicesPanel=false"></div>
+			<div class="ar-modal-content">
+				
+				<div class="col-xs-12 col-sm-8 ar-autoscroll">
+					
+					<br>
+					<br>
+					<div class="ar-list ar-autoscroll">
+						<div class="ar-element ar-thick" ng-repeat="service in services">
+							<div class="col-xs-4">{{service.name}}</div>
+							<div class="col-xs-3">{{service.department.name||departments[service.department_id].name}}</div>
+							<div class="col-xs-3">{{service.description}} <br> {{service.observations}}</div>
+							<div class="col-xs-2"> 
+								<ul class="inline">
+									<li><a ng-click="setCurrentService(service)">Editar</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+
+				</div>
+
+				<div class="col-xs-12 col-sm-4" ng-show="currentService">
+					<h4>Editar servicio</h4>
+					<div class="ar-form-container">
+						<form>
+							<input type="text" ng-model="currentService.name" class="form-control" placeholder="Nombre">
+							<input type="text" ng-model="currentService.description" class="form-control" placeholder="Descripción">
+							<input type="text" ng-model="currentService.observations" class="form-control" placeholder="Observaciones">
+							<select ng-model="currentService.department_id" class="form-control">
+								<?php foreach($dunits as $dept): ?>
+									<option value="<?php echo $dept->id ?>"><?php echo $dept->name ?></option>
+								<?php endforeach; ?>
+							</select>
+							<button class="btn btn-primary form-control" ng-click="editService()">Guardar cambios</button>
+							<br>
+							<br>
+							<a class="cancel mbtn" ng-click="currentService=false">Cancelar</a>
+						</form>
+					</div>
+				</div>
+				
+
+				<div class="col-xs-12 col-sm-4" ng-hide="currentService">
+					<h4>Agregar Servicio</h4>
+					<div class="ar-form-container">
+						<form>
+							<input type="text" ng-model="newService.name" class="form-control" placeholder="Nombre">
+							<input type="text" ng-model="newService.description" class="form-control" placeholder="Descripción">
+							<input type="text" ng-model="newService.observations" class="form-control" placeholder="Observaciones">
+							<select ng-model="newService.department_id" class="form-control">
+								<?php foreach($dunits as $dept): ?>
+									<option value="<?php echo $dept->id ?>"><?php echo $dept->name ?></option>
+								<?php endforeach; ?>
+							</select>
+							<button class="btn btn-primary form-control" ng-click="addService()">Crear</button>
+							</form>
+					</div>
+				</div>
+
 
 			</div>
 		</div>
@@ -204,7 +333,11 @@
 			
 		</div>
 		<div class="ar-section-bottombtns">
-			<div class="mbtn" ng-click="showRegisteredUserPanel=true">ver usuarios registrados</div> <div class="mbtn">ver usuarios ignorados</div>
+			<div class="mbtn" ng-click="showRegisteredUserPanel=true">ver usuarios registrados</div> 
+			<?php 
+			/*
+			<div class="mbtn">ver usuarios ignorados</div>
+			*/ ?>
 		</div>
 	</section>
 
@@ -378,6 +511,8 @@ var users_app = angular.module('dashboard',[])
 		$scope.users = UsersDataService.users();
 		$scope.users.then(function(data){
 			$scope.users = data;
+			console.log('$scope.users::::');
+			console.log($scope.users);
 		});
 
 
@@ -434,7 +569,6 @@ users_app.factory('MiscDataService',['$http',function($http){
 			aau : function(){
 				return $http.get(window['ROOT_PATH']+'/aau')
 					.then(function(response){
-						console.log(response);
 						return response.data;
 					},function(){
 						alert('Ocurrió un error al intentar obtener datos del servidor');
@@ -443,7 +577,6 @@ users_app.factory('MiscDataService',['$http',function($http){
 			addAAU : function(newAAU){
 				return $http.post(window['ROOT_PATH']+'/aau/add',newAAU)
 					.then(function(response){
-						console.log(response);
 						return response.data;
 					},function(){
 						alert('Ocurrió un error al intentar subir datos al servidor');
@@ -452,7 +585,57 @@ users_app.factory('MiscDataService',['$http',function($http){
 			editAAU : function(currentAAU){
 				return $http.post(window['ROOT_PATH']+'/aau/edit',currentAAU)
 					.then(function(response){
-						console.log(response);
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					});
+			},
+
+			service : function(){
+				return $http.get(window['ROOT_PATH']+'/service')
+					.then(function(response){
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					});
+			},
+			addService : function(newService){
+				return $http.post(window['ROOT_PATH']+'/service/add',newService)
+					.then(function(response){
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					});
+			},
+			editService : function(currentService){
+				return $http.post(window['ROOT_PATH']+'/service/edit',currentService)
+					.then(function(response){
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					});
+			},
+
+
+			programs : function(){
+				return $http.get(window['ROOT_PATH']+'/pdi-program')
+					.then(function(response){
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					});
+			},
+			addProgram : function(newProgram){
+				return $http.post(window['ROOT_PATH']+'/pdi-program/add',newProgram)
+					.then(function(response){
+						return response.data;
+					},function(){
+						alert('Ocurrió un error al intentar subir datos al servidor');
+					});
+			},
+			editProgram : function(currentProgram){
+				return $http.post(window['ROOT_PATH']+'/pdi-program/edit',currentProgram)
+					.then(function(response){
 						return response.data;
 					},function(){
 						alert('Ocurrió un error al intentar subir datos al servidor');
@@ -461,14 +644,19 @@ users_app.factory('MiscDataService',['$http',function($http){
 		};
 	}])
 	.controller('MiscController',['$scope','MiscDataService',function($scope,MiscDataService){
+
+		$scope.departments = idAsIndexes(<?php echo $dunits ?>);
+
+
 		$scope.aaus = MiscDataService.aau();
 		$scope.aaus.then(function(data){
 			$scope.aaus = data;
 		});
-
 		$scope.currentAAU = false;
 
-		//events
+		$scope.setCurrentAAU = function(caau){
+			$scope.currentAAU = caau;
+		};
 		$scope.addAAU = function(){
 			return MiscDataService.addAAU($scope.newAAU)
 				.then(function(resp){
@@ -494,11 +682,6 @@ users_app.factory('MiscDataService',['$http',function($http){
 					},3000);
 				});
 		};
-
-		$scope.setCurrentAAU = function(caau){
-			$scope.currentAAU = caau;
-		};
-
 		$scope.editAAU = function(){
 			return MiscDataService.editAAU($scope.currentAAU)
 				.then(function(resp){
@@ -522,6 +705,132 @@ users_app.factory('MiscDataService',['$http',function($http){
 				});
 		};
 
+
+		$scope.services = MiscDataService.service();
+		$scope.services.then(function(data){
+			$scope.services = data;
+		});
+		$scope.currentService = false;
+
+		$scope.setCurrentService = function(service){
+			$scope.currentService = service;
+		};
+		$scope.addService = function(){
+			return MiscDataService.addService($scope.newService)
+				.then(function(resp){
+
+					var message = 'Ocurrió un problema al intentar crear los datos';
+					if(resp && resp.status == 'success'){
+						//add shit
+						$scope.services.push($scope.newService);
+
+						//clean shit
+						$scope.newService = {};
+
+						//tell shit was done
+						message = 'Servicio creado';
+					}
+					//show shit
+					$scope.modalLoaderActive = false;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+				});
+		};
+		$scope.editService = function(){
+			return MiscDataService.editService($scope.currentService)
+				.then(function(resp){
+					var message = 'Ocurrió un problema al intentar actualizar los datos';
+					if(resp && resp.status == 'success'){
+
+						//clean shit
+						$scope.currentService = null;
+
+						//tell shit was done
+						message = 'Servicio actualizado';
+					}
+					//show shit
+					$scope.modalLoaderActive = false;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+				});
+		};
+
+
+		$scope.programs = MiscDataService.programs();
+		$scope.programs.then(function(data){
+			$scope.programs = data;
+		});
+		$scope.currentProgram = false;
+
+		$scope.setCurrentProgram = function(cp){
+			$scope.currentProgram = cp;
+		};
+		$scope.addProgram = function(){
+			return MiscDataService.addProgram($scope.newProgram)
+				.then(function(resp){
+
+					var message = 'Ocurrió un problema al intentar crear los datos';
+					if(resp && resp.status == 'success'){
+						//add shit
+						$scope.programs.push($scope.newProgram);
+
+						//clean shit
+						$scope.newProgram = {};
+
+						//tell shit was done
+						message = 'Programa creado';
+					}
+					//show shit
+					$scope.modalLoaderActive = false;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+				});
+		};
+		$scope.editProgram = function(){
+			return MiscDataService.editProgram($scope.currentProgram)
+				.then(function(resp){
+					var message = 'Ocurrió un problema al intentar actualizar los datos';
+					if(resp && resp.status == 'success'){
+
+						//clean shit
+						$scope.currentProgram = null;
+
+						//tell shit was done
+						message = 'Programa actualizado';
+					}
+					//show shit
+					$scope.modalLoaderActive = false;
+					$scope.alert = message;
+					setTimeout(function(){
+						$scope.$apply(function(){
+							$scope.alert = null;
+						});
+					},3000);
+				});
+		};
+
+
+
+		function idAsIndexes(arr){
+			newarr = [];
+			for (var i = arr.length - 1; i >= 0; i--) {
+				if(arr[i].id)
+					newarr[arr[i].id] = arr[i];
+			};
+			return newarr;
+		}
 	}]);
 
 </script>

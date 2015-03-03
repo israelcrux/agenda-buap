@@ -11,6 +11,28 @@
 
 
         /*
+         * Deactivating an user setting status to 0
+         */
+        public function deactivate() {
+
+            $user = User::find(Input::get('id'));
+
+            if(is_null($user)) {
+                return '{"status":"error","message":"El usuario no existe"}';
+            }
+
+            if(Auth::user()->user_type_id != 4) {
+                return '{"status":"error","message":"Usted no tiene permisos para modificar este usuario"}';
+            }
+
+            $user->status = 0;
+            $user->save();
+
+            return '{"status":"success","message":"El usuario ha sido de baja exitosamente"}';
+
+        }
+
+        /*
          * Reset password
          */
         public function passwordReset() {
@@ -140,7 +162,11 @@
             /* Verifying that the user exists and correct credentials */
             if(Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password')))) {
                 /* Verifying status user */
-                if(Auth::user()->status == '2' || Auth::user()->status == '4') {
+                if(Auth::user()->status == '0') {
+                    Auth::logout();
+                    return Redirect::to('login')->with('alert', 'Usuario deshabilitado')->withInput(Input::except('password'));
+                }
+                else if(Auth::user()->status == '2' || Auth::user()->status == '4') {
                     Auth::logout();
                     return Redirect::to('login')->with('alert', 'Usuario requiere activación')->withInput(Input::except('password'));
                 }

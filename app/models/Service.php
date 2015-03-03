@@ -12,9 +12,21 @@
         protected $table = 'services';
 
         /*
+         * Table fields guarded, attributes do not mass-assignable
+         */
+        protected $guarded = array('id');
+
+        /*
          * Table field to execute a soft deleting action
          */
         public $dates = ['deleted_at'];
+
+        /*
+         * Many services belongs to a department
+         */
+        public function department() {
+            return $this->belongsTo('Department');
+        }
 
         /*
          * Many services have many events
