@@ -32,6 +32,18 @@
 				</div>
 				<div class="collapse navbar-collapse navbar-right" id="ar-collapsable-menu">
 			      <ul class="nav navbar-nav">
+			      @if(Auth::user()->user_type_id > 1)
+
+			      	@if(Auth::user()->user_type_id == 2 )
+						<li>{{HTML::link('/dashboard-employee','Inicio')}}</li>
+				  	@elseif(Auth::user()->user_type_id == 3 )
+						<li>{{HTML::link('/dashboard-boss','Inicio')}}</li>
+				  	@elseif(Auth::user()->user_type_id == 4 )
+						<li>{{HTML::link('/dashboard-admin','Inicio')}}</li>
+				  	@endif
+
+					<li>{{HTML::link('/dashboard','Eventos')}}</li>
+				  @endif
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
