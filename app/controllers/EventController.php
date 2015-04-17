@@ -778,7 +778,7 @@
                             'file' => $file
                         ),
                         array(
-                            'file' => 'mimes:jpg,jpeg,png,bmp,pdf,doc,docx,ppt,pptx,zip,rar|max:1024',
+                            'file' => 'mimes:jpg,jpeg,png,bmp,pdf,doc,docx,ppt,pptx,zip,rar|max:20480',
                         ),
                         array(
                             'file.mimes' => 'Archivo '.$file->getClientOriginalName().' con formato inválido',
