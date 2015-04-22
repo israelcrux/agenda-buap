@@ -19,7 +19,7 @@
 	<script>
 		setTimeout(function(){
 			document.getElementById('ar-alrt').className="ar-alert out";
-		},3000);
+		},10000);
 	</script>
 <?php 
 	}
