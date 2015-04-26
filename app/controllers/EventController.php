@@ -362,6 +362,19 @@
             $event = EventDCI::find(Input::get('id'));
 
             if(is_null($event)) {
+                Mail::send('errors.editevent',
+                    array(
+                        'error' => 'No existe el evento especificado',
+                        'user' => json_encode(Auth::user()),
+                        'event' => json_encode(Input::all()),
+                    ),
+                    function($message) {
+                        $message->to('sjaca10@gmail.com')->subject('Error al editar evento - DCI');
+                        $message->to('jesuslink00@gmail.com')->subject('Error al editar evento - DCI');
+                    }
+
+                );
+
                 return Redirect::to('dashboard')
                             ->with('alert', 'No existe el evento especificado')
                             ->with('FORM_ENABLED','true')
