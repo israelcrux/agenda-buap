@@ -47,7 +47,7 @@
 						<?php /* type date */?>
 						<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required value="<?php echo Input::old('end_day'); ?>">
 						<?php /* type time */?>
-						<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="17:00:00" value="<?php echo Input::old('time'); ?>">
+						<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="<?php if(Input::has('time')) echo Input::old('time'); else echo "17:00:00"; ?>">
 
 						<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" required value="<?php echo Input::old('place'); ?>">
 						<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" value="<?php echo Input::old('link'); ?>">
@@ -256,7 +256,7 @@
 						<?php /* type date */?>
 						<input class="datepicker" type="text"  pattern="^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$" name="end_day" id="end_day" placeholder="Fecha de término" autocomplete="off" required value="{{currentEvent.end_day}}">
 						<?php /* type time */?>
-						<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="17:00:00" value="{{currentEvent.time}}">
+						<input type="time" name="time" id="time" placeholder="Hora de inicio hh:mm" autocomplete="off" required value="{{currentEvent.time}}">
 
 						<input type="text" class="form-horizontal" name="place" id="place" placeholder="Lugar" required value="{{currentEvent.place}}">
 						<input type="url" class="form-horizontal" name="link" id="link" placeholder="URL del evento" value="{{currentEvent.link}}">
