@@ -90,6 +90,16 @@ Route::get('/signup', function(){
     return View::make('signup', array('aaunits' => AcademicAdministrativeUnit::all()));
 });
 
+/* 
+This is here, in case someone forgot to validate their email, and it expires... etc
+Route to show the registerlinkform */
+Route::get('/registerlinkform', function(){
+    return View::make('registerlinkform');
+});
+Route::post('/registerlinkform', 'UserController@resendlink');
+
+
+
 /* Route to show the register form to employees */
 Route::get('/signup-pro', function(){
     return View::make('signup-pro',

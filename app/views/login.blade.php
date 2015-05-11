@@ -15,6 +15,9 @@
 		<div class="ar-padder">
 			<div class="col-xs-6">{{ HTML::link('/password','Olvidé mi contraseña') }}</div>
 			<div class="col-xs-6 ar-right">{{ HTML::link('/signup','Registro') }}</div>
+			<div class="col-xs-6"></div>
+			<div class="col-xs-6 ar-right">{{ HTML::link('/registerlinkform','Reenviar enlace de validación') }}
+</div>
 		</div>
 	</div>
 @stop

@@ -270,23 +270,24 @@
          */
         public function activate($token) {
             // Checking on database if the token exists
-            $user_auth_activation = UserAuthOperation::whereRaw('token = ? and type = ?', array($token, 1))->first();
+            $user_auth_activation = UserAuthOperation::whereRaw('token = ? and type = ? and used = 0', array($token, 1))->first();
 
             // Verifying that the token is valid
             if(!$user_auth_activation) {
-                return Redirect::to('login')->with('alert', 'Activación invalida');
+                return Redirect::to('login')->with('alert', 'El enlace se activación no existe, o ya fué utilizado');
             }
 
+            // ya no es necesario
             // Verifying that the token has not been used
-            if($user_auth_activation->used == 1) {
-                return Redirect::to('login')->with('alert', 'El mécanismo de activación del e-mail ha sido utilizado');
-            }
+            // if($user_auth_activation->used == 1) {
+            //     return Redirect::to('login')->with('alert', 'El mécanismo de activación del e-mail ha sido utilizado');
+            // }
 
-            // Verifying that the token has not been expired
+            // Verifying that the token has not expired
             $expiration_date = new DateTime($user_auth_activation->expiration);
             $now = new DateTime();
             if($now > $expiration_date) {
-                return Redirect::to('login')->with('alert', 'El token de validación ha expirado');
+                return Redirect::to('registerlinkform')->with('alert', 'El token de validación ha expirado');
             }
 
             // Updating the information for the token as used
@@ -474,6 +475,34 @@
             return '{"status":"success","message":"El usuario '.$user->first_name.' '.$user->last_name.' ha sido autorizado como '.$response_message.'"}';
 
         }
+
+        /*
+         * Send email to validate the user AGAIN
+         */
+        public function resendlink(){
+            
+            $user = User::where('email', '=', Input::get('email'))->first();
+            if(!$user){
+                return Redirect::to('registerlinkform')->with('alert', 'El correo proporcionado no está registrado');
+            } else if($user->status != 2){
+                return Redirect::to('login')->with('alert', 'Esta cuenta ya es válida, puede iniciar sesión');
+            } else {
+
+                //invalidar al token anterior 
+                $usertokens = UserAuthOperation::whereRaw('user_id = ? and type = ? and used = 0', array($user->id, 1))->get();
+                if(count( $usertokens) > 0 ) {
+                    foreach($usertokens as $token) { 
+                        $token->used = 1;
+                        $token->save();
+                    }
+                }
+
+                $this->mailToValidateMail($user,'register');
+    
+                return Redirect::to('login')->with('alert', 'Todo listo, un nuevo enlace ha sido enviado a su correo');
+            }
+        }
+
 
         /*
          * Send an mail to validate the user mail

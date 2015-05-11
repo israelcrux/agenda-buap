@@ -5,6 +5,9 @@
     <div class="ar-form-wrapper" >
 		<div class="ar-form-container">
 			<h1>Registro</h1>
+			<p>
+				{{ HTML::link('/registerlinkform','Reenviar enlace de validación') }}
+			</p>
 		    {{ Form::open(array('url' => '/register', 'method' => 'post', 'role'=>'form', 'class' =>'form-horizontal' )); }}
 				<input class="form-control" name="first_name" type="text" id="first_name" placeholder="Nombre(s)" autocomplete="off" value="{{ Input::old('first_name'); }}" required>
 				<input class="form-control" name="last_name" type="text" id="last_name" placeholder="Apellidos" autocomplete="off" value="{{ Input::old('last_name'); }}" required>
